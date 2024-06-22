@@ -1,0 +1,5439 @@
+{
+    "GCF": {
+        "mcc": [
+            "001"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_128"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA1_96"
+        ],
+        "ikev2_dh_group_list": [
+            "2"
+        ],
+        "ikev2_lifetime": [
+            "86400"
+        ]
+    },
+    "Jazz_PK": {
+        "mcc": [
+            "410"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Vodafone_EG": {
+        "mcc": [
+            "602"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "We_EG": {
+        "mcc": [
+            "602"
+        ],
+        "mnc": [
+            "004"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "82200"
+        ]
+    },
+    "TMobile_GR": {
+        "mcc": [
+            "202"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "64800"
+        ]
+    },
+    "MOBILY_SA": {
+        "mcc": [
+            "420"
+        ],
+        "mnc": [
+            "003"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Wind_GR": {
+        "mcc": [
+            "202"
+        ],
+        "mnc": [
+            "010"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Vodafone_GR": {
+        "mcc": [
+            "202"
+        ],
+        "mnc": [
+            "005"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "3600"
+        ]
+    },
+    "Vodafone_QA": {
+        "mcc": [
+            "427"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_128",
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA1_96",
+            "HMAC_SHA_512_256"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": [
+            "43200"
+        ]
+    },
+    "MOI_QA": {
+        "mcc": [
+            "427"
+        ],
+        "mnc": [
+            "006"
+        ],
+        "ikev2_encr_algo_list": [
+            "ANY"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "ANY"
+        ],
+        "ikev2_dh_group_list": [
+            "-1"
+        ],
+        "ikev2_lifetime": [
+            "43200"
+        ]
+    },
+    "Ooredoo_QA": {
+        "mcc": [
+            "427"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Tele2_NL": {
+        "mcc": [
+            "204"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Vodafone_NL": {
+        "mcc": [
+            "204"
+        ],
+        "mnc": [
+            "004"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "TMobile_NL": {
+        "mcc": [
+            "204"
+        ],
+        "mnc": [
+            "016"
+        ],
+        "ikev2_encr_algo_list": [
+            "BASIC"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "64800"
+        ]
+    },
+    "KPN_NL": {
+        "mcc": [
+            "204"
+        ],
+        "mnc": [
+            "008"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Telenet_BE": {
+        "mcc": [
+            "206"
+        ],
+        "mnc": [
+            "005"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": [
+            "900"
+        ]
+    },
+    "Proximus_BE": {
+        "mcc": [
+            "206"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "5"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Orange_BE": {
+        "mcc": [
+            "206"
+        ],
+        "mnc": [
+            "010"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "5"
+        ],
+        "ikev2_lifetime": [
+            "28800"
+        ]
+    },
+    "Orange_LU": {
+        "mcc": [
+            "270"
+        ],
+        "mnc": [
+            "099"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "5"
+        ],
+        "ikev2_lifetime": [
+            "28800"
+        ]
+    },
+    "Orange_FR": {
+        "mcc": [
+            "208"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": [
+            "28800"
+        ]
+    },
+    "Orange_FR:Reunion": {
+        "mcc": [
+            "647"
+        ],
+        "mnc": [
+            "000"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": [
+            "28800"
+        ]
+    },
+    "Orange_FR:Caraibe": {
+        "mcc": [
+            "340"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": [
+            "64800"
+        ]
+    },
+    "SFR_FR": {
+        "mcc": [
+            "208"
+        ],
+        "mnc": [
+            "010"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Free_FR": {
+        "mcc": [
+            "208"
+        ],
+        "mnc": [
+            "015"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Bouygues_FR": {
+        "mcc": [
+            "208"
+        ],
+        "mnc": [
+            "020"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "ANY"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": [
+            "14800"
+        ]
+    },
+    "Coriolis_FR": {
+        "mcc": [
+            "208"
+        ],
+        "mnc": [
+            "027"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": [
+            "64800"
+        ]
+    },
+    "Vodafone_ES": {
+        "mcc": [
+            "214"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Telefonica_ES": {
+        "mcc": [
+            "214"
+        ],
+        "mnc": [
+            "007"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA1_96",
+            "HMAC_SHA_256_128",
+            "HMAC_SHA_512_256"
+        ],
+        "ikev2_dh_group_list": [
+            "2",
+            "14"
+        ],
+        "ikev2_lifetime": [
+            "64800"
+        ]
+    },
+    "Orange_ES": {
+        "mcc": [
+            "214"
+        ],
+        "mnc": [
+            "003"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "5"
+        ],
+        "ikev2_lifetime": [
+            "28800"
+        ]
+    },
+    "Telenor_HU": {
+        "mcc": [
+            "216"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "TMobile_HU": {
+        "mcc": [
+            "216"
+        ],
+        "mnc": [
+            "030"
+        ],
+        "ikev2_encr_algo_list": [
+            "BASIC"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Vodafone_HU": {
+        "mcc": [
+            "216"
+        ],
+        "mnc": [
+            "070"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "DIGI_HU": {
+        "mcc": [
+            "216"
+        ],
+        "mnc": [
+            "003"
+        ],
+        "ikev2_encr_algo_list": [
+            "ANY"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "ANY"
+        ],
+        "ikev2_dh_group_list": [
+            "-1"
+        ],
+        "ikev2_lifetime": [
+            "82800"
+        ]
+    },
+    "Digi_ES": {
+        "mcc": [
+            "214"
+        ],
+        "mnc": [
+            "022"
+        ],
+        "ikev2_encr_algo_list": [
+            "3DES_CBC",
+            "AES_CBC_128",
+            "AES_CBC_192",
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128",
+            "HMAC_SHA_384_192",
+            "HMAC_SHA_512_256"
+        ],
+        "ikev2_dh_group_list": [
+            "2",
+            "5",
+            "14",
+            "15"
+        ],
+        "ikev2_lifetime": [
+            "64800"
+        ]
+    },
+    "TMobile_HR": {
+        "mcc": [
+            "219"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [
+            "BASIC"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "64800"
+        ]
+    },
+    "Vodafone_HR": {
+        "mcc": [
+            "219"
+        ],
+        "mnc": [
+            "010"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": [
+            "64800"
+        ]
+    },
+    "Wind_CA": {
+        "mcc": [
+            "222"
+        ],
+        "mnc": [
+            "088"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [
+            "5"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Wind_CA:SJR": {
+        "mcc": [
+            "222"
+        ],
+        "mnc": [
+            "088"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [
+            "5"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Telus_CA": {
+        "mcc": [
+            "302"
+        ],
+        "mnc": [
+            "220"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": [
+            "71000"
+        ]
+    },
+    "Koodo_CA": {
+        "mcc": [
+            "302"
+        ],
+        "mnc": [
+            "220"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": [
+            "71000"
+        ]
+    },
+    "Vodafone_RO": {
+        "mcc": [
+            "226"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "RDS_RO": {
+        "mcc": [
+            "226"
+        ],
+        "mnc": [
+            "005"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Orange_RO": {
+        "mcc": [
+            "226"
+        ],
+        "mnc": [
+            "010"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "5"
+        ],
+        "ikev2_lifetime": [
+            "28800"
+        ]
+    },
+    "Swisscom_CH": {
+        "mcc": [
+            "228"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_128",
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA1_96",
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "2",
+            "15"
+        ],
+        "ikev2_lifetime": [
+            "82800"
+        ]
+    },
+    "Sunrise_CH": {
+        "mcc": [
+            "228"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "900"
+        ]
+    },
+    "UPC_CH": {
+        "mcc": [
+            "228"
+        ],
+        "mnc": [
+            "053"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Orange_CH": {
+        "mcc": [
+            "228"
+        ],
+        "mnc": [
+            "003"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Telefonica_CZ": {
+        "mcc": [
+            "230"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_128",
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128",
+            "HMAC_SHA_384_192",
+            "HMAC_SHA_512_256"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "TMobile_CZ": {
+        "mcc": [
+            "230"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [
+            "BASIC"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "64800"
+        ]
+    },
+    "Vodafone_CZ": {
+        "mcc": [
+            "230"
+        ],
+        "mnc": [
+            "003"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_512_256"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Orange_SK": {
+        "mcc": [
+            "231"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": [
+            "14400"
+        ]
+    },
+    "Telefonica_SK": {
+        "mcc": [
+            "231"
+        ],
+        "mnc": [
+            "006"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_128",
+            "AES_CBC_192",
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128",
+            "HMAC_SHA_384_192",
+            "HMAC_SHA_512_256"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "TMobile_SK": {
+        "mcc": [
+            "231"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256",
+            "AES_CBC_128"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA1_96",
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14",
+            "2"
+        ],
+        "ikev2_lifetime": [
+            "64800"
+        ]
+    },
+    "A1_AT": {
+        "mcc": [
+            "232"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "3_AT": {
+        "mcc": [
+            "232"
+        ],
+        "mnc": [
+            "010"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": [
+            "1800"
+        ]
+    },
+    "Spusu_AT": {
+        "mcc": [
+            "232"
+        ],
+        "mnc": [
+            "017"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Telefonica_GB": {
+        "mcc": [
+            "234"
+        ],
+        "mnc": [
+            "010"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "ANY"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": [
+            "43200"
+        ]
+    },
+    "TelefonicaLAB_GB": {
+        "mcc": [
+            "234"
+        ],
+        "mnc": [
+            "010"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "ANY"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": [
+            "43200"
+        ]
+    },
+    "Vodafone_GB": {
+        "mcc": [
+            "234"
+        ],
+        "mnc": [
+            "015"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "3600"
+        ]
+    },
+    "Hutchison_GB": {
+        "mcc": [
+            "234"
+        ],
+        "mnc": [
+            "020"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Truphone_GB": {
+        "mcc": [
+            "234"
+        ],
+        "mnc": [
+            "025"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Truphone_ES": {
+        "mcc": [
+            "214"
+        ],
+        "mnc": [
+            "027"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "EE_GB": {
+        "mcc": [
+            "234"
+        ],
+        "mnc": [
+            "030"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "EEESN_GB": {
+        "mcc": [
+            "234"
+        ],
+        "mnc": [
+            "071"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Spusu_GB": {
+        "mcc": [
+            "234"
+        ],
+        "mnc": [
+            "040"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Virgin_GB": {
+        "mcc": [
+            "234"
+        ],
+        "mnc": [
+            "038"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_128",
+            "AES_CBC_192",
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128",
+            "HMAC_SHA_384_192",
+            "HMAC_SHA_512_256"
+        ],
+        "ikev2_dh_group_list": [
+            "15",
+            "16",
+            "17",
+            "18"
+        ],
+        "ikev2_lifetime": []
+    },
+    "BTOP_GB": {
+        "mcc": [
+            "234"
+        ],
+        "mnc": [
+            "008"
+        ],
+        "ikev2_encr_algo_list": [
+            "ANY"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "ANY"
+        ],
+        "ikev2_dh_group_list": [
+            "-1"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Sky_GB": {
+        "mcc": [
+            "234"
+        ],
+        "mnc": [
+            "057"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "ANY"
+        ],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Sure_GB": {
+        "mcc": [
+            "234"
+        ],
+        "mnc": [
+            "057"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "TDC_DK": {
+        "mcc": [
+            "238"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "43200"
+        ]
+    },
+    "Telenor_DK": {
+        "mcc": [
+            "238"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "3_DK": {
+        "mcc": [
+            "238"
+        ],
+        "mnc": [
+            "006"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "28800"
+        ]
+    },
+    "Telia_DK": {
+        "mcc": [
+            "238"
+        ],
+        "mnc": [
+            "020"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": [
+            "87900"
+        ]
+    },
+    "Telia_DK:MVNO": {
+        "mcc": [
+            "238"
+        ],
+        "mnc": [
+            "020"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": [
+            "87900"
+        ]
+    },
+    "Telia_SE": {
+        "mcc": [
+            "240"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": [
+            "87900"
+        ]
+    },
+    "3_SE": {
+        "mcc": [
+            "240"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "28800"
+        ]
+    },
+    "Telenor_SE": {
+        "mcc": [
+            "240"
+        ],
+        "mnc": [
+            "008"
+        ],
+        "ikev2_encr_algo_list": [
+            "ANY"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "ANY"
+        ],
+        "ikev2_dh_group_list": [
+            "-1"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Tele2_SE": {
+        "mcc": [
+            "240"
+        ],
+        "mnc": [
+            "007"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Telenor_NO": {
+        "mcc": [
+            "242"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Nova_IS": {
+        "mcc": [
+            "274"
+        ],
+        "mnc": [
+            "011"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Vodafone_IS": {
+        "mcc": [
+            "274"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "IceNet_NO": {
+        "mcc": [
+            "242"
+        ],
+        "mnc": [
+            "014"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Telia_NO": {
+        "mcc": [
+            "242"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Elisa_FI": {
+        "mcc": [
+            "244"
+        ],
+        "mnc": [
+            "005"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "DNA_FI": {
+        "mcc": [
+            "244"
+        ],
+        "mnc": [
+            "012"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Telia_FI": {
+        "mcc": [
+            "244"
+        ],
+        "mnc": [
+            "091"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": [
+            "87900"
+        ]
+    },
+    "Tele2_LV": {
+        "mcc": [
+            "247"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Bite_LT": {
+        "mcc": [
+            "246"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Tele2_LT": {
+        "mcc": [
+            "246"
+        ],
+        "mnc": [
+            "003"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "ZEB_LT": {
+        "mcc": [
+            "246"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_128",
+            "AES_CBC_256",
+            "3DES_CBC"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128",
+            "HMAC_SHA1_96"
+        ],
+        "ikev2_dh_group_list": [
+            "14",
+            "15"
+        ],
+        "ikev2_lifetime": [
+            "87900"
+        ]
+    },
+    "Bite_LV": {
+        "mcc": [
+            "247"
+        ],
+        "mnc": [
+            "005"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Elisa_EE": {
+        "mcc": [
+            "248"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Telia_EE": {
+        "mcc": [
+            "248"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_128",
+            "AES_CBC_256",
+            "3DES_CBC"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128",
+            "HMAC_SHA1_96"
+        ],
+        "ikev2_dh_group_list": [
+            "2",
+            "14",
+            "15"
+        ],
+        "ikev2_lifetime": [
+            "87900"
+        ]
+    },
+    "Tele2_EE": {
+        "mcc": [
+            "248"
+        ],
+        "mnc": [
+            "003"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "MTS_RU": {
+        "mcc": [
+            "250"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Megafon_RU": {
+        "mcc": [
+            "250"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Velcom_BY": {
+        "mcc": [
+            "257"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "7200"
+        ]
+    },
+    "MTS_BY": {
+        "mcc": [
+            "257"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Beeline_RU": {
+        "mcc": [
+            "250"
+        ],
+        "mnc": [
+            "099"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Azercell_AZ": {
+        "mcc": [
+            "400"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [
+            "2",
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Bakcell_AZ": {
+        "mcc": [
+            "400"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Beeline_KZ": {
+        "mcc": [
+            "401"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Sberbank_RU": {
+        "mcc": [
+            "250"
+        ],
+        "mnc": [
+            "050"
+        ],
+        "ikev2_encr_algo_list": [
+            "3DES_CBC"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_512_256"
+        ],
+        "ikev2_dh_group_list": [
+            "16"
+        ],
+        "ikev2_lifetime": []
+    },
+    "TELE2_RU": {
+        "mcc": [
+            "250"
+        ],
+        "mnc": [
+            "020"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "64800"
+        ]
+    },
+    "Tattelecom_RU": {
+        "mcc": [
+            "250"
+        ],
+        "mnc": [
+            "027"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA1_96",
+            "HMAC_MD5_96"
+        ],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Motiv_RU": {
+        "mcc": [
+            "250"
+        ],
+        "mnc": [
+            "035"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "MTS_AM": {
+        "mcc": [
+            "283"
+        ],
+        "mnc": [
+            "005"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Vivacom_BG": {
+        "mcc": [
+            "284"
+        ],
+        "mnc": [
+            "003"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "AES_XCBC_MAC_96"
+        ],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "43200"
+        ]
+    },
+    "A1_BG": {
+        "mcc": [
+            "284"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Plus_PL": {
+        "mcc": [
+            "260"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [
+            "ANY"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "BASIC"
+        ],
+        "ikev2_dh_group_list": [
+            "14",
+            "15",
+            "16",
+            "17",
+            "18"
+        ],
+        "ikev2_lifetime": []
+    },
+    "TMobile_PL": {
+        "mcc": [
+            "260"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [
+            "BASIC"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "64800"
+        ]
+    },
+    "Orange_PL": {
+        "mcc": [
+            "260"
+        ],
+        "mnc": [
+            "003"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": [
+            "28800"
+        ]
+    },
+    "Play_PL": {
+        "mcc": [
+            "260"
+        ],
+        "mnc": [
+            "006"
+        ],
+        "ikev2_encr_algo_list": [
+            "ANY"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "ANY"
+        ],
+        "ikev2_dh_group_list": [
+            "14",
+            "15",
+            "16",
+            "17",
+            "18"
+        ],
+        "ikev2_lifetime": [
+            "3600"
+        ]
+    },
+    "TMobile_DE": {
+        "mcc": [
+            "262"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA1_96",
+            "HMAC_SHA_256_128",
+            "HMAC_SHA_512_256"
+        ],
+        "ikev2_dh_group_list": [
+            "14",
+            "15",
+            "19"
+        ],
+        "ikev2_lifetime": [
+            "64800"
+        ]
+    },
+    "Vodafone_DE": {
+        "mcc": [
+            "262"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Truphone_DE": {
+        "mcc": [
+            "262"
+        ],
+        "mnc": [
+            "042"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Telefonica_DE": {
+        "mcc": [
+            "262"
+        ],
+        "mnc": [
+            "007"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "1n1_DE": {
+        "mcc": [
+            "262"
+        ],
+        "mnc": [
+            "23"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Post_LU": {
+        "mcc": [
+            "270"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Tango_LU": {
+        "mcc": [
+            "270"
+        ],
+        "mnc": [
+            "077"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Vodafone_IE": {
+        "mcc": [
+            "272"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": [
+            "43200"
+        ]
+    },
+    "Sky_IE": {
+        "mcc": [
+            "272"
+        ],
+        "mnc": [
+            "025"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Meteor_IE": {
+        "mcc": [
+            "272"
+        ],
+        "mnc": [
+            "003"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "43200"
+        ]
+    },
+    "Ondo_MN": {
+        "mcc": [
+            "428"
+        ],
+        "mnc": [
+            "033"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Turkcell_TR": {
+        "mcc": [
+            "286"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "28800"
+        ]
+    },
+    "Vodafone_TR": {
+        "mcc": [
+            "286"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "28800"
+        ]
+    },
+    "AVEA_TR": {
+        "mcc": [
+            "286"
+        ],
+        "mnc": [
+            "003"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Telekom_SI": {
+        "mcc": [
+            "293"
+        ],
+        "mnc": [
+            "041"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_512_256"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": [
+            "43200"
+        ]
+    },
+    "RWC_CA": {
+        "mcc": [
+            "302"
+        ],
+        "mnc": [
+            "370"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [
+            "1"
+        ],
+        "ikev2_lifetime": [
+            "28800"
+        ]
+    },
+    "RWC_CA:TBT": {
+        "mcc": [
+            "302"
+        ],
+        "mnc": [
+            "370"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [
+            "1"
+        ],
+        "ikev2_lifetime": [
+            "28800"
+        ]
+    },
+    "VideoTron_CA": {
+        "mcc": [
+            "302"
+        ],
+        "mnc": [
+            "500"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "SaskTel_CA": {
+        "mcc": [
+            "302"
+        ],
+        "mnc": [
+            "780"
+        ],
+        "ikev2_encr_algo_list": [
+            "ANY"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "ANY"
+        ],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "SaskTelLAB_CA": {
+        "mcc": [
+            "302"
+        ],
+        "mnc": [
+            "681"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_512_256"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Bell_CA": {
+        "mcc": [
+            "302"
+        ],
+        "mnc": [
+            "610"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": [
+            "80000"
+        ]
+    },
+    "Sprint_US": {
+        "mcc": [
+            "310"
+        ],
+        "mnc": [
+            "120"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "VZW_US": {
+        "mcc": [
+            "311"
+        ],
+        "mnc": [
+            "480"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "VZW_US:CCT": {
+        "mcc": [
+            "311"
+        ],
+        "mnc": [
+            "480"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "VZW_US:TFN": {
+        "mcc": [
+            "311"
+        ],
+        "mnc": [
+            "480"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "VZW_US:FKR": {
+        "mcc": [
+            "311"
+        ],
+        "mnc": [
+            "480"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "VZW_US:Visible": {
+        "mcc": [
+            "311"
+        ],
+        "mnc": [
+            "480"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "VZW_US:CHA": {
+        "mcc": [
+            "311"
+        ],
+        "mnc": [
+            "480"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "VZW_US:GoogleGC": {
+        "mcc": [
+            "311"
+        ],
+        "mnc": [
+            "480"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "VZW_US:Bluegrass": {
+        "mcc": [
+            "311"
+        ],
+        "mnc": [
+            "480"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "VZW_US:ChatMobility": {
+        "mcc": [
+            "311"
+        ],
+        "mnc": [
+            "480"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "VZW_US:NorthWest": {
+        "mcc": [
+            "311"
+        ],
+        "mnc": [
+            "480"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "VZW_US:Cox": {
+        "mcc": [
+            "311"
+        ],
+        "mnc": [
+            "480"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "ATT_US:AIO": {
+        "mcc": [
+            "310"
+        ],
+        "mnc": [
+            "150"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "ATT_US": {
+        "mcc": [
+            "310"
+        ],
+        "mnc": [
+            "030"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "ATT_US:FN": {
+        "mcc": [
+            "313"
+        ],
+        "mnc": [
+            "100"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "ATT_US:MVNO": {
+        "mcc": [
+            "310"
+        ],
+        "mnc": [
+            "030"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "ATT_US:GoogleGC": {
+        "mcc": [
+            "310"
+        ],
+        "mnc": [
+            "030"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "ATT_US:TFN": {
+        "mcc": [
+            "310"
+        ],
+        "mnc": [
+            "030"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "ATT_US:DSH": {
+        "mcc": [
+            "310"
+        ],
+        "mnc": [
+            "410"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Liberty_PR": {
+        "mcc": [
+            "313"
+        ],
+        "mnc": [
+            "790"
+        ],
+        "ikev2_encr_algo_list": [
+            "ANY"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "ANY"
+        ],
+        "ikev2_dh_group_list": [
+            "1",
+            "2",
+            "5",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18"
+        ],
+        "ikev2_lifetime": []
+    },
+    "TMobile_US": {
+        "mcc": [
+            "210"
+        ],
+        "mnc": [
+            "310"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "TMobile_US:TFN": {
+        "mcc": [
+            "210"
+        ],
+        "mnc": [
+            "310"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "TMobile_US:LAB": {
+        "mcc": [
+            "310"
+        ],
+        "mnc": [
+            "310"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Dish_US": {
+        "mcc": [
+            "313"
+        ],
+        "mnc": [
+            "340"
+        ],
+        "ikev2_encr_algo_list": [
+            "ANY"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "ANY"
+        ],
+        "ikev2_dh_group_list": [
+            "-1"
+        ],
+        "ikev2_lifetime": [
+            "64800"
+        ]
+    },
+    "TMobile_US:DSH": {
+        "mcc": [
+            "310"
+        ],
+        "mnc": [
+            "240"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "GenericIR92_US": {
+        "mcc": [
+            "311"
+        ],
+        "mnc": [
+            "370"
+        ],
+        "ikev2_encr_algo_list": [
+            "ANY"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "ANY"
+        ],
+        "ikev2_dh_group_list": [
+            "-1"
+        ],
+        "ikev2_lifetime": []
+    },
+    "GenericIR92_US:NexTech": {
+        "mcc": [
+            "311"
+        ],
+        "mnc": [
+            "370"
+        ],
+        "ikev2_encr_algo_list": [
+            "ANY"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "ANY"
+        ],
+        "ikev2_dh_group_list": [
+            "-1"
+        ],
+        "ikev2_lifetime": []
+    },
+    "GenericIR92_US:SouthernLinc": {
+        "mcc": [
+            "312"
+        ],
+        "mnc": [
+            "720"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_128",
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "AES_XCBC_MAC_96",
+            "HMAC_SHA_384_192",
+            "HMAC_SHA_512_256"
+        ],
+        "ikev2_dh_group_list": [
+            "14",
+            "5"
+        ],
+        "ikev2_lifetime": []
+    },
+    "GenericIR92_US:CarolinaWest": {
+        "mcc": [
+            "310"
+        ],
+        "mnc": [
+            "130"
+        ],
+        "ikev2_encr_algo_list": [
+            "ANY"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "ANY"
+        ],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "GenericIR92_US:CSpire": {
+        "mcc": [
+            "311"
+        ],
+        "mnc": [
+            "230"
+        ],
+        "ikev2_encr_algo_list": [
+            "ANY"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "ANY"
+        ],
+        "ikev2_dh_group_list": [
+            "-1"
+        ],
+        "ikev2_lifetime": []
+    },
+    "GenericIR92_US:Cellcom": {
+        "mcc": [
+            "311"
+        ],
+        "mnc": [
+            "840"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256",
+            "AES_CBC_128",
+            "3DES_CBC"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_512_256",
+            "HMAC_SHA_384_192",
+            "HMAC_SHA_256_128",
+            "HMAC_SHA1_96"
+        ],
+        "ikev2_dh_group_list": [
+            "14",
+            "5",
+            "2"
+        ],
+        "ikev2_lifetime": []
+    },
+    "GenericIR92_US:Appalachian": {
+        "mcc": [
+            "312"
+        ],
+        "mnc": [
+            "130"
+        ],
+        "ikev2_encr_algo_list": [
+            "ANY"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "ANY"
+        ],
+        "ikev2_dh_group_list": [
+            "-1"
+        ],
+        "ikev2_lifetime": []
+    },
+    "GenericIR92_US:United": {
+        "mcc": [
+            "311"
+        ],
+        "mnc": [
+            "650"
+        ],
+        "ikev2_encr_algo_list": [
+            "ANY"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "ANY"
+        ],
+        "ikev2_dh_group_list": [
+            "-1"
+        ],
+        "ikev2_lifetime": []
+    },
+    "GCI_US": {
+        "mcc": [
+            "311"
+        ],
+        "mnc": [
+            "370"
+        ],
+        "ikev2_encr_algo_list": [
+            "ANY"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "ANY"
+        ],
+        "ikev2_dh_group_list": [
+            "-1"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Altice_US": {
+        "mcc": [
+            "313"
+        ],
+        "mnc": [
+            "390"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256",
+            "AES_CBC_128"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": [
+            "43200"
+        ]
+    },
+    "USCC_US": {
+        "mcc": [
+            "311"
+        ],
+        "mnc": [
+            "580"
+        ],
+        "ikev2_encr_algo_list": [
+            "ANY"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "ANY"
+        ],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "ITE_US": {
+        "mcc": [
+            "310"
+        ],
+        "mnc": [
+            "110"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "GTA_US": {
+        "mcc": [
+            "310"
+        ],
+        "mnc": [
+            "140"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "GenericIR92_US:Viaero": {
+        "mcc": [
+            "310"
+        ],
+        "mnc": [
+            "450"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_512_256"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Telcel_MX": {
+        "mcc": [
+            "334"
+        ],
+        "mnc": [
+            "020"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_128",
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA1_96",
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "2",
+            "14"
+        ],
+        "ikev2_lifetime": [
+            "87000"
+        ]
+    },
+    "Ooredoo_MV": {
+        "mcc": [
+            "472"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "28800"
+        ]
+    },
+    "RJIL_IN": {
+        "mcc": [
+            "405"
+        ],
+        "mnc": [
+            "840"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "AIRTEL_IN": {
+        "mcc": [
+            "404"
+        ],
+        "mnc": [
+            "010"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Vodafone_IN": {
+        "mcc": [
+            "404"
+        ],
+        "mnc": [
+            "086"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_128",
+            "AES_CBC_256",
+            "3DES_CBC"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "ANY"
+        ],
+        "ikev2_dh_group_list": [
+            "1",
+            "2",
+            "5",
+            "14",
+            "15",
+            "16"
+        ],
+        "ikev2_lifetime": []
+    },
+    "IDEA_IN": {
+        "mcc": [
+            "404"
+        ],
+        "mnc": [
+            "022"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_128",
+            "AES_CBC_256",
+            "3DES_CBC"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "ANY"
+        ],
+        "ikev2_dh_group_list": [
+            "1",
+            "2",
+            "5",
+            "14",
+            "15",
+            "16"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Asiacell_IQ": {
+        "mcc": [
+            "418"
+        ],
+        "mnc": [
+            "005"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Zain_JO": {
+        "mcc": [
+            "416"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [
+            "ANY"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "ANY"
+        ],
+        "ikev2_dh_group_list": [
+            "1",
+            "2",
+            "5",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18"
+        ],
+        "ikev2_lifetime": [
+            "43200"
+        ]
+    },
+    "Umniah_JO": {
+        "mcc": [
+            "416"
+        ],
+        "mnc": [
+            "003"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "STC_SA": {
+        "mcc": [
+            "420"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Zain_SA": {
+        "mcc": [
+            "420"
+        ],
+        "mnc": [
+            "004"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Virgin_SA": {
+        "mcc": [
+            "420"
+        ],
+        "mnc": [
+            "005"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "900"
+        ]
+    },
+    "Zain_KW": {
+        "mcc": [
+            "419"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Viva_KW": {
+        "mcc": [
+            "419"
+        ],
+        "mnc": [
+            "004"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Omantel_OM": {
+        "mcc": [
+            "422"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Etisalat_AE": {
+        "mcc": [
+            "424"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_128",
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "BASIC"
+        ],
+        "ikev2_dh_group_list": [
+            "14",
+            "15",
+            "16",
+            "17",
+            "18"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Ooredoo_KW": {
+        "mcc": [
+            "419"
+        ],
+        "mnc": [
+            "003"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_512_256"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "DU_AE": {
+        "mcc": [
+            "424"
+        ],
+        "mnc": [
+            "003"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Nedaa_AE": {
+        "mcc": [
+            "424"
+        ],
+        "mnc": [
+            "011"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "PTR_IL": {
+        "mcc": [
+            "425"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_512_256"
+        ],
+        "ikev2_dh_group_list": [
+            "1"
+        ],
+        "ikev2_lifetime": []
+    },
+    "PCL_IL": {
+        "mcc": [
+            "425"
+        ],
+        "mnc": [
+            "003"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_512_256"
+        ],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Cellcom_IL": {
+        "mcc": [
+            "425"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [
+            "-1"
+        ],
+        "ikev2_lifetime": []
+    },
+    "HotMobile_IL": {
+        "mcc": [
+            "425"
+        ],
+        "mnc": [
+            "007"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Telzar_IL": {
+        "mcc": [
+            "mc425"
+        ],
+        "mnc": [
+            "019"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_512_256"
+        ],
+        "ikev2_dh_group_list": [
+            "1"
+        ],
+        "ikev2_lifetime": []
+    },
+    "CSL_HK": {
+        "mcc": [
+            "454"
+        ],
+        "mnc": [
+            "000"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "31536000"
+        ]
+    },
+    "Truphone_HK": {
+        "mcc": [
+            "454"
+        ],
+        "mnc": [
+            "008"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_512_256"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "3_HK": {
+        "mcc": [
+            "454"
+        ],
+        "mnc": [
+            "003"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "31536000"
+        ]
+    },
+    "Smartone_HK": {
+        "mcc": [
+            "454"
+        ],
+        "mnc": [
+            "006"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_MD5_96"
+        ],
+        "ikev2_dh_group_list": [
+            "5"
+        ],
+        "ikev2_lifetime": [
+            "3600"
+        ]
+    },
+    "CMHK_HK": {
+        "mcc": [
+            "454"
+        ],
+        "mnc": [
+            "012"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_MD5_96"
+        ],
+        "ikev2_dh_group_list": [
+            "5"
+        ],
+        "ikev2_lifetime": []
+    },
+    "PCCW_HK": {
+        "mcc": [
+            "454"
+        ],
+        "mnc": [
+            "019"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "31536000"
+        ]
+    },
+    "3_MO": {
+        "mcc": [
+            "455"
+        ],
+        "mnc": [
+            "003"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Smart_KH": {
+        "mcc": [
+            "456"
+        ],
+        "mnc": [
+            "006"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "KDDI_JP": {
+        "mcc": [
+            "440"
+        ],
+        "mnc": [
+            "051"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "FET_TW": {
+        "mcc": [
+            "466"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "3000"
+        ]
+    },
+    "CHT_TW": {
+        "mcc": [
+            "466"
+        ],
+        "mnc": [
+            "092"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "3600"
+        ]
+    },
+    "APT_TW": {
+        "mcc": [
+            "466"
+        ],
+        "mnc": [
+            "005"
+        ],
+        "ikev2_encr_algo_list": [
+            "3DES_CBC"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "TWM_TW": {
+        "mcc": [
+            "466"
+        ],
+        "mnc": [
+            "097"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "DIGI_MY": {
+        "mcc": [
+            "502"
+        ],
+        "mnc": [
+            "016"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Maxis_MY": {
+        "mcc": [
+            "502"
+        ],
+        "mnc": [
+            "012"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "UMobile_MY": {
+        "mcc": [
+            "mnc502"
+        ],
+        "mnc": [
+            "018"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Celcom_MY": {
+        "mcc": [
+            "mnc502"
+        ],
+        "mnc": [
+            "019"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "YTL_MY": {
+        "mcc": [
+            "mnc502"
+        ],
+        "mnc": [
+            "152"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "180"
+        ]
+    },
+    "P1_MY": {
+        "mcc": [
+            "mnc502"
+        ],
+        "mnc": [
+            "153"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "TwoDegree_NZ": {
+        "mcc": [
+            "520"
+        ],
+        "mnc": [
+            "024"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Vodafone_NZ": {
+        "mcc": [
+            "530"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Spark_NZ": {
+        "mcc": [
+            "530"
+        ],
+        "mnc": [
+            "099"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Etisalat_EG": {
+        "mcc": [
+            "602"
+        ],
+        "mnc": [
+            "003"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "TPG_AU": {
+        "mcc": [
+            "505"
+        ],
+        "mnc": [
+            "014"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Telstra_AU": {
+        "mcc": [
+            "505"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": [
+            "80000"
+        ]
+    },
+    "Optus_AU": {
+        "mcc": [
+            "505"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Vodafone_AU": {
+        "mcc": [
+            "505"
+        ],
+        "mnc": [
+            "003"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_512_256"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": [
+            "64800"
+        ]
+    },
+    "Telkomsel_ID": {
+        "mcc": [
+            "510"
+        ],
+        "mnc": [
+            "010"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Smart_PH": {
+        "mcc": [
+            "515"
+        ],
+        "mnc": [
+            "003"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "3600"
+        ]
+    },
+    "Globe_PH": {
+        "mcc": [
+            "515"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "900"
+        ]
+    },
+    "Vinaphone_VN": {
+        "mcc": [
+            "452"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Viettel_VN": {
+        "mcc": [
+            "452"
+        ],
+        "mnc": [
+            "004"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Vietnamobile_VN": {
+        "mcc": [
+            "452"
+        ],
+        "mnc": [
+            "005"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Mobifone_VN": {
+        "mcc": [
+            "452"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "28800"
+        ]
+    },
+    "Truemove_TH": {
+        "mcc": [
+            "520"
+        ],
+        "mnc": [
+            "004"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "AIS_TH": {
+        "mcc": [
+            "520"
+        ],
+        "mnc": [
+            "003"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "DTAC_TH": {
+        "mcc": [
+            "520"
+        ],
+        "mnc": [
+            "005"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "900"
+        ]
+    },
+    "Starhub_SG": {
+        "mcc": [
+            "525"
+        ],
+        "mnc": [
+            "005"
+        ],
+        "ikev2_encr_algo_list": [
+            "3DES_CBC"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Starhub_SG:MVNO": {
+        "mcc": [
+            "525"
+        ],
+        "mnc": [
+            "005"
+        ],
+        "ikev2_encr_algo_list": [
+            "3DES_CBC"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Singtel_SG": {
+        "mcc": [
+            "525"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "900"
+        ]
+    },
+    "Mobileone_SG": {
+        "mcc": [
+            "525"
+        ],
+        "mnc": [
+            "003"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "TPG_SG": {
+        "mcc": [
+            "525"
+        ],
+        "mnc": [
+            "010"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Imagine_BN": {
+        "mcc": [
+            "528"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Progresif_BN": {
+        "mcc": [
+            "528"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "UNN_BN": {
+        "mcc": [
+            "528"
+        ],
+        "mnc": [
+            "003"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "DST_BN": {
+        "mcc": [
+            "528"
+        ],
+        "mnc": [
+            "011"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Maroc_MA": {
+        "mcc": [
+            "604"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Orange_MA": {
+        "mcc": [
+            "604"
+        ],
+        "mnc": [
+            "000"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "43200"
+        ]
+    },
+    "Airtel_ZM": {
+        "mcc": [
+            "645"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "MTN_ZM": {
+        "mcc": [
+            "645"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Vodacom_ZA": {
+        "mcc": [
+            "655"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_MD5_96"
+        ],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "3600"
+        ]
+    },
+    "Vodacom_MZ": {
+        "mcc": [
+            "643"
+        ],
+        "mnc": [
+            "004"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "GRAMEENPHONE_BD": {
+        "mcc": [
+            "470"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Telkom_ZA": {
+        "mcc": [
+            "655"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "CellC_ZA": {
+        "mcc": [
+            "655"
+        ],
+        "mnc": [
+            "007"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "7200"
+        ]
+    },
+    "MTN_ZA": {
+        "mcc": [
+            "655"
+        ],
+        "mnc": [
+            "010"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Airtel_KE": {
+        "mcc": [
+            "639"
+        ],
+        "mnc": [
+            "003"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Jambotel_KE": {
+        "mcc": [
+            "639"
+        ],
+        "mnc": [
+            "011"
+        ],
+        "ikev2_encr_algo_list": [
+            "3DES_CBC",
+            "AES_CBC_128",
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA1_96",
+            "HMAC_SHA_512_256",
+            "HMAC_SHA_384_192",
+            "HMAC_SHA_512_256",
+            "HMAC_MD5_96",
+            "AES_XCBC_MAC_96"
+        ],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Sudani_SD": {
+        "mcc": [
+            "634"
+        ],
+        "mnc": [
+            "007"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Airtel_UG": {
+        "mcc": [
+            "641"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [
+            "3DES_CBC",
+            "AES_CBC_128",
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA1_96",
+            "HMAC_MD5_96",
+            "HMAC_SHA_256_128",
+            "HMAC_SHA_384_192",
+            "HMAC_SHA_512_256"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Safaricom_KE": {
+        "mcc": [
+            "639"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Free_SN": {
+        "mcc": [
+            "608"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "MTN_GH": {
+        "mcc": [
+            "620"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Cable_PA": {
+        "mcc": [
+            "714"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Claro_PE": {
+        "mcc": [
+            "716"
+        ],
+        "mnc": [
+            "010"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_128",
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA1_96",
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "2",
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Entel_PE": {
+        "mcc": [
+            "716"
+        ],
+        "mnc": [
+            "017"
+        ],
+        "ikev2_encr_algo_list": [
+            "3DES_CBC"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Claro_AR": {
+        "mcc": [
+            "722"
+        ],
+        "mnc": [
+            "310"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_128",
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA1_96",
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "2",
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Movistar_CL": {
+        "mcc": [
+            "730"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "43200"
+        ]
+    },
+    "Movistar_UY": {
+        "mcc": [
+            "748"
+        ],
+        "mnc": [
+            "007"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "28800"
+        ]
+    },
+    "Claro_BR": {
+        "mcc": [
+            "724"
+        ],
+        "mnc": [
+            "005"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_128",
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA1_96",
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "2",
+            "14"
+        ],
+        "ikev2_lifetime": [
+            "87000"
+        ]
+    },
+    "Vivo_BR": {
+        "mcc": [
+            "724"
+        ],
+        "mnc": [
+            "006"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Americanet_BR": {
+        "mcc": [
+            "724"
+        ],
+        "mnc": [
+            "026"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Unifique_BR": {
+        "mcc": [
+            "724"
+        ],
+        "mnc": [
+            "029"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Brisanet_BR": {
+        "mcc": [
+            "724"
+        ],
+        "mnc": [
+            "077"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Movistar_AR": {
+        "mcc": [
+            "722"
+        ],
+        "mnc": [
+            "007"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "43200"
+        ]
+    },
+    "TMobile_AT": {
+        "mcc": [
+            "232"
+        ],
+        "mnc": [
+            "003"
+        ],
+        "ikev2_encr_algo_list": [
+            "BASIC"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Batelco_BH": {
+        "mcc": [
+            "426"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "3600"
+        ]
+    },
+    "Viva_BH": {
+        "mcc": [
+            "426"
+        ],
+        "mnc": [
+            "004"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "64800"
+        ]
+    },
+    "Personal_AR": {
+        "mcc": [
+            "722"
+        ],
+        "mnc": [
+            "034"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Movistar_PE": {
+        "mcc": [
+            "716"
+        ],
+        "mnc": [
+            "006"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "ANY"
+        ],
+        "ikev2_dh_group_list": [
+            "5"
+        ],
+        "ikev2_lifetime": [
+            "3600"
+        ]
+    },
+    "Claro_CO": {
+        "mcc": [
+            "732"
+        ],
+        "mnc": [
+            "101"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_128",
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA1_96",
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "2",
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Wom_CO": {
+        "mcc": [
+            "732"
+        ],
+        "mnc": [
+            "360"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Movistar_CO": {
+        "mcc": [
+            "732"
+        ],
+        "mnc": [
+            "123"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_MD5_96",
+            "HMAC_SHA1_96",
+            "AES_XCBC_MAC_96"
+        ],
+        "ikev2_dh_group_list": [
+            "2",
+            "5",
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Claro_CL": {
+        "mcc": [
+            "730"
+        ],
+        "mnc": [
+            "003"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_128",
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA1_96",
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "2",
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Wom_CL": {
+        "mcc": [
+            "730"
+        ],
+        "mnc": [
+            "009"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [
+            "1"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Dialog_LK": {
+        "mcc": [
+            "413"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Mobitel_LK": {
+        "mcc": [
+            "413"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Claro_UY": {
+        "mcc": [
+            "748"
+        ],
+        "mnc": [
+            "010"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_128",
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA1_96",
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "2",
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Entel_CL": {
+        "mcc": [
+            "730"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "ANY"
+        ],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "43200"
+        ]
+    },
+    "Movistar_PA": {
+        "mcc": [
+            "714"
+        ],
+        "mnc": [
+            "020"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Claro_DO": {
+        "mcc": [
+            "370"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_128",
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA1_96",
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "2",
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Orange_DO": {
+        "mcc": [
+            "730"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "MEO_PT": {
+        "mcc": [
+            "268"
+        ],
+        "mnc": [
+            "006"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_128",
+            "AES_CBC_192",
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA1_96",
+            "HMAC_SHA_256_128",
+            "HMAC_SHA_384_192",
+            "HMAC_SHA_512_256"
+        ],
+        "ikev2_dh_group_list": [
+            "2",
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "NOS_PT": {
+        "mcc": [
+            "268"
+        ],
+        "mnc": [
+            "003"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Vodafone_AL": {
+        "mcc": [
+            "276"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "6400"
+        ]
+    },
+    "Claro_CR": {
+        "mcc": [
+            "712"
+        ],
+        "mnc": [
+            "003"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_128",
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA1_96",
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "2",
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Claro_SV": {
+        "mcc": [
+            "706"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_128",
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA1_96",
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "2",
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Claro_GT": {
+        "mcc": [
+            "704"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_128",
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA1_96",
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "2",
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Claro_HN": {
+        "mcc": [
+            "708"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_128",
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA1_96",
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "2",
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Claro_NI": {
+        "mcc": [
+            "710"
+        ],
+        "mnc": [
+            "021"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_128",
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA1_96",
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "2",
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Namaste_NP": {
+        "mcc": [
+            "429"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Claro_PA": {
+        "mcc": [
+            "714"
+        ],
+        "mnc": [
+            "003"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Epic_CY": {
+        "mcc": [
+            "280"
+        ],
+        "mnc": [
+            "010"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Primetel_CY": {
+        "mcc": [
+            "280"
+        ],
+        "mnc": [
+            "020"
+        ],
+        "ikev2_encr_algo_list": [
+            "3DES_CBC",
+            "AES_CBC_128",
+            "AES_CBC_192",
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA1_96",
+            "HMAC_SHA_256_128",
+            "HMAC_SHA_384_192",
+            "HMAC_MD5_96"
+        ],
+        "ikev2_dh_group_list": [
+            "1",
+            "2",
+            "5"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Telecom_LI": {
+        "mcc": [
+            "295"
+        ],
+        "mnc": [
+            "005"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Claro_PR": {
+        "mcc": [
+            "330"
+        ],
+        "mnc": [
+            "110"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_128",
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA1_96",
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "2",
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Claro_PY": {
+        "mcc": [
+            "744"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_128",
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA1_96",
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "2",
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Claro_EC": {
+        "mcc": [
+            "740"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_128",
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA1_96",
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "2",
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Att_ius_MX": {
+        "mcc": [
+            "334"
+        ],
+        "mnc": [
+            "050"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [
+            "5"
+        ],
+        "ikev2_lifetime": [
+            "3600"
+        ]
+    },
+    "ALE_EC": {
+        "mcc": [
+            "740"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "NRJ_FR": {
+        "mcc": [
+            "208"
+        ],
+        "mnc": [
+            "026"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": [
+            "43200"
+        ]
+    },
+    "Lifecell_UA": {
+        "mcc": [
+            "255"
+        ],
+        "mnc": [
+            "006"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [
+            "1"
+        ],
+        "ikev2_lifetime": [
+            "28800"
+        ]
+    },
+    "Cable_JM": {
+        "mcc": [
+            "338"
+        ],
+        "mnc": [
+            "180"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Cable_BB": {
+        "mcc": [
+            "342"
+        ],
+        "mnc": [
+            "600"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "Telecom_MC": {
+        "mcc": [
+            "212"
+        ],
+        "mnc": [
+            "010"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "4ka_SK": {
+        "mcc": [
+            "231"
+        ],
+        "mnc": [
+            "003"
+        ],
+        "ikev2_encr_algo_list": [
+            "3DES_CBC",
+            "AES_CBC_128",
+            "AES_CBC_192",
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "ANY"
+        ],
+        "ikev2_dh_group_list": [
+            "1",
+            "2",
+            "5",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18"
+        ],
+        "ikev2_lifetime": []
+    },
+    "BTC_BS": {
+        "mcc": [
+            "364"
+        ],
+        "mnc": [
+            "039"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "3_IE": {
+        "mcc": [
+            "272"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "14"
+        ],
+        "ikev2_lifetime": []
+    },
+    "Telecom_IT": {
+        "mcc": [
+            "mnc222"
+        ],
+        "mnc": [
+            "001"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_256",
+            "AES_CBC_192",
+            "AES_CBC_128"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA_512_256",
+            "HMAC_SHA_384_192",
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "16",
+            "15",
+            "14"
+        ],
+        "ikev2_lifetime": [
+            "3900"
+        ]
+    },
+    "Windtre_IT": {
+        "mcc": [
+            "222"
+        ],
+        "mnc": [
+            "088"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_128",
+            "AES_CTR_128",
+            "AES_CBC_192",
+            "AES_CTR_192",
+            "AES_CBC_256",
+            "AES_CTR_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "AES_XCBC_MAC_96",
+            "HMAC_MD5_96",
+            "HMAC_SHA1_96",
+            "HMAC_SHA_256_128",
+            "HMAC_SHA_384_192",
+            "HMAC_SHA_512_256"
+        ],
+        "ikev2_dh_group_list": [
+            "1",
+            "2",
+            "5",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18"
+        ],
+        "ikev2_lifetime": [
+            "64800"
+        ]
+    },
+    "TMobile_ME": {
+        "mcc": [
+            "297"
+        ],
+        "mnc": [
+            "002"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_128",
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA1_96",
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [],
+        "ikev2_lifetime": []
+    },
+    "CTC_CN": {
+        "mcc": [
+            "460"
+        ],
+        "mnc": [
+            "011"
+        ],
+        "ikev2_encr_algo_list": [
+            "AES_CBC_128",
+            "AES_CBC_256"
+        ],
+        "ikev2_prf_algo_list": [],
+        "ikev2_hash_algo_list": [
+            "HMAC_SHA1_96",
+            "HMAC_SHA_256_128"
+        ],
+        "ikev2_dh_group_list": [
+            "2",
+            "14"
+        ],
+        "ikev2_lifetime": [
+            "64800"
+        ]
+    }
+}

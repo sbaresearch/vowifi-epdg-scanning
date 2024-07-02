@@ -13,6 +13,9 @@ pip install -r requirements.txt
 
 # Execution
 
+> [!NOTE]
+> The server-side scans use scapy to send and receive packets and thus require root privileges.
+
 ```bash
 sudo su
 source venv/bin/activate

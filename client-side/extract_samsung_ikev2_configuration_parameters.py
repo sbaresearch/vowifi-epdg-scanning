@@ -14,13 +14,10 @@ statistics={
 		"ikev2_no_dh_algo":0
 	}
 
-def main():
-	parser = argparse.ArgumentParser()
-	parser.add_argument("-s", "--samsung", required=True, type=str, default="../Samsung_Clientside/epdg_apns_conf.xml", help="File including samsung ikve2 configuration as xml")
-	args=parser.parse_args()
 
+def evaluate_samsung_apn_file(samsungxml,outfile):
 	# Read the xml file
-	with open(args.samsung) as fd:
+	with open(samsungxml) as fd:
 		doc = xmltodict.parse(fd.read())
 
 	# Extract the ikev2 configurations
@@ -98,7 +95,18 @@ def main():
 		except:
 			pass
 	# Dump the result as json
-	with open("samsung_ikev2_conf.json", "w") as outfile:
+	with open(outfile, "w") as outfile:
 		json.dump(config_dict, outfile, indent=4)
 
-main()
+
+def main():
+	parser = argparse.ArgumentParser()
+	parser.add_argument("-s", "--samsungfile", required=True, type=str, default="dumps/Samsung_Clientside/epdg_apns_conf.xml", help="File including samsung ikve2 configuration as xml")
+	parser.add_argument("-o", "--outfile", required=True, type=str, default="dumps/Samsung_Clientside/epdg_apns_conf.xml", help="File including samsung ikve2 configuration as xml")
+
+	args=parser.parse_args()
+
+	evaluate_samsung_apn_file(args.samsungfile,args.outfile)
+
+if __name__ == "__main__":
+    main()

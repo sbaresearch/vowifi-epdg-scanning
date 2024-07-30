@@ -6,23 +6,6 @@ import json
 from ast import literal_eval
 import pprint
  
-statistics={
-	"total_providers":0,
-	"total_configs":0,
-	"non_empty_configs":0,
-	"none_empty_providers":{},
-	"parsed_ikev2_params":{},
-	"ikev2_params":{},
-	"deprecated":{}
-}
-
-
-deprecated = {
-	"ikev2_encr_algo_list":{"algorithms":{1:0, 2:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0},"count":0},
-	"ikev2_prf_algo_list":{"algorithms":{1:0,3:0},"count":0},
-	"ikev2_hash_algo_list":{"algorithms":{1:0,3:0,4:0,6:0,7:0},"count":0},
-	"ikev2_dh_group_list":{"algorithms":{1:0,2:0,5:0,22:0},"count":0} #https://www.etsi.org/deliver/etsi_ts/133200_133299/133210/17.01.00_60/ts_133210v170100p.pdf (shall not be supported)
-}
 
 translate_apple_terminology={
 	"ikev2_encr_algo_list": {
@@ -42,10 +25,18 @@ translate_apple_terminology={
         "'SHA2-384'": 13,
         "'SHA2-512'": 14},
 }
-def count_ike_parameters(data):
+def count_apple_ike_parameters(statistics,data):
 	"""
 	
 	"""
+
+	deprecated = {
+		"ikev2_prf_algo_list":{"algorithms":{1:0,3:0},"count":0},
+		"ikev2_hash_algo_list":{"algorithms":{1:0,3:0,4:0,6:0,7:0},"count":0},
+		"ikev2_encr_algo_list":{"algorithms":{1:0, 2:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0},"count":0},
+		"ikev2_dh_group_list":{"algorithms":{1:0,2:0,5:0,22:0},"count":0} #https://www.etsi.org/deliver/etsi_ts/133200_133299/133210/17.01.00_60/ts_133210v170100p.pdf (shall not be supported)
+	}
+
 	parameter_set_dict={
 		"ikev2_dh_group_list":0,
 		"ikev2_encr_algo_list":0,		
@@ -111,21 +102,26 @@ def count_ike_parameters(data):
 						
 		if non_empty==True:
 			statistics["non_empty_configs"]+=1
-	return res_counts,parameter_set_dict
+	return statistics,res_counts,parameter_set_dict,deprecated
 
-def main():
-	parser = argparse.ArgumentParser()
-	parser.add_argument("-j", "--jsonfile", required=False, default="apple_ike_configuration_parameters.json",type=str, help="Json file with data of parsed MBN Files")
-	args=parser.parse_args()
-
-	jsonfile = args.jsonfile
+def count_apple(jsonfile):
 	with open(jsonfile) as json_file:
 		data = json.load(json_file)
 
 	# Read the json file
+	statistics={
+		"total_providers":0,
+		"total_configs":0,
+		"non_empty_configs":0,
+		"none_empty_providers":{},
+		"parsed_ikev2_params":{},
+		"ikev2_params":{},
+		"deprecated":{}
+	}
+
 	statistics["total_configs"]=len(data)
 	statistics["total_providers"]=len(set([x.split("_")[0] for x in data.keys()]))
-	res_counts,parameter_set_dict=count_ike_parameters(data)
+	statistics,res_counts,parameter_set_dict,deprecated=count_apple_ike_parameters(statistics,data)
 
 	
 	# Print the result
@@ -140,8 +136,14 @@ def main():
 
 
 	statistics["none_empty_providers"]=len(statistics["none_empty_providers"])
-	print(output_res)
 	pprint.pprint(statistics)
+	return statistics
+
+def main():
+	parser = argparse.ArgumentParser()
+	parser.add_argument("-j", "--jsonfile", required=False, default="apple_ike_configuration_parameters.json",type=str, help="Json file with data of parsed MBN Files")
+	args=parser.parse_args()
+	count_apple(args.jsonfile)
 
 if __name__ == "__main__":
 	main()

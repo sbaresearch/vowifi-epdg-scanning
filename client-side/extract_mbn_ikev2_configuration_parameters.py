@@ -93,8 +93,8 @@ def extract_encr_algo(key,encr_algo,enc_algo_out):
 		return enc_algo_out
 
 def extract_dh_group(key,dh_group,dh_group_out):
-	print(key)
-	print(dh_group)
+	#print(key)
+	#print(dh_group)
 	#[{'@value': '14'}, {'@value': '5'}, {'@value': '2'}]
 	#2
 	if isinstance(dh_group,list):
@@ -145,7 +145,7 @@ def normalize_results(results,ikev2_params):
 		# should be
 		# {'ikev2_encr_algo_list': [{'id': '12', 'key_size': '128'}], 'ikev2_prf_algo_list': [{'id': '2'}], 'ikev2_hash_algo_list': [{'id': '2'}], 'ikev2_dh_group_list': [{'id': '2'}]}
 	"""
-	print(results)
+	#print(results)
 	
 	for param in results.keys():
 		if isinstance(results[param],dict):
@@ -171,7 +171,7 @@ def normalize_results(results,ikev2_params):
 			#	ikev2_params[param]["hard_sec"]=results[param]["hard_sec"]
 			#if "soft_sec" in key:
 				#	ikev2_params[param]["soft_sec"]=results[param]["soft_sec"]
-	print(ikev2_params)
+	#print(ikev2_params)
 	return ikev2_params
 
 def parse_parameters_from_nested_dict(iwlan_dict):
@@ -362,14 +362,10 @@ def extract_iwlan_xml_files(folder,file_list):
 	return file_list
 
 
-def main():
-	# Parse	arguments
-	parser = argparse.ArgumentParser()
-	parser.add_argument("-f", "--folder", required=True, type=str, help="Folder with parsed MBN Files")
-	args=parser.parse_args()
-	
+
+def evaluate_mbn_files(folder,outputfile):
 	# Iterate folder and list xml files (endswith("iwlan_s2b_config.xml"):)
-	iwlan_s2b_list=extract_iwlan_xml_files(args.folder,[])
+	iwlan_s2b_list=extract_iwlan_xml_files(folder,[])
 	# Remove parsed_nv_files
 	iwlan_s2b_list=[x for x in iwlan_s2b_list if "parsed_nv_files" not in x]
 	
@@ -411,105 +407,19 @@ def main():
 		out_dict["configuration_files"].append(config_res)
 
 	# Save out_dict to json file
-	with open(args.folder+"/ikev2_configuration_parameters.json", "w") as outfile: 
+	with open(outputfile, "w") as outfile: 
 		json.dump(out_dict, outfile,indent=4)
+
+def main():
+	# Parse	arguments
+	parser = argparse.ArgumentParser()
+	parser.add_argument("-f", "--folder", required=True, type=str, help="Folder with parsed MBN Files")
+	parser.add_argument("-o", "--outputfile", required=True, default="ikev2_configuration_parameters.json", type=str, help="Folder with parsed MBN Files")
+
+	args=parser.parse_args()
+	
+	evaluate_mbn_files(args.folder,args.outputfile)
+	
 
 if __name__ == "__main__":
     main()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#def extract_iwlan_fqdns_from_mbn(path: Path, mbn: Mbn):
-#    items = list(filter(nonempty_file, mbn["mcfg"].get_file_items(b"/data/iwlan_s2b_config.xml\x00")))
-#    if len(items) == 0:
-#        logger.warning(f"Failed to find 'iwlan_s2b_config.xml' in '{path}'.")
-#        return None
-
-#    fqdns = set()
-#    for i in items:
-#        data = i["data"]
-
-#        assert len(data) != 0 and (data[0] != 7 or len(data) > 1)
-
- #       if data[0] == 7:
- #           data = data[1:]
-
- #       try:
- #           root = ET.fromstring(data.decode())
- #       except Exception as e:
- #           logger.warning("Exception occurred trying to parse xml file.", e)
- #           return None
-
-  #      names = set(map(lambda e: e.text, root.findall(".//epdg_addr_info/fqdn")))
-
-  #      if len(names) != 1:
-   #         logger.warning(f"Found multiple/no fqdns in xml file: {names}")
-
-    #    fqdns.update(names)
-
-    #if len(fqdns) > 1:
-    #    logger.error(f"Found multiple fqdns in mbn file: {fqdns}")
-    #    raise NotImplementedError
-
-   # return fqdns.pop() if len(fqdns) == 1 else None
-
-#def extract_iwlan_fqdns(path: Path) -> Optional[str]:
-#    with open(path, "rb") as f:
-#        mbn = Mbn(f)
-#    return extract_iwlan_fqdns_from_mbn(path, mbn)
-     
-
-#def generate_cname_mapping_for_fqdns(mbn: Mbn, fqdns: str) -> List[str]:
- #   cname_mapping = []
-#    mnoids = mbn["mcfg"]["trailer"]["mnoid"].get('ids',[])
-#    for d in mnoids:
- #       standardized_domain = create_3gpp_vowifi_domain(d.mcc, d.mnc)
- #       cname_mapping.append(f"{standardized_domain} CNAME {fqdns}")
- #   return cname_mapping
-
-#def extract_cname_mapping(path: Path) -> List[str]:
-#    with open(path, "rb") as f:
-#        mbn = Mbn(f)
-#    fqdns = extract_iwlan_fqdns_from_mbn(path, mbn)
-#    if fqdns is not None:
-#        if not is_3gpp_vowifi_domain(fqdns):
-#            return generate_cname_mapping_for_fqdns(mbn, fqdns)
-#        else:
-#            logger.warning(f"Ignore 3gpp standardized fqdns {fqdns}")
-#    return []
-    
-
-#def nonempty_file(i: MCFG_Item) -> bool:
-#    return len(i["data"]) != 0 and (i["data"][0] != 7 or len(i["data"]) > 1)
-

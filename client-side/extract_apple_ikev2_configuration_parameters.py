@@ -407,7 +407,7 @@ def output_stdout(ikev2_results):
 		print(param)	
 		for elem in ikev2_results[param]:			
 			#if param == "ikev2_encr_algo_list":
-				#print(elem)
+			#	print(elem)
 			#	encr=elem.split("|")
 			#	encr_algo=encr[0]
 			#	elem=encr_algo				
@@ -518,27 +518,19 @@ def iterdict(d):
             d.update({k: v})
     return d
 
-
-def main():
-	# Parse	arguments
-	parser = argparse.ArgumentParser()
-	parser.add_argument("-f", "--folder", required=True, type=str, help="Folder with IPCC bundles")
-	parser.add_argument("-p", "--providers", required=True, type=str, help="File including a list of providers for which IPCC configurations are present")
-	
-	args=parser.parse_args()
-	
-	ipcc_urls=args.folder+"/ipcc_urls.txt"
+def evaluate_apple_ipccs(apple_folder,carrier_file,output_file,update_file):
+	ipcc_urls=apple_folder+"/ipcc_urls.txt"
 	with open(ipcc_urls) as f:
 		urls = f.readlines()
 		urls = [x.strip() for x in urls]
 
 	#Read providers file
-	with open(args.providers) as f:
+	with open(carrier_file) as f:
 		providers = f.readlines()
 		providers = [x.strip() for x in providers]
 	
-	# List all directories in args.folder
-	config_dirs=[a for a in os.listdir(args.folder) if os.path.isdir(args.folder+"/"+a)] #glob.glob('*' + os.path.sep)#[x[0] for x in os.walk(args.folder)]
+	# List all directories in apple_folder
+	config_dirs=[a for a in os.listdir(apple_folder) if os.path.isdir(apple_folder+"/"+a)] #glob.glob('*' + os.path.sep)#[x[0] for x in os.walk(apple_folder)]
 	# Check if case insensitive string Iphone is present in folder name
 	config_dirs=[x for x in config_dirs if "iphone" in x.lower()]
 	config_dict=retrieve_udpate_times(config_dirs,providers,urls)
@@ -556,9 +548,9 @@ def main():
 			# Extract HNI
 			# 1. Check if file exists
 			# Retrieve provider named folder, by listing the first directory from the payload dir
-			bundle_dirs=[a for a in os.listdir(args.folder+"/"+config_dir+"/Payload") if os.path.isdir(args.folder+"/"+config_dir+"/Payload/"+a)] #glob.glob('*' + os.path.sep)#[x[0] for x in os.walk(args.folder)]
+			bundle_dirs=[a for a in os.listdir(apple_folder+"/"+config_dir+"/Payload") if os.path.isdir(apple_folder+"/"+config_dir+"/Payload/"+a)] #glob.glob('*' + os.path.sep)#[x[0] for x in os.walk(apple_folder)]
 			print(bundle_dirs)
-			carrier_file=args.folder+"/"+config_dir+"/Payload/"+bundle_dirs[0]+"/carrier.plist.xml"
+			carrier_file=apple_folder+"/"+config_dir+"/Payload/"+bundle_dirs[0]+"/carrier.plist.xml"
 			if os.path.isfile(carrier_file):
 				# 2. Parse file
 				plist_dict=parse_xml(carrier_file)
@@ -574,7 +566,7 @@ def main():
 			config_dict[provider][config_dir]["hni"]=hni
 			
 	
-			ipcc_plist=extract_xml_files(args.folder+"/"+config_dir+"/Payload/"+bundle_dirs[0]+"/",[])
+			ipcc_plist=extract_xml_files(apple_folder+"/"+config_dir+"/Payload/"+bundle_dirs[0]+"/",[])
 	
 				
 			for config_file in ipcc_plist:
@@ -640,17 +632,29 @@ def main():
 
 
 	string_config_dict = iterdict(config_dict)
-	with open(args.folder+"/config_dirs_update_time.json", "w") as outfile: 
+	with open(update_file, "w") as outfile: 
 		json.dump(string_config_dict, outfile,indent=4,ensure_ascii=True)
 	
 	string_provider_dict=iterdict(apple_results)
-	with open(args.folder+"/apple_ike_configuration_parameters.json", "w") as outfile: 
+	with open(output_file, "w") as outfile: 
 		json.dump(string_provider_dict, outfile,indent=4,ensure_ascii=True)
 
 	print("Finished: "+str(supported_sims_fails) + " failed to list HNI key (SupportedSIMS)")
 	print("Total Providers: " +str(len(config_dict)))
 	config_dict_red={x for x in config_dict.keys() if len(config_dict[x])>0}#
 	print("Providers with iPhone Config Bundles: "+str(len(config_dict_red)))
+
+def main():
+	# Parse	arguments
+	parser = argparse.ArgumentParser()
+	parser.add_argument("-f", "--folder", required=True, type=str, help="Folder with IPCC bundles")
+	parser.add_argument("-p", "--providers", required=True, type=str, help="File including a list of providers for which IPCC configurations are present")
+	parser.add_argument("-o", "--outputfile", required=False, default="apple_ike_configuration_parameters.json", type=str, help="File to store Apple results in JSON Format")
+	parser.add_argument("-u", "--updatefile", required=False, default="config_dirs_update_time.json", type=str, help="File to store Apple bundle update times in JSON Format")
+
+	args=parser.parse_args()
+	
+	evaluate_apple_ipccs(args.folder,args.providers,args.outputfile,args.updatefile)
 	
 		
 if __name__ == "__main__":

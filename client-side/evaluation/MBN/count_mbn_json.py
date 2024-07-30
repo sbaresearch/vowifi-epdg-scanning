@@ -6,32 +6,27 @@ import json
 from ast import literal_eval
 import pprint
 
-statistics={
-	"total_providers":0,
-	"total_configs":0,
-	"non_empty_configs":0,
-	"none_empty_providers":{},
-	"ikev2_params":{}
-}
-	
-	# https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-5
-deprecated = {
-	"ikev2_encr_algo_list":{"algorithms":{1:0, 2:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0},"count":0},
-	"ikev2_prf_algo_list":{"algorithms":{1:0,3:0},"count":0},
-	"ikev2_hash_algo_list":{"algorithms":{1:0,3:0,4:0,6:0,7:0},"count":0},
-	"ikev2_dh_group_list":{"algorithms":{1:0,2:0,5:0,22:0},"count":0} #https://www.etsi.org/deliver/etsi_ts/133200_133299/133210/17.01.00_60/ts_133210v170100p.pdf (shall not be supported)
-}
-parameter_set_dict={
-		"ikev2_dh_group_list":0,
-		"ikev2_encr_algo_list":0,		
-		"ikev2_prf_algo_list":0,
-		"ikev2_hash_algo_list":0,
-		"ikev2_sa_rekey_timer":0,
-}
-def count_data(data):
+
+
+def count_data(statistics,data):
 	"""
 	Count the data
 	"""
+	# https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-5
+	deprecated = {
+		"ikev2_prf_algo_list":{"algorithms":{1:0,3:0},"count":0},
+		"ikev2_hash_algo_list":{"algorithms":{1:0,3:0,4:0,6:0,7:0},"count":0},
+		"ikev2_encr_algo_list":{"algorithms":{1:0, 2:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0},"count":0},
+		"ikev2_dh_group_list":{"algorithms":{1:0,2:0,5:0,22:0},"count":0} #https://www.etsi.org/deliver/etsi_ts/133200_133299/133210/17.01.00_60/ts_133210v170100p.pdf (shall not be supported)
+	}
+	parameter_set_dict={
+			"ikev2_dh_group_list":0,
+			"ikev2_encr_algo_list":0,		
+			"ikev2_prf_algo_list":0,
+			"ikev2_hash_algo_list":0,
+			"ikev2_sa_rekey_timer":0,
+	}
+
 	res_counts={}
 	for config in data:
 		ikev2_params = config["ikev2_params"]
@@ -80,7 +75,7 @@ def count_data(data):
 							tmpkey=key
 					else:
 						tmpkey=key
-						parsed_element=int(parsed_element["id"])
+						parsed_element=str(parsed_element["id"])
 
 					if parsed_element not in res_counts[tmpkey]:
 						res_counts[tmpkey][parsed_element]=1
@@ -88,9 +83,9 @@ def count_data(data):
 						res_counts[tmpkey][parsed_element]+=1
 
 					if key=="ikev2_dh_group_list":
-						if parsed_element>0:
+						if parsed_element!="0":
 							
-							if parsed_element >= 15:
+							if int(parsed_element) >= 15:
 								large_dh_group_supp=True
 		
 		if large_dh_group_supp==True:
@@ -101,24 +96,29 @@ def count_data(data):
 				#if ikev2_params[key].startswith('[') and ikev2_params[key].endswith(']'):
 				#	ikev2_params[key]=[s.strip() for s in ikev2_params[key][1:-1].split(',')]
 
-	return res_counts
+	return statistics,res_counts,parameter_set_dict,deprecated
 
-def main():
-	parser = argparse.ArgumentParser()
-	parser.add_argument("-j", "--jsonfile", default="../dumps/20230822_Xiaomi_13_Pro_0A_SM8550-AB/ikev2_configuration_parameters.json", required=False, type=str, help="Json file with data of parsed MBN Files")
-	args=parser.parse_args()
-
-	jsonfile = args.jsonfile
+def count_mbn_results(mbnjson):
+	jsonfile = mbnjson
 	with open(jsonfile) as json_file:
 		data = json.load(json_file)
 
 	data=data["configuration_files"]
 
+	statistics={
+		"total_providers":0,
+		"total_configs":0,
+		"non_empty_configs":0,
+		"none_empty_providers":{},
+		"ikev2_params":{}
+	}
+	
 	# Read the json file
 	statistics["total_configs"]=len(data)
 
 
-	statistics["parsed_ikev2_params"] = count_data(data)
+	statistics,parsed_ikev2_params,parameter_set_dict,deprecated = count_data(statistics,data)
+	statistics["parsed_ikev2_params"]=parsed_ikev2_params
 	statistics["ikev2_params"]=parameter_set_dict
 	statistics["deprecated"]=deprecated
 	for key in statistics["ikev2_params"]:
@@ -126,6 +126,16 @@ def main():
 			statistics["deprecated"][key]["set"]=statistics["ikev2_params"][key]
 	#Print Statistical results of the parsed MBN File
 	pprint.pprint(statistics)
+
+	return statistics
+
+def main():
+	parser = argparse.ArgumentParser()
+	parser.add_argument("-j", "--jsonfile", default="../dumps/20230822_Xiaomi_13_Pro_0A_SM8550-AB/ikev2_configuration_parameters.json", required=False, type=str, help="Json file with data of parsed MBN Files")
+	args=parser.parse_args()
+
+	count_mbn_results(args.jsonfile)
 	
 
-main()
+if __name__ == "__main__":
+    main()

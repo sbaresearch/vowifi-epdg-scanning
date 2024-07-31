@@ -28,18 +28,17 @@ This README file contains the instructions for the client-side VoWiFi parameter 
 
 You can reproduce all the client-side analysis steps using the provided jupyter notebook.
 
-Requirement: Jupyter Notebook (https://jupyter.org/install) e.g.
-
+#### Installation
 ```bash
-pip install jupyterlab
-pip install notebook
+cd client-side
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
 ```
 
 To run the notebook:
 
 ```bash
-cd client-side
-pip install -r requirements.txt
 jupyter notebook client_side_evaluation.ipynb
 ```
 

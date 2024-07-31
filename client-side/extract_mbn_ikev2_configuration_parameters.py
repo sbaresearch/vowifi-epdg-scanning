@@ -23,7 +23,7 @@ import pycountry_convert as pc
 
 import pprint
 
-mobiledb = MobileCodeSearcher('metadata/mccmnc.csv')
+mobiledb = MobileCodeSearcher('evaluation/mccmnc.csv')
 
 logger = logging.getLogger(__name__)
 valid_meta=0

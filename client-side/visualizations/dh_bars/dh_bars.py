@@ -90,7 +90,8 @@ def visualize_dh_groups(ikev2_dh_group_data,visfile):
     plt.ylabel("DH Groups",fontsize=8.5)
     plt.yticks(indices, dh_groups,fontsize=8.5)
     
-    plt.xlim(0,81,10)
+    plt.xlim(xmin=0,xmax=81)
+    plt.xticks(range(0, 82, 10))
     matplotlib.rcParams.update({'font.size': 8.5})
     
     

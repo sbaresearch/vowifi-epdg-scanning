@@ -25,7 +25,7 @@ import ikev2_params_converter
 
 import pycountry_convert as pc
 
-mobiledb = MobileCodeSearcher('metadata/mccmnc.csv')
+mobiledb = MobileCodeSearcher('evaluation/mccmnc.csv')
 
 logger = logging.getLogger(__name__)
 valid_meta=0

@@ -1,10 +1,6 @@
-beautifulsoup4==4.11.1
-beautifulsoup4==4.10.0
-matplotlib==3.5.2
-matplotlib==3.5.1
+matplotlib==3.9.1
 natsort==8.4.0
-numpy==1.21.5
-pandas==1.4.2
+numpy==2.0.1
+pandas==2.2.2
 pycountry_convert==0.7.2
-tqdm==4.64.0
 xmltodict==0.13.0

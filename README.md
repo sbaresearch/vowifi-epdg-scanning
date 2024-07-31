@@ -3,6 +3,8 @@
 This artifact contains the source code necessary to run client- and server-side evaluation scripts for our VoWiFi security analysis.
 While the scripts can be used to scan for various security parameters (e.g., ciphers), our evaluation focuses on the key exchange (i.e., the supported Diffie-Hellman (DH) groups and the rekey-timings) that are used for the first (i.e., phase 1) VoWiFi tunnel that is essential to the security of the overall communication.
 
+The full paper can be found [here](usenix-security-24/USENIX_Security_2024_Diffie_Hellman_Picture_Show_Key_Exchange_Stories_from_Commercial_VoWiFi_Deployments_PN.pdf).
+
 ## Cloning the repository
 
 We use Git LFS (Git Large File Storage) for the dumps.zip file containing client-side operator configurations. To successfully clone the repository including the 400MB dumps.zip file, Git LFS hooks are required.
@@ -41,6 +43,8 @@ To run the notebook:
 ```bash
 jupyter notebook client_side_evaluation.ipynb
 ```
+
+The jupyter notebook provides step-by-step instructions for extracting and harmonizing the client-side configuration data for different device types. Furthermore, it allows using the harmonized results in json-format (created via the first part of the notebook) to generate graphs representing the summarized results in a more convenient and human-friendly way.
 
 #### Extracting Client Configurations from Firmware ROMs
 Since this requires downloading complete firmware ROMs (having often more than 10GB) from external sources and since unpacking the relevant configurations from the ROM is an overall time-consuming extraction approach, we took a shorter path for the artifact evaluation and just provide the configuration files that were used within our publication in the dumps.zip file.

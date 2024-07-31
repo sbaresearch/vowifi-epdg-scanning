@@ -42,6 +42,12 @@ To run the notebook:
 jupyter notebook client_side_evaluation.ipynb
 ```
 
+#### Extracting Client Configurations from Firmware ROMs
+Since this requires downloading complete firmware ROMs (having often more than 10GB) from external sources and since unpacking the relevant configurations from the ROM is an overall time-consuming extraction approach, we took a shorter path for the artifact evaluation and just provide the configuration files that were used within our publication in the dumps.zip file.
+
+To make it easier for other researchers to repeat the full configuration extraction at a later point in time (e.g., with more recent or different firmware ROMs) we reference the used approach [here](#extracting-configurations-for-other-devices).
+
+
 ## Server Side ePDG Probing (Active/Dynamic Analysis)
 
 This README section contains the instructions for the server-side ePDG probing (Section 6).
@@ -105,3 +111,51 @@ or, to just display the affected operators/domains:
 ```bash
 grep successful results/SUPPORT_DH_768MODP_*.txt | cut -d' ' -f2 | uniq
 ```
+
+
+## Extracting Configurations for Other Devices
+
+Depending on the device, the following approaches were used to extract the VoWiFi configuration data:
+
+| Provider | VoWiFi configuration through | Download & Parse                              |
+| -------- | ---------------------------- | --------------------------------------------- |
+| Apple    | IPCC Files                   | https://github.com/mrlnc/ipcc-downloader      |
+| Oppo     | MBN Files                    | https://github.com/sbaresearch/mbn-mcfg-tools |
+| Xiaomi   | MBN Files                    | https://github.com/sbaresearch/mbn-mcfg-tools |
+| Samsung  | XML Files                    | Handset path: /system/etc/epdg_apns_conf.xml  |
+
+### Apple
+
+To extract VoWiFi configurations from IPCC files the following steps are necessary.
+
+Download IPCC files using  [ipcc-downloader](https://github.com/mrlnc/ipcc-downloader).
+
+``` bash
+./download_ipccs.py -d # May take some time
+cd data
+for i in $(find . | grep plist); do plistutil -i $i -o $i.xml; done
+```
+
+The IPCC URLs (`ipcc_urls.txt`) and the unpacked carrier configurations are stored in the `data` folder.
+
+### Samsung
+
+1. Extract AP (.tar.md5) file
+
+2. lz4: unpack super.img.lz4 to super.img [`lz4 super.img.lz4`]
+
+3. simg2img: unpack super.img to super.img.raw [`simg2img super.img super.img.raw`]
+
+4. lpunpack: extract system image from super.img.raw [`python3 lpunpack.py --partition=system super.img.raw extracted`]
+
+5. Mount extracted/system and go to /system/etc/
+
+The `system/etc/epdg_apns_conf.xml` file contains ePDG endpoints and the corresponding cipher configurations.
+
+
+### Xiaomi + Oppo (Qualcomm-generic)
+
+1. Extract ROM, go to images folder
+2. Mount NON-HLOS.bin
+3. MBN MCFG files are located at /image/modem_pr/mcfg
+4. Use [mbn-mcfg-tools](https://github.com/sbaresearch/mbn-mcfg-tools) to further process MBN files

@@ -15,7 +15,12 @@ Thefore:
 
 - Clone the repository by running `git clone https://github.com/sbaresearch/vowifi-epdg-scanning.git`.
 
-Alternatively, if you do not want to use Git LFS you can clone the repository without the prior instructions and [download the dumps.zip file via the web interace](https://github.com/sbaresearch/vowifi-epdg-scanning/raw/main/client-side/dumps.zip?download=).
+Alternatively, if you do not want to use Git LFS you can clone the repository without the prior instructions and [download the dumps.zip file via a mirror at our scientific artifact storage](https://phaidra.univie.ac.at/detail/o:2083413).
+
+```
+git clone https://github.com/sbaresearch/vowifi-epdg-scanning.git
+wget -O vowifi-epdg-scanning/client-side/dumps.zip https://services.phaidra.univie.ac.at/api/object/o:2083413/download
+```
 
 ## Client Side Configuration Extraction (Passive/Static Analysis)
 
@@ -62,6 +67,26 @@ source venv/bin/activate
 ./epdg_scanner.py --testcase SUPPORT_DH_768MODP
 ./epdg_scanner.py --testcase SUPPORT_DH_1024MODP
 ./epdg_scanner.py --testcase SUPPORT_DH_1536MODP
+```
+
+##### Dockerized Execution
+
+If you have troubles running the server-side scans on your system you can also run it within a docker container.
+
+Run the ubuntu container via docker (interactive mode):
+`docker run -i -t ubuntu bash`
+
+Setup the docker system and run the scan:
+```
+apt update
+apt install -y git python3-pip python3-venv tcpdump
+git clone https://github.com/sbaresearch/vowifi-epdg-scanning.git
+cd vowifi-epdg-scanning/server-side/
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+./epdg_scanner.py --testcase SUPPORT_DH_768MODP
 ```
 
 #### Evaluation

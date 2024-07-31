@@ -79,6 +79,7 @@ source venv/bin/activate
 If you have troubles running the server-side scans on your system you can also run it within a docker container.
 
 Run the ubuntu container via docker (interactive mode):
+
 `docker run -i -t ubuntu bash`
 
 Setup the docker system and run the scan:

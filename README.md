@@ -178,3 +178,10 @@ The `system/etc/epdg_apns_conf.xml` file contains ePDG endpoints and the corresp
 2. Mount NON-HLOS.bin
 3. MBN MCFG files are located at /image/modem_pr/mcfg
 4. Use [mbn-mcfg-tools](https://github.com/sbaresearch/mbn-mcfg-tools) to further process MBN files
+
+
+## License
+
+This project is licensed under GPLv3.
+
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)

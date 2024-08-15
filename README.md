@@ -3,8 +3,21 @@
 This artifact contains the source code necessary to run client- and server-side evaluation scripts for our VoWiFi security analysis.
 While the scripts can be used to scan for various security parameters (e.g., ciphers), our evaluation focuses on the key exchange (i.e., the supported Diffie-Hellman (DH) groups and the rekey-timings) that are used for the first (i.e., phase 1) VoWiFi tunnel that is essential to the security of the overall communication.
 
-The full paper can be found [here](usenix-security-24/USENIX_Security_2024_Diffie_Hellman_Picture_Show_Key_Exchange_Stories_from_Commercial_VoWiFi_Deployments_PN.pdf).
-Also, the presentation slides are available [here](usenix-security-24/USENIX_Security_2024_Diffie_Hellman_Picture_Show_Slides.pdf).
+
+## 📚 Publication
+
+Our corresponding USENIX Security '24 paper can be found [here](usenix-security-24/USENIX_Security_2024_Diffie_Hellman_Picture_Show_Key_Exchange_Stories_from_Commercial_VoWiFi_Deployments_PN.pdf).
+The presentation slides are available [here](usenix-security-24/USENIX_Security_2024_Diffie_Hellman_Picture_Show_Slides.pdf).
+
+If you want to cite our paper in your work, please use the following BibTeX entry.
+```bibtex
+@inproceedings{gegenhuber2024diffie,
+  title={Diffie-Hellman Picture Show: Key Exchange Stories from Commercial VoWiFi Deployments},
+  author={Gegenhuber, Gabriel K and Holzbauer, Florian and Frenzel, Philipp {\'E} and Weippl, Edgar and Dabrowski, Adrian},
+  booktitle={33rd USENIX Security Symposium (USENIX Security 24)},
+  year={2024}
+}
+```
 
 ## Cloning the repository
 

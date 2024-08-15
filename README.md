@@ -4,6 +4,7 @@ This artifact contains the source code necessary to run client- and server-side 
 While the scripts can be used to scan for various security parameters (e.g., ciphers), our evaluation focuses on the key exchange (i.e., the supported Diffie-Hellman (DH) groups and the rekey-timings) that are used for the first (i.e., phase 1) VoWiFi tunnel that is essential to the security of the overall communication.
 
 The full paper can be found [here](usenix-security-24/USENIX_Security_2024_Diffie_Hellman_Picture_Show_Key_Exchange_Stories_from_Commercial_VoWiFi_Deployments_PN.pdf).
+Also, the presentation slides are available [here](usenix-security-24/USENIX_Security_2024_Diffie_Hellman_Picture_Show_Slides.pdf).
 
 ## Cloning the repository
 

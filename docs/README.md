@@ -2,7 +2,7 @@
 ## [Black Hat Europe 2024 ](https://www.blackhat.com/eu-24/briefings/schedule/#wifi-calling-revealing-downgrade-attacks-and-not-so-private-private-keys-42490)
 
 | Adrian Dabrowski  |  PhD, University of Applied Sciences FH Campus Wien |
-|Gabriel K. Gegenhuber  |  University of Vienna |
+| Gabriel K. Gegenhuber  |  University of Vienna |
 | Florian Holzbauer  |  University of Vienna |
 | Philipp É. Frenzel  |  SBA Research |
 

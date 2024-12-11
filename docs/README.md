@@ -10,9 +10,9 @@ Florian Holzbauer  |  University of Vienna
 Philipp É. Frenzel  |  SBA Research
 
 ### Papers
-* **Diffie-Hellman Picture Show: Key Exchange Stories from Commercial VoWiFi Deployments**;
-Gabriel K. Gegenhuber, Florian Holzbauer, Philipp Frenzel, Edgar Weippl, Adrian Dabrowski.
-Usenix Security Symposium 2024
+* **Diffie-Hellman Picture Show: Key Exchange Stories from Commercial VoWiFi Deployments**
+  Gabriel K. Gegenhuber, Florian Holzbauer, Philipp Frenzel, Edgar Weippl, Adrian Dabrowski
+  USENIX Security Symposium 2024
   * [PDF](https://github.com/sbaresearch/vowifi-epdg-scanning/blob/main/usenix-security-24/USENIX_Security_2024_Diffie_Hellman_Picture_Show_Key_Exchange_Stories_from_Commercial_VoWiFi_Deployments_PN.pdf)
   * BibTex:
     ```
@@ -26,9 +26,9 @@ Usenix Security Symposium 2024
     }
     ```
 
-* **MobileAtlas: Geographically Decoupled Measurements in Cellular Networks for Security and Privacy Research**;
-Gabriel K. Gegenhuber, Wilfried Mayer, Edgar Weippl, Adrian Dabrowski
-In Proceedings of the 32nd USENIX Security Symposium 2023.
+* **MobileAtlas: Geographically Decoupled Measurements in Cellular Networks for Security and Privacy Research**
+  Gabriel K. Gegenhuber, Wilfried Mayer, Edgar Weippl, Adrian Dabrowski
+  USENIX Security Symposium 2023
   * [PDF](https://mobileatlas.eu/papers/23_USENIX_SECURITY_MobileAtlas_Geographically_Decoupled_Measurements_in_Cellular_Networks.pdf)
   * BitTex:
     ```
@@ -42,9 +42,9 @@ In Proceedings of the 32nd USENIX Security Symposium 2023.
     }
     ```
 
-
-* **Why E.T. Can't Phone Home: A Global View on IP-based Geoblocking at VoWiFi**;
-Gabriel Karl Gegenhuber, Philipp Frenzel, Edgar Weippl
+* **Why E.T. Can't Phone Home: A Global View on IP-based Geoblocking at VoWiFi**
+  Gabriel Karl Gegenhuber, Philipp Frenzel, Edgar Weippl
+  ACM MobiSys
   * [PDF](https://github.com/sbaresearch/scanywhere/blob/main/vowifi-mobisys24/MobiSys2024_Why_ET_Cant_Phone_Home.pdf)
   * BibTex:
     ```
@@ -57,7 +57,6 @@ Gabriel Karl Gegenhuber, Philipp Frenzel, Edgar Weippl
       url={https://github.com/sbaresearch/scanywhere/blob/main/vowifi-mobisys24/MobiSys2024_Why_ET_Cant_Phone_Home.pdf}
     }
     ```
-
 
 ### Ressources
 * Test your/any cellular provider for weak ePDG Keys

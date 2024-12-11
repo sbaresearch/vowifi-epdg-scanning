@@ -33,7 +33,7 @@ Philipp É. Frenzel  |  SBA Research
   * BitTex:
     ```
     @inproceedings {gegenhuber2023mobileatlas,
-      title = {{MobileAtlas}: Geographically Decoupled Measurements in Cellular Networks for Security and Privacy Research},
+      title = {MobileAtlas: Geographically Decoupled Measurements in Cellular Networks for Security and Privacy Research},
       author={Gabriel K. Gegenhuber and Wilfried Mayer and Edgar Weippl and Adrian Dabrowski},
       booktitle={32nd USENIX Security Symposium (USENIX Security 23)},
       year={2023},

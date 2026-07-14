@@ -1,0 +1,45 @@
+.contact-info-row {
+  display: flex;
+  gap: 12px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--landing-border);
+}
+.contact-info-row:last-child { border-bottom: none; }
+
+.contact-info-label {
+  min-width: 72px;
+  font-weight: 600;
+  color: var(--landing-text-muted);
+  font-size: 0.9rem;
+  padding-top: 1px;
+}
+
+.contact-legal dt {
+  font-weight: 600;
+  color: var(--landing-text);
+  margin-top: 10px;
+}
+.contact-legal dt:first-child { margin-top: 0; }
+
+.contact-legal dd {
+  margin: 0;
+  color: var(--landing-text-soft);
+}
+
+.contact-legal-note {
+  margin: 0 0 14px;
+  font-size: 0.85rem;
+  color: var(--landing-text-muted);
+}
+
+.info-panel + .info-panel {
+  margin-top: 0;
+}
+
+.info-panel .section-heading {
+  margin-bottom: 16px;
+}
+
+.info-panel .section-heading h2 {
+  font-size: clamp(1.3rem, 3vw, 1.7rem);
+}

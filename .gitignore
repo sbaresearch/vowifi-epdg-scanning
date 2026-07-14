@@ -1,1 +1,3 @@
 __pycache__/
+server-side/epdg-container/
+server-side/.env.secrets

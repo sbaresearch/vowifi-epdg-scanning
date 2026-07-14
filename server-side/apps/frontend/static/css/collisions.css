@@ -1,0 +1,170 @@
+.chart-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.chart-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  align-self: flex-start;
+  min-height: 32px;
+  margin-bottom: 4px;
+}
+
+.chart-back-btn {
+  display: none;
+  padding: 5px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--landing-accent);
+  background: transparent;
+  color: var(--landing-accent);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 120ms, color 120ms;
+}
+
+.chart-back-btn:hover {
+  background: var(--landing-accent);
+  color: #fff;
+}
+
+.chart-breadcrumb:not([hidden]) {
+  display: inline;
+  font-size: 0.88rem;
+  color: var(--landing-text-muted);
+}
+
+/* show back button whenever breadcrumb is visible */
+.chart-breadcrumb:not([hidden]) ~ * { display: none; }
+#chart-breadcrumb:not([hidden]) + * { display: none; }
+
+#chart-nav:has(#chart-breadcrumb:not([hidden])) .chart-back-btn {
+  display: inline-block;
+}
+
+#chart-key-display {
+  align-self: stretch;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  border-radius: 10px;
+  border: 1px solid var(--landing-border);
+  background: var(--landing-surface);
+}
+
+#chart-key-display[hidden] {
+  display: none !important;
+}
+
+.chart-key-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--landing-text-muted);
+  white-space: nowrap;
+}
+
+.chart-key-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+#chart-key-text {
+  font-family: ui-monospace, "Cascadia Code", "Source Code Pro", monospace;
+  font-size: 0.82rem;
+  color: var(--landing-text-soft);
+  word-break: break-all;
+  overflow-wrap: anywhere;
+}
+
+#chart-key-last-seen {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--landing-accent);
+}
+
+#chart {
+  width: 100%;
+  height: 520px;
+}
+
+#chart-hover-hint {
+  font-size: 0.78rem;
+  color: var(--landing-text-muted);
+  text-align: center;
+  margin-top: -8px;
+  margin-bottom: 0;
+}
+
+#chart-hover-hint[hidden] {
+  display: none !important;
+}
+
+#chart-key-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 16px;
+}
+
+#chart-key-list[hidden] {
+  display: none !important;
+}
+
+.key-list-row {
+  display: grid;
+  grid-template-columns: 2.4rem 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--landing-border);
+  background: var(--landing-surface);
+  cursor: pointer;
+  transition: background 100ms, border-color 100ms;
+}
+
+.key-list-row:hover {
+  background: var(--landing-surface-strong);
+  border-color: var(--landing-accent);
+}
+
+.key-rank {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--landing-text-muted);
+  text-align: center;
+}
+
+.key-hex {
+  font-family: ui-monospace, "Cascadia Code", "Source Code Pro", monospace;
+  font-size: 0.78rem;
+  color: var(--landing-text-soft);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.key-count {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--landing-accent);
+  white-space: nowrap;
+  letter-spacing: -0.02em;
+}
+
+.key-count-unit {
+  font-size: 0.72rem;
+  font-weight: 500;
+  opacity: 0.7;
+  letter-spacing: 0;
+}

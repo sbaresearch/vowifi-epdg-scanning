@@ -1,0 +1,190 @@
+services:
+  epdg-scanner:
+    build:
+      context: ./apps/core
+      dockerfile: Dockerfile
+    image: epdg-scanner:latest
+    container_name: epdg-scanner
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    working_dir: /app
+    env_file:
+      - ./.env.secrets
+    environment:
+      DATA_DIR: /data/data
+      TAKEOUT_DIR: /data/takeout
+
+    volumes:
+      - ./epdg-container:/data
+
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+
+    security_opt:
+      - no-new-privileges:true
+
+    command: ["python3", "-u", "-m", "scanner.main"]
+
+    networks:
+      - ipv6_net
+      - database_net
+
+  api-backend:
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile
+    image: api-backend:latest
+    container_name: api-backend
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    env_file:
+      - ./.env.secrets
+
+    environment:
+      APP_NAME: VoWiFi Scan API
+      APP_VERSION: 0.1.0
+      API_V1_PREFIX: /api/v1
+      UVICORN_WORKERS: 2
+      UVICORN_TIMEOUT_KEEP_ALIVE: 5
+      DB_POOL_SIZE: 40
+      DB_MAX_OVERFLOW: 80
+      DB_POOL_TIMEOUT_SECONDS: 30
+      DB_POOL_RECYCLE_SECONDS: 1800
+      DB_SLOW_QUERY_MS: 300
+      TAKEOUT_DIR: /takeout
+
+    volumes:
+      # read-only access to the cached DB data takeouts.
+      - ./epdg-container/takeout:/takeout:ro
+
+    ports:
+      - "127.0.0.1:8000:8000"
+
+    depends_on:
+      - postgres
+
+    networks:
+      - database_net
+      - frontend_net
+      - api_net
+
+  postgres:
+    image: postgres:18
+    container_name: epdg-postgres
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    shm_size: 512mb
+
+    env_file:
+      - ./.env.secrets
+
+    volumes:
+      - ./epdg-container/postgres:/var/lib/postgresql
+      # here so the database gets inizialized on first startup.
+      - ./db/migrations/001_create_tables.sql:/docker-entrypoint-initdb.d/001_create_tables.sql:ro
+      - ./db/migrations/002_create_functions.sql:/docker-entrypoint-initdb.d/002_create_functions.sql:ro
+      - ./db/migrations/003_add_iso3.sql:/docker-entrypoint-initdb.d/003_add_iso3.sql:ro
+
+    command:
+      - "postgres"
+      - "-c"
+      - "max_connections=400"
+      - "-c"
+      - "shared_buffers=512MB"
+      - "-c"
+      - "effective_cache_size=1536MB"
+      - "-c"
+      - "work_mem=8MB"
+      - "-c"
+      - "maintenance_work_mem=128MB"
+
+    networks:
+      - database_net
+
+  adminer:
+    image: adminer
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    ports:
+      - "127.0.0.1:8080:8080"
+
+    networks:
+      - database_net
+      - frontend_net
+
+  key-collision-zulip-bot:
+    build:
+      context: ./apps/bot
+      dockerfile: Dockerfile
+    image: key-collision-zulip-bot:latest
+    container_name: key-collision-zulip-bot
+    restart: on-failure
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    env_file:
+      - ./.env.secrets
+
+    environment:
+      API_ORIGIN: http://api-backend:8000
+
+    networks:
+      - database_net
+      - frontend_net
+      - api_net
+
+  frontend:
+    image: nginx:alpine
+    container_name: webpage-frontend
+    restart: unless-stopped
+
+    volumes:
+      - ./apps/frontend:/usr/share/nginx/html:ro
+
+    ports:
+      - "127.0.0.1:8081:80"
+
+    depends_on:
+      - api-backend
+
+    networks:
+      - frontend_net
+
+networks:
+  ipv6_net:
+    enable_ipv6: true
+    ipam:
+      config:
+        - subnet: "fd00:dead:beef:1::/64"
+
+  database_net:
+    internal: true
+
+  api_net:
+    internal: true
+
+  frontend_net:

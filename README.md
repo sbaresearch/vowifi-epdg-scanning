@@ -3,6 +3,8 @@
 This artifact contains the source code necessary to run client- and server-side evaluation scripts for our VoWiFi security analysis.
 While the scripts can be used to scan for various security parameters (e.g., ciphers), our evaluation focuses on the key exchange (i.e., the supported Diffie-Hellman (DH) groups and the rekey-timings) that are used for the first (i.e., phase 1) VoWiFi tunnel that is essential to the security of the overall communication.
 
+> [!TIP]
+> **Continuous scanning data and insights are available on the [VoWiFi Watchdog Platform](https://vowifi-watchdog.sec.univie.ac.at/).**
 
 ## 📚 Publication
 
@@ -68,68 +70,98 @@ To make it easier for other researchers to repeat the full configuration extract
 
 ## Server Side ePDG Probing (Active/Dynamic Analysis)
 
-This README section contains the instructions for the server-side ePDG probing (Section 6).
+Automated VoWiFi server-side ePDG probing, ePDG discovery, scanning, storage, and visualization (Section 6).
 
-#### Installation
+#### What this Project does
+
+This project runs an automated pipeline that discovers ePDG infrastructure and turns raw scan output into queryable data.
+
+`apps/core/scanner/main.py` does a one-time setup first, then repeats the scan pipeline every 8 hours.
+
+At startup, `environment_setup_check()` creates missing directories and generates baseline files when needed (the candidate ePDG domain list and `zdns` config).
+
+Per cycle:
+
+1. Resolve generated ePDG domains with `zdns` and write raw DNS output.
+2. Filter DNS results to keep useful A/AAAA answers and valid CNAME-only domains.
+3. Build the up to date ePDG target list and overwrite `epdg_domains.txt`.
+4. Execute multiple first layer IKEv2 handshake test cases per target to observe behavior across DH variants.
+5. Enrich discovered targets with MCC/MNC metadata (country, network, operator, ITU region).
+6. Normalize and enrich scan results, then upsert into Postgres tables (`scan`, `epdg_server`, `epdg_result`).
+7. Refresh latest-result snapshots (`refresh_latest_snapshot`, `refresh_country_operator_snapshot`).
+8. Rebuild the key-collision dataset (`refresh_collision_keys`).
+9. Cache databse takouts as sql dump and CSV files, compressed and ready to serve for download.
+10. Compress older raw DNS files, keep the newest one uncompressed, then wait for the next cycle.
+
+#### Services (Docker Compose)
+
+- `epdg-scanner`: orchestrates DNS + scan pipeline (`scanner.main`)
+- `postgres`: primary data store
+- `api-backend`: FastAPI (`/api/v1/*`)
+- `key-collision-zulip-bot`: Zulip bot (built from `apps/bot`) that reports IKEv2 key collisions; reads from the API (`API_ORIGIN=http://api-backend:8000`) and Postgres. No host port.
+- `adminer`: database UI on `127.0.0.1:8080`
+- `frontend`: multi-page static site (map, table, collisions chart, database download) on `127.0.0.1:8081`
+
+API backend is exposed on `127.0.0.1:8000`.
+
+#### Quick Start
+
+1. Create your secrets file:
 
 ```bash
-cd server-side
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
+cp .env.secrets.example .env.secrets
 ```
 
-#### Execution
+2. Populate your secrets in `.env.secrets`:
+
+- **Required** (Postgres): `POSTGRES_HOST`, `POSTGRES_PORT`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB`
+- **Required** (API DB connection): `DATABASE_URL` (or `DATABASE_URL_FILE`)
+
+- Required only if running the Zulip bot (will gracefully exit if not set): `ZULIP_SERVER_URL`, `ZULIP_BOT_EMAIL`, `ZULIP_BOT_API_KEY`
+- Optional (API behavior): `ENABLE_DOCS`, `DEFAULT_LIMIT`, `MAX_LIMIT`, `API_KEY` (or `API_KEY_FILE`), `ENABLE_RATE_LIMIT`, `RATE_LIMIT_REQUESTS_PER_MINUTE`, `RATE_LIMIT_TIMEOUT_SECONDS`, `LOG_LEVEL`
+- Optional (API metadata): `APP_NAME`, `APP_VERSION`, `API_V1_PREFIX`
+- Optional (DB pool tuning): `DB_POOL_SIZE`, `DB_MAX_OVERFLOW`, `DB_POOL_TIMEOUT_SECONDS`, `DB_POOL_RECYCLE_SECONDS`, `DB_SLOW_QUERY_MS`
 
 > [!NOTE]
-> The server-side scans use scapy to send and receive packets and thus require root privileges.
+> The frontend calls the API with the same `API_KEY`, which is currently embedded in the frontend JS. If you set `API_KEY`, also update it at the top of `apps/frontend/static/js/map.js`, `table.js`, `collisions.js` and `takeout.js`.
+
+3. Build and start:
 
 ```bash
-sudo su
-source venv/bin/activate
-./epdg_scanner.py --testcase SUPPORT_DH_768MODP
-./epdg_scanner.py --testcase SUPPORT_DH_1024MODP
-./epdg_scanner.py --testcase SUPPORT_DH_1536MODP
+docker compose build
+docker compose up
 ```
 
-##### Dockerized Execution
+> [!NOTE]
+> Persistent data is stored under `./epdg-container/` (scanner data + postgres volume + cached takout download).
 
-If you have troubles running the server-side scans on your system you can also run it within a docker container.
+4. Analyze the data via the web frontend at `127.0.0.1:8081` or via adminer at `127.0.0.1:8080`.
 
-Run the ubuntu container via docker (interactive mode):
+#### API Overview
 
-`docker run -i -t ubuntu bash`
+Base path: `/api/v1` (all `/api/v1` routes require the API key).
 
-Setup the docker system and run the scan:
-```
-apt update
-apt install -y git python3-pip python3-venv tcpdump
-git clone https://github.com/sbaresearch/vowifi-epdg-scanning.git
-cd vowifi-epdg-scanning/server-side/
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
+Main route groups:
 
-./epdg_scanner.py --testcase SUPPORT_DH_768MODP
-```
+- /servers
+- /scans
+- /results
+- /latest-results
+- /all-results (paginated historical scan results)
+- /map
+- /collisions-latest (latest key-collision data)
+- /collision-keys (collision keys ordered by usage count)
+- /takeout
 
-#### Evaluation
+#### Disclaimer
 
-The probing results can be found in the results directory.
-The *.txt* file contains the security associations that were negotiated with each server.
-The *.pcap* file can be used for further (more precise) analysis with Wireshark.
+This section uses third-party tools and data sources:
 
-For simple evaluation, the *.txt* file can filtered in the following manner:
+- Natural Earth country boundaries (`apps/frontend/static/ne_50m_admin_0_countries.json`): https://github.com/martynafford/natural-earth-geojson
+- DNS scanning tool (`zdns`): https://github.com/zmap/zdns
+- MCC/MNC enrichment sources: [mcc-mnc.com](https://mcc-mnc.com/) and [Wikipedia mobile network code pages](https://en.wikipedia.org/wiki/Mobile_network_codes)
 
-```bash
-grep successful results/SUPPORT_DH_768MODP_*.txt
-```
-
-or, to just display the affected operators/domains:
-
-```bash
-grep successful results/SUPPORT_DH_768MODP_*.txt | cut -d' ' -f2 | uniq
-```
+Please follow the upstream project license and terms when using or redistributing it.
 
 
 ## Extracting Configurations for Other Devices

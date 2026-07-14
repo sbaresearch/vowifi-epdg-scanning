@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Map — VoWiFi Watchdog</title>
+
+  <link rel="stylesheet" href="/static/vendor/maplibre/maplibre-gl-5.19.0.css" />
+  <link rel="stylesheet" href="/static/css/map.css" />
+</head>
+
+<body class="map-page">
+  <div id="map"></div>
+
+  <template id="tpl-popup-message">
+    <div class="new-popup-card new-popup-card--message">
+      <div class="new-popup-title">{{COUNTRY}}</div>
+      <div class="new-popup-message">{{MESSAGE}}</div>
+    </div>
+  </template>
+
+  <template id="tpl-popup-score">
+    <div class="new-popup-card new-popup-card--score">
+      <div class="new-popup-head">
+        <div class="new-popup-head-left">
+          <div class="new-popup-title">{{COUNTRY}}</div>
+          <div class="new-popup-score-line">
+            Handshake score: <b>{{SCORE}}</b>
+          </div>
+        </div>
+        <div class="new-popup-legend" aria-label="Handshake mark legend">
+          <div class="new-popup-legend-row">
+            <span class="new-popup-legend-label">Deprecated (768, 1024, 1536):</span>
+            <span class="new-popup-legend-item">
+              <span class="new-popup-legend-mark new-popup-legend-mark--weak-good">✓</span>
+              supported
+            </span>
+            <span class="new-popup-legend-item">
+              <span class="new-popup-legend-mark new-popup-legend-mark--weak-bad">X</span>
+              not supported
+            </span>
+            <span class="new-popup-legend-item">
+              <span class="new-popup-legend-mark new-popup-legend-mark--no-response">○</span>
+              no response
+            </span>
+          </div>
+          <div class="new-popup-legend-row">
+            <span class="new-popup-legend-label">Regular:</span>
+            <span class="new-popup-legend-item">
+              <span class="new-popup-legend-mark new-popup-legend-mark--strong-good">✓</span>
+              supported
+            </span>
+            <span class="new-popup-legend-item">
+              <span class="new-popup-legend-mark new-popup-legend-mark--strong-bad">X</span>
+              not supported
+            </span>
+            <span class="new-popup-legend-item">
+              <span class="new-popup-legend-mark new-popup-legend-mark--no-response">○</span>
+              no response
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="new-popup-grid-wrap">
+        <div class="new-popup-grid">
+          <div class="new-popup-grid-row new-popup-grid-row--head" data-grid-template="{{GRID_TEMPLATE}}">
+            <div class="new-popup-grid-cell new-popup-grid-cell--operator new-popup-grid-cell--title">Operator</div>
+            {{HEADER_CELLS}}
+          </div>
+          {{ROWS}}
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <template id="tpl-popup-row">
+    <div class="new-popup-grid-row new-popup-grid-row--body" data-grid-template="{{GRID_TEMPLATE}}">
+      <div class="new-popup-grid-cell new-popup-grid-cell--operator">{{OPERATOR}}</div>
+      {{VALUE_CELLS}}
+    </div>
+  </template>
+
+  <template id="tpl-popup-row-empty">
+    <div class="new-popup-empty">{{MESSAGE}}</div>
+  </template>
+
+  <div id="map-legend" class="mapboxgl-legend" hidden>
+    <h2>Handshake Score</h2>
+    <p>The handshake score (0-10) is an indicator for<br>how many operators support deprecated protocols.<br>No response is not valued (neutral).</p>
+    <div class="legend-gradient" style="background:linear-gradient(to right,rgb(215,55,45),rgb(236,188,55),rgb(48,163,83))"></div>
+    <div class="legend-labels"><span>more</span><span>less</span></div>
+    <div class="legend-item">
+      <div class="legend-patch-container"><div class="legend-shape-square" style="background:#8f8f8f"></div></div>
+      <span class="legend-text">No responses</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-patch-container"><div class="legend-shape-square" style="background:#f5f5f5"></div></div>
+      <span class="legend-text">No scans</span>
+    </div>
+  </div>
+
+  <script defer src="/static/vendor/maplibre/maplibre-gl-5.19.0.js"></script>
+  <script defer src="/static/js/map.js"></script>
+</body>
+
+</html>

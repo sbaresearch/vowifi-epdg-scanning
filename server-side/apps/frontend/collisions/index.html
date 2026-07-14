@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Key Collisions — VoWiFi Watchdog</title>
+  <link rel="stylesheet" href="/static/css/landing.css" />
+  <link rel="stylesheet" href="/static/css/theme-toggle.css" />
+  <link rel="stylesheet" href="/static/css/collisions.css" />
+  <script src="/static/js/theme.js"></script>
+</head>
+<body class="landing-page">
+  <main class="landing-shell">
+    <header class="landing-nav">
+      <button id="theme-toggle" aria-label="Switch to dark mode">
+        <span class="theme-icon">&#x263D;</span>
+      </button>
+    </header>
+
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-content">
+          <p class="eyebrow">Analysis</p>
+          <h1>Key Collisions</h1>
+        </div>
+      </div>
+    </section>
+
+    <section class="info-panel chart-panel">
+      <div class="chart-nav" id="chart-nav">
+        <button class="chart-back-btn" id="chart-back">← Back</button>
+        <span class="chart-breadcrumb" id="chart-breadcrumb" hidden></span>
+      </div>
+      <div id="chart-key-display" hidden>
+        <span class="chart-key-label">Key</span>
+        <div class="chart-key-detail">
+          <code id="chart-key-text"></code>
+          <span id="chart-key-last-seen"></span>
+        </div>
+      </div>
+      <div id="chart"></div>
+      <p id="chart-hover-hint" hidden>Hover over the segments to see the last seen date per operator.</p>
+      <div id="chart-key-list" hidden></div>
+    </section>
+  </main>
+
+
+  <script src="/static/vendor/echarts/echarts-5.6.0.min.js"></script>
+  <script defer src="/static/js/collisions.js"></script>
+</body>
+</html>

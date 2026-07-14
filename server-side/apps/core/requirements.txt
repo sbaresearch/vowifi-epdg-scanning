@@ -1,0 +1,10 @@
+pycrypto
+pycryptodome
+cryptography
+dnspython
+scapy @ https://github.com/secdev/scapy/archive/refs/heads/master.zip
+psycopg[binary]
+# for scraping
+requests
+beautifulsoup4
+lxml

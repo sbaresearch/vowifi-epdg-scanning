@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Table — VoWiFi Watchdog</title>
+
+  <link rel="stylesheet" href="/static/vendor/ag-grid/ag-grid-35.2.1.css" />
+  <link rel="stylesheet" href="/static/vendor/ag-grid/ag-theme-quartz-35.2.1.css" />
+  <link rel="stylesheet" href="/static/css/table.css" />
+  <link rel="stylesheet" href="/static/css/theme-toggle.css" />
+  <script src="/static/js/theme.js"></script>
+</head>
+
+<body>
+  <main class="table-shell">
+    <section class="table-header">
+      <p class="eyebrow">Data</p>
+      <h1 id="tableHeading">Latest Data</h1>
+      <p class="intro">
+        Live view of the most recent or all historical VoWiFi scan results. Click on a Key Hex column entry to copy it.
+      </p>
+    </section>
+
+    <section class="table-panel">
+      <div class="table-toolbar">
+        <div class="table-label">Latest Watchdog Scan Results</div>
+        <div class="table-toolbar-end">
+          <div id="tableStatus" class="table-note"></div>
+          <div id="endpoint-toggle" class="segment-toggle is-intro" role="group" aria-label="Data view">
+            <button class="segment-btn segment-btn--active" data-mode="latest">Latest</button>
+            <button class="segment-btn" data-mode="all">All History</button>
+          </div>
+          <button id="theme-toggle" aria-label="Switch to dark mode">
+            <span class="theme-icon">&#x263D;</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="vowifiGrid" class="ag-theme-quartz"></div>
+    </section>
+  </main>
+
+  <script src="/static/vendor/ag-grid/ag-grid-community-35.2.1.min.js"></script>
+  <script defer src="/static/js/table.js"></script>
+</body>
+</html>

@@ -1,0 +1,2 @@
+zulip
+psycopg2-binary

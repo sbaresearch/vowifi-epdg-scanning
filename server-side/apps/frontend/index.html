@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VoWiFi Watchdog</title>
+  <meta
+    name="description"
+    content="Automated VoWiFi ePDG discovery, scanning, storage, and interactive visualization."
+  />
+  <link rel="stylesheet" href="/static/css/landing.css" />
+  <link rel="stylesheet" href="/static/css/theme-toggle.css" />
+  <script src="/static/js/theme.js"></script>
+  <script src="/static/js/takeout.js" defer></script>
+</head>
+<body class="landing-page">
+  <main class="landing-shell">
+    <header class="landing-nav">
+      <button id="theme-toggle" aria-label="Switch to dark mode">
+        <span class="theme-icon">&#x263D;</span>
+      </button>
+    </header>
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-content">
+          <p class="eyebrow"></p>
+          <h1>VoWiFi Watchdog</h1>
+          <p class="hero-copy">
+            Project VoWiFi Watchdog aims to monitor the global VoWiFi landscape with automated scannning and analysis of worldwide ePDG infrastructure and IKEv2 DH handshakes.
+            It's main goal is to provide insights accessable to all, researchers, operators and the general public in an intuitive and interactive way.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="/map/">Interactive Map</a>
+            <a class="button button-primary" href="/table/">Data Table</a>
+            <a class="button button-primary" href="/collisions/">Key Collisions</a>
+          </div>
+          <div class="hero-download">
+            <p class="hero-download-label">Download the full raw dataset for your own analysis:</p>
+            <div class="hero-actions">
+              <a class="button button-secondary" id="takeout-csv" data-format="csv" download>Download CSV</a>
+              <a class="button button-secondary" id="takeout-sql" data-format="sql" download>Download SQL dump</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="overview" class="info-panel">
+      <div class="section-heading">
+        <p class="section-label">Overview</p>
+        <h2>What this is all about</h2>
+      </div>
+      <div class="overview-body">
+        <p class="section-copy">
+          This project is based on the paper <a href="https://publications.sba-research.org/publications/CR_Diffie_Hellman_Picture_Show_Key_Exchange_S_Gabriel%20Gegenhuber.pdf">Diffie-Hellman Picture Show: Key Exchange Stories from Commercial VoWiFi Deployments</a><sup><a href="#fn1" id="ref1">1</a></sup>.
+          
+          This project runs an automated pipeline that discovers ePDG infrastructure, then
+          executes multiple IKEv2 handshake tests and exposes the Data through an API and map UI.
+        </p>
+        <div id="footnotes" class="footnotes">
+          <ol>
+            <li id="fn1">Gabriel K. Gegenhuber, Florian Holzbauer, Philipp É. Frenzel, Edgar Weippl, and Adrian Dabrowski. 2024. Diffie-hellman picture show: key exchange stories from commercial VoWiFi deployments. In Proceedings of the 33rd USENIX Conference on Security Symposium (SEC '24). USENIX Association, USA, Article 26, 451–468.<a href="#ref1">↩</a></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="capabilities" aria-label="Project capabilities">
+      <article class="capability-card">
+        <h3>Discovery</h3>
+        <p>
+          Generates all possible ePDG domains with MCC and MNC combinations and then runs DNS scans to identify active VoWiFi
+          targets.
+        </p>
+      </article>
+      <article class="capability-card">
+        <h3>Scanning</h3>
+        <p>
+          Multiple IKEv2 handshake variants are made against discovered targets to evaluate operator support,
+          downgrade tolerance, and response quality.
+        </p>
+      </article>
+      <article class="capability-card">
+        <h3>Storage</h3>
+        <p>
+          Scan results are normalized, analyzed and stored for later serving via API and visualization.
+        </p>
+      </article>
+      <article class="capability-card">
+        <h3>Visualization</h3>
+        <p>
+          Visualizations are provided to give intuitive insights into the global VoWiFi landscape, with a special focus on handshake support.
+        </p>
+      </article>
+    </section>
+  </main>
+
+  <footer class="landing-footer">
+    <p>
+      Map boundaries are based on <a href="https://www.naturalearthdata.com/">Natural Earth</a> data. This project also relies on <a href="https://github.com/zmap/zdns">zdns</a> and MCC/MNC <a href="https://mcc-mnc.com/">enrichment sources</a>.<br />
+      <a href="/contact/">Contact</a>
+    </p>
+  </footer>
+</body>
+</html>

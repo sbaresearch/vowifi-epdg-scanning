@@ -1,0 +1,5 @@
+fastapi==0.116.1
+uvicorn[standard]==0.35.0
+sqlalchemy==2.0.43
+asyncpg==0.30.0
+pydantic-settings==2.10.1

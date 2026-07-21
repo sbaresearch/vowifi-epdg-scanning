@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 
 
-def generator(output_path):
+def generator(output_path: Path):
     epdg_domains = []
 
     # adding all 3 digit mcc's (1.000.000)
@@ -48,4 +48,4 @@ def generator(output_path):
 
 
 if __name__ == "__main__":
-    generator()
+    raise SystemExit("This module is not meant to be run directly. Use main.py instead.")

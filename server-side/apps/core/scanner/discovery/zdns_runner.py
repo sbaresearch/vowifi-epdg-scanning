@@ -1,13 +1,15 @@
 import datetime
+import os
 import subprocess
 import logging
+from pathlib import Path
 from scanner.common.logging_config import configure_logging
 
 logger = logging.getLogger(__name__)
 
 
 # run zdns with generated ePDGs.
-def zdns_runner(config_path, input_path, output_path):
+def zdns_runner(config_path: Path, input_path: Path, output_path: Path):
     logger.info("running zdns scan...")
 
     config_file = config_path / "zdns_config.ini"
@@ -27,15 +29,24 @@ def zdns_runner(config_path, input_path, output_path):
     )
 
     logger.debug("starting zdns subprocess.")
-    zdns_result = subprocess.run(
-        zdns,
-        # shell=True,
-        check=True,
-    )
-
-    logger.info("zdns scan finished...")
+    try:
+        subprocess.run(
+            zdns,
+            # shell=True,
+            check=True,
+        )
+        logger.info("zdns scan finished...")
+    except subprocess.CalledProcessError as e:
+        logger.error("zdns scan failed with return code %s", e.returncode)
+        raise
+    except FileNotFoundError:
+        logger.error("zdns executable not found. Please ensure it is installed and in your PATH.")
+        raise
 
 
 if __name__ == "__main__":
     configure_logging("%(asctime)s [%(levelname)s] %(name)s: %(message)s")
-    zdns_runner()
+    
+    default_base_dir = Path(__file__).resolve().parent.parent
+    data_dir = Path(os.getenv("DATA_DIR", default_base_dir / "data"))
+    zdns_runner(data_dir / "config", data_dir / "generated", data_dir / "scans" / "raw")

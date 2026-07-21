@@ -419,7 +419,7 @@ TEST_CONFIG = {
 
 REGEX_VOWIFI = r"^epdg.epc.mnc(\d{2,3}).mcc(\d{3}).pub.3gppnetwork.org\.?$"
 
-BASE_DIR = pathlib.Path(__file__).resolve().parent
+BASE_DIR = pathlib.Path(__file__).resolve().parent.parent
 DATA_DIR = pathlib.Path(os.getenv("DATA_DIR", BASE_DIR / "data"))
 RESULTS_DIR = DATA_DIR / "results"
 EPDGS_DIR = DATA_DIR
@@ -427,6 +427,8 @@ EPDGS_DIR = DATA_DIR
 
 def get_ids_from_domain(domain):
     m = re.search(REGEX_VOWIFI, domain)
+    if not m:
+        raise ValueError(f"domain {domain} does not match regex {REGEX_VOWIFI}")
     mnc = m[1]
     mcc = m[2]
     return mcc, mnc
@@ -466,7 +468,7 @@ def resolve_domain(operator_url, ip_version="v4v6"):
     return list(dict.fromkeys(records))  # order
 
 
-def epdg_scanner(interface="any", ip_version="ipv4", testcase="SUPPORT_DH_1024MODP"):
+def epdg_scanner(interface="any", ip_version="ipv4", testcase="SUPPORT_DH_1024MODP", epdg_domains_file="epdg_domains.txt"):
 
     # sanatizing input arguments.
     if testcase not in TEST_CONFIG.keys() or ip_version not in [
@@ -482,14 +484,13 @@ def epdg_scanner(interface="any", ip_version="ipv4", testcase="SUPPORT_DH_1024MO
     logger.info(f"starting scan for {testcase}...")
 
     timestamp = datetime.datetime.now(datetime.timezone.utc).strftime(
-        "%Y-%m-%dT%H:%M:%SZ"
+        "%Y-%m-%dT%H%M%SZ"
     )
     name = f"{testcase}_{timestamp}"
 
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
-    epdg_domains = get_epdg_domains("epdg_domains.txt")
-    # epdg_domains = get_epdg_domains("ike_encr_null_domains.txt")
+    epdg_domains = get_epdg_domains(epdg_domains_file)
 
     results_output_file = RESULTS_DIR / f"{name}.json"
     traffic_output_file = RESULTS_DIR / f"{name}.pcap"
@@ -501,7 +502,7 @@ def epdg_scanner(interface="any", ip_version="ipv4", testcase="SUPPORT_DH_1024MO
                 ips = resolve_domain(domain, ip_version)
                 for ip in ips:
                     timestamp = datetime.datetime.now(datetime.timezone.utc).strftime(
-                        "%Y-%m-%dT%H:%M:%SZ"
+                        "%Y-%m-%dT%H%M%SZ"
                     )
                     data = {
                         "timestamp": timestamp,
@@ -538,6 +539,9 @@ def epdg_scanner(interface="any", ip_version="ipv4", testcase="SUPPORT_DH_1024MO
         for domain in epdg_domains:
             ips = resolve_domain(domain, ip_version)
             for ip in ips:
+                if ip == "127.0.0.1" or ip == "::1":
+                    results_file.write(f'[{timestamp}] {domain} -> {ip}: Skipping loopback address\n')
+                    continue
                 mcc, mnc = get_ids_from_domain(domain)
                 # crafting package.
                 ike = EpdgIKEv2(
@@ -589,10 +593,12 @@ if __name__ == "__main__":
     parser.add_argument(
         "--ip", help="IP Version", choices=["ipv4", "ipv6", "ipv4v6"], default="ipv4"
     )
-    parser.add_argument("--testcase", help="Test Case", choices=TEST_CONFIG.keys())
+    parser.add_argument("--testcase", default="SUPPORT_DH_1024MODP", help="Test Case", choices=TEST_CONFIG.keys())
+    parser.add_argument("--epdg-domains-file", default="epdg_domains.txt", help="File containing ePDG domains")
     args = vars(parser.parse_args())
 
     interface = args["interface"]
     ip_version = args["ip"]
     testcase = args["testcase"]
-    epdg_scanner(interface, ip_version, testcase)
+    epdg_domains_file = args["epdg_domains_file"]
+    epdg_scanner(interface, ip_version, testcase, epdg_domains_file)

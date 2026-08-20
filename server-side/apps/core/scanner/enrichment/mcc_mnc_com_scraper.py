@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 from pathlib import Path
 from typing import Any, Dict, List
 
@@ -7,6 +8,7 @@ import requests
 from scanner.common.logging_config import configure_logging
 
 API_URL = "https://mcc-mnc.com/api/v1/mcc-mnc.php"
+TOKEN_ENV_VAR = "MCC_MNC_API_TOKEN"
 HEADERS = {
     "User-Agent": "MCC_MNC_parser/1.0 (personal use.)",
     "Accept-Language": "en-US,en;q=0.9",
@@ -26,8 +28,24 @@ def write_json(data: List[Dict[str, str]], out_path: Path) -> None:
     )
 
 
+def build_headers() -> Dict[str, str]:
+    token = os.getenv(TOKEN_ENV_VAR, "").strip()
+    if not token:
+        raise RuntimeError(
+            f"{TOKEN_ENV_VAR} is not set. mcc-mnc.com retired anonymous access, "
+            "register for an API token and add it to .env.secrets."
+        )
+
+    return {**HEADERS, "Authorization": f"Bearer {token}"}
+
+
 def scraper() -> List[dict]:
-    request = requests.get(API_URL, headers=HEADERS, timeout=60)
+    request = requests.get(API_URL, headers=build_headers(), timeout=60)
+    if request.status_code in (401, 403):
+        raise RuntimeError(
+            f"mcc-mnc.com rejected the API token from {TOKEN_ENV_VAR} "
+            f"(HTTP {request.status_code}): {request.text.strip()}"
+        )
     request.raise_for_status()
     payload = request.json()
     data_normalized = normalize_api_payload(payload)

@@ -1,11 +1,12 @@
+import argparse
 import datetime
-import time
-import os.path
-import os
-import json
 import glob
-import logging
 import ipaddress
+import json
+import logging
+import os
+import os.path
+import time
 from pathlib import Path
 from scanner.common import file_compressor
 from scanner.common.logging_config import configure_logging
@@ -30,6 +31,8 @@ CONFIG_DIR = DATA_DIR / "config"
 RESULTS_DIR = DATA_DIR / "results"
 MAPPINGS_DIR = DATA_DIR / "mappings"
 
+PIPELINE_MODES = ("pipeline", "discovery", "enrichment", "ikev2", "ingest", "takeout")
+
 SLEEPTIME = 28800  # 8 hours.
 
 TESTCASES = [
@@ -53,7 +56,7 @@ TESTCASES = [
 
 
 # takes a file directory and the base name of a file to find the latest version of a group of files within a directory.
-def latest_file_picker(file_dir, file_base_name):
+def latest_file_picker(file_dir: Path, file_base_name: str) -> str|None:
     logger.debug(f"looking for latest {file_base_name} in {file_dir}.")
 
     pattern = os.path.join(str(file_dir), file_base_name)
@@ -109,8 +112,11 @@ def filter_zdns_scan_results():
     logger.info("filtering zdns scan...")
 
     latest_raw_dns_scan = latest_file_picker(RAW_DIR, "epdg_dns_scan_*.json")
-    logger.debug("filtering the raw DNS scans.")
+    if not latest_raw_dns_scan:
+        logger.warning("No raw DNS scan file found!")
+        return
 
+    logger.debug("filtering the raw DNS scans.")
     filtered_dns_entries: list[dict] = []
     drop_counts = {
         "no_A_or_AAAA": 0,
@@ -208,6 +214,10 @@ def extract_domains_from_filtered_scans():
         "epdg_dns_scan_filtered_*.json",
     )
 
+    if not latest_filtered_dns_scan:
+        logger.warning("No filtered DNS scan file found!")
+        return
+
     with open(latest_filtered_dns_scan, "r") as epdg_dns_scan_filtered_file:
         logger.debug(f"reading from {latest_filtered_dns_scan}.")
         filtered_dns_scan = json.load(epdg_dns_scan_filtered_file)
@@ -235,6 +245,10 @@ def override_edpg_domains():
         "epdg_scanned_*.json",
     )
 
+    if not latest_epdg_domains:
+        logger.warning("No extracted ePDG domains file found!")
+        return
+
     epdg_domains = []
     # this file is not really valid json.
     with open(latest_epdg_domains, "r") as epdg_domains_json_file:
@@ -252,12 +266,12 @@ def override_edpg_domains():
             epdg_domains_txt_file.write(epdg + "\n")
 
 
-def run_epdg_scanning_tool():
+def run_epdg_scanning_tool(ip_version: str = "ipv4"):
     logger.info("running ePDG scanning tool...")
 
     for tc in TESTCASES:
         logger.info(f"running scan for {tc}...")
-        epdg_scanner.epdg_scanner("any", "ipv4v6", tc)
+        epdg_scanner.epdg_scanner("any", ip_version, tc, str(DATA_DIR / "epdg_domains.txt"))
         latest_results = latest_file_picker(
             RESULTS_DIR,
             f"{tc}*.json",
@@ -266,46 +280,118 @@ def run_epdg_scanning_tool():
             MAPPINGS_DIR,
             "mcc_mnc_output_*.json",
         )
+
+        if not latest_results or not latest_mappings:
+            logger.warning(
+                f"Missing results or mappings for {tc}. Skipping insertion into database."
+            )
+            continue
+
         scan_analyzer_insert.analyze_and_insert(
             Path(latest_results), Path(latest_mappings)
         )
 
 
-if __name__ == "__main__":
-    configure_logging("%(asctime)s [%(levelname)s]: %(message)s")
-    logger.info("starting up...")
-    environment_setup_check()
+def run_discovery_stage():
+    zdns_runner.zdns_runner(CONFIG_DIR, GENERATED_DIR, RAW_DIR)
+    filter_zdns_scan_results()
+    extract_domains_from_filtered_scans()
+    override_edpg_domains()
+
+
+def run_enrichment_stage():
+    mcc_mnc_scraper_start.scraper(Path(MAPPINGS_DIR))
+
+
+def run_ikev2_stage(ip_version: str):
+    run_epdg_scanning_tool(ip_version)
+
+
+def run_ingest_stage():
+    scan_analyzer_insert.refresh_collision_keys()
+
+
+def run_pipeline_cycle(ip_version: str):
+    run_discovery_stage()
+    run_enrichment_stage()
+    run_ikev2_stage(ip_version)
+    run_ingest_stage()
+    logger.info("done.")
+    logger.info("compressing zdns output files.")
+    latest_zdns_output = latest_file_picker(
+            RAW_DIR,
+            "epdg_dns_scan_*.json",
+        )
+    if not latest_zdns_output:
+        logger.warning("No zdns output file found for compression!")
+    else:
+        file_compressor.compress_files(
+            RAW_DIR,
+            latest_zdns_output,
+        )
+        logger.info("compression done.")
+
+    logger.info("generating database takeouts.")
+    try:
+        takeout_export.generate_takeouts()
+        logger.info("takeout generation done.")
+    except Exception:
+        # ignore if failed, just keep serving last export. try again next time.
+        logger.exception("takeout generation failed. keep serving last export.")
+
+
+def run_pipeline_forever():
+    while True:
+        run_pipeline_cycle(ip_version="ipv4v6")
+        logger.info("waiting...")
+        time.sleep(SLEEPTIME)
+        logger.info("continuing...")
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description="Run the VoWiFi ePDG scanner pipeline or one of its stages.",
+    )
+    parser.add_argument(
+        "module",
+        nargs="?",
+        choices=PIPELINE_MODES,
+        default="pipeline",
+        help="Which scanner stage to run.",
+    )
+    return parser
+
+def gen_takeout_if_missing():
     logger.info("checking if database takeouts exist.")
     try:
         takeout_export.generate_if_missing()
     except Exception:
         # ignore if failed, just serve nothing until first scan run completes.
         logger.exception("startup takeout generation failed")
-    while True:
-        zdns_runner.zdns_runner(CONFIG_DIR, GENERATED_DIR, RAW_DIR)
-        filter_zdns_scan_results()
-        extract_domains_from_filtered_scans()
-        override_edpg_domains()
-        mcc_mnc_scraper_start.scraper(Path(MAPPINGS_DIR))
-        run_epdg_scanning_tool()
-        scan_analyzer_insert.refresh_collision_keys()
-        logger.info("done.")
-        logger.info("compressing zdns output files.")
-        file_compressor.compress_files(
-            RAW_DIR,
-            latest_file_picker(
-                RAW_DIR,
-                "epdg_dns_scan_*.json",
-            ),
-        )
-        logger.info("compression done.")
-        logger.info("generating database takeouts.")
-        try:
-            takeout_export.generate_takeouts()
-            logger.info("takeout generation done.")
-        except Exception:
-            # ignore if failed, just keep serving last export. try again next time.
-            logger.exception("takeout generation failed. keep serving last export.")
-        logger.info("waiting...")
-        time.sleep(SLEEPTIME)
-        logger.info("continuing...")
+
+
+def main(argv: list[str] | None = None) -> int:
+    args = build_parser().parse_args(argv)
+
+    configure_logging("%(asctime)s [%(levelname)s]: %(message)s")
+    logger.info("starting up...")
+    environment_setup_check()
+
+    if args.module == "takeout":
+        gen_takeout_if_missing()
+    elif args.module == "pipeline":
+        run_pipeline_forever()
+    elif args.module == "discovery":
+        run_discovery_stage()
+    elif args.module == "enrichment":
+        run_enrichment_stage()
+    elif args.module == "ikev2":
+        run_ikev2_stage(ip_version="ipv4v6")
+    elif args.module == "ingest":
+        run_ingest_stage()
+
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

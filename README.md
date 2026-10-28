@@ -4,7 +4,7 @@ This artifact contains the source code necessary to run client- and server-side 
 While the scripts can be used to scan for various security parameters (e.g., ciphers), our evaluation focuses on the key exchange (i.e., the supported Diffie-Hellman (DH) groups and the rekey-timings) that are used for the first (i.e., phase 1) VoWiFi tunnel that is essential to the security of the overall communication.
 
 > [!TIP]
-> **Continuous scanning data and insights are available on the [VoWiFi Watchdog Platform](https://vowifi-watchdog.sec.univie.ac.at/).**
+> **Continuous scanning data and insights are available on the [VoWiFi Watchdog Platform](https://vowifi.mobileatlas.eu/).**
 
 ## 📚 Publication
 

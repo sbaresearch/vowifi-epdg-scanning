@@ -1,0 +1,205 @@
+/* highlight for search hits, the hovered operator and the hovered cluster: orange,
+   the warm opposite of the blue cluster rings, so it stands out in both themes. */
+body.landing-page {
+  --fp-highlight: #eb6834;
+}
+
+[data-theme="dark"] body.landing-page {
+  --fp-highlight: #d95926;
+}
+
+/* "Fingerprinting" is one long word, so let it use the full hero width. */
+.fingerprint-hero h1 {
+  max-width: none;
+  font-size: clamp(2.6rem, 7vw, 5.4rem);
+}
+
+.snapshot-note {
+  display: inline-block;
+  margin: 20px 0 0;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--landing-accent) 35%, transparent);
+  background: color-mix(in srgb, var(--landing-accent) 8%, transparent);
+  color: var(--landing-text-soft);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.snapshot-note strong {
+  color: var(--landing-accent);
+}
+
+.fingerprint-steps {
+  margin-top: 16px;
+  padding-left: 22px;
+  line-height: 1.6;
+}
+
+.fingerprint-steps li + li {
+  margin-top: 8px;
+}
+
+.fingerprint-steps li::marker {
+  color: var(--landing-accent);
+  font-weight: 700;
+}
+
+.fingerprint-intro {
+  margin-top: 16px;
+  line-height: 1.6;
+}
+
+.fingerprint-intro b {
+  color: var(--landing-text);
+}
+
+/* --- toolbar --------------------------------------------------------------- */
+
+.fp-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 20px;
+  margin-top: 20px;
+}
+
+.fp-search {
+  width: 300px;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 9px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--landing-border);
+  background: var(--landing-surface-strong);
+  color: var(--landing-text);
+  font: inherit;
+}
+
+.fp-search:focus-visible {
+  outline: 2px solid var(--landing-accent);
+  outline-offset: 1px;
+}
+
+.fp-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.92rem;
+  color: var(--landing-text-soft);
+  cursor: pointer;
+}
+
+.fp-check input {
+  margin: 0;
+  accent-color: var(--landing-accent);
+}
+
+.fp-hint {
+  margin: 10px 0 12px;
+  font-size: 0.82rem;
+  color: var(--landing-text-muted);
+}
+
+/* --- chart ----------------------------------------------------------------- */
+
+#fp-chart {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 85vh;
+  border-radius: 14px;
+  border: 1px solid var(--landing-border);
+  background: var(--landing-surface);
+  cursor: grab;
+  /* one finger scrolls the page, two fingers pan and zoom the chart */
+  touch-action: pan-x pan-y;
+}
+
+.fp-cluster {
+  fill: var(--landing-accent);
+  fill-opacity: 0.05;
+  stroke: var(--landing-accent);
+  stroke-width: 1.5;
+}
+
+.fp-group {
+  fill: none;
+  stroke: var(--landing-text-muted);
+  stroke-dasharray: 3 2;
+  pointer-events: none;
+}
+
+.fp-ip {
+  fill: var(--landing-text-muted);
+  stroke: var(--landing-surface-strong);
+  stroke-width: 1.5;
+  cursor: pointer;
+}
+
+.fp-ip.hl {
+  fill: var(--fp-highlight);
+}
+
+.fp-cluster:hover {
+  stroke: var(--fp-highlight);
+  stroke-width: 2.5;
+}
+
+.fp-ip:hover {
+  stroke: var(--landing-text);
+  stroke-width: 2;
+}
+
+.fp-label {
+  font-size: 11px;
+  font-weight: 600;
+  fill: var(--landing-text-soft);
+  text-anchor: middle;
+  pointer-events: none;
+  paint-order: stroke;
+  stroke: var(--landing-surface-strong);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+
+/* --- tooltip --------------------------------------------------------------- */
+
+.fp-tip {
+  position: fixed;
+  z-index: 10;
+  max-width: 360px;
+  padding: 10px 12px;
+  pointer-events: none;
+  border-radius: 10px;
+  border: 1px solid var(--landing-border);
+  background: var(--landing-surface-strong);
+  box-shadow: var(--landing-shadow);
+  backdrop-filter: blur(12px);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--landing-text-soft);
+  overflow-wrap: anywhere;
+}
+
+.fp-tip strong {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 0.9rem;
+  color: var(--landing-text);
+}
+
+.fp-tip[hidden] {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .fp-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .fp-search {
+    width: 100%;
+  }
+}

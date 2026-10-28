@@ -2,13 +2,12 @@
 
 import os
 import re
-import time
 import pathlib
 import argparse
 import subprocess
 import dns.resolver
 from scanner.common.logging_config import configure_logging
-from scanner.ikev2.ikev2_class import EpdgIKEv2
+from scanner.ikev2.ikev2_class import EpdgIKEv2, usable_ip_versions
 import logging
 import datetime
 import json
@@ -433,40 +432,54 @@ def get_ids_from_domain(domain):
 
 
 def get_epdg_domains(filename="epdg_domains.txt"):
-    edpg_input_file = EPDGS_DIR / filename
+    """Target list for this run; EPDG_DOMAINS_FILE overrides the shared list."""
+    override = os.getenv("EPDG_DOMAINS_FILE", "").strip()
+    edpg_input_file = pathlib.Path(override) if override else EPDGS_DIR / filename
     with open(edpg_input_file) as file:
         return [line.rstrip() for line in file]
-    return []
+
+
+# Missing records are normal; resolver failures (timeout, no nameserver) are not.
+NO_SUCH_RECORD = (dns.resolver.NXDOMAIN, dns.resolver.NoAnswer)
+
+# resolver failures since the last reset: tells "no ePDG answered" from "DNS down".
+resolver_failures = {"count": 0}
+
+
+def _resolve(dnsres, name, rdtype):
+    """One lookup: [] for a missing record, [] plus a counted failure for a broken resolver."""
+    try:
+        return list(dnsres.resolve(name, rdtype))
+    except NO_SUCH_RECORD:
+        return []
+    except Exception as exc:
+        resolver_failures["count"] += 1
+        logger.debug(f"resolving {name} {rdtype} failed: {type(exc).__name__}: {exc}")
+        return []
 
 
 def resolve_domain(operator_url, ip_version="v4v6"):
     dnsres = dns.resolver.Resolver()
     records = []
-    try:
-        if "v4" in ip_version:
-            ans = dnsres.resolve(operator_url, "A")
-            for record in ans:
-                records.append(record.address)
-    except:
-        pass
-    try:
-        if "v6" in ip_version:
-            ans = dnsres.resolve(operator_url, "AAAA")
-            for record in ans:
-                records.append(record.address)
-    except:
-        pass
-    try:
-        ans = dnsres.resolve(operator_url, "CNAME")
-        for record in ans:
-            # print(f"CNAME {ans}")
-            records.extend(resolve_domain(record.target, ip_version))
-    except:
-        pass
+    if "v4" in ip_version:
+        records.extend(r.address for r in _resolve(dnsres, operator_url, "A"))
+    if "v6" in ip_version:
+        records.extend(r.address for r in _resolve(dnsres, operator_url, "AAAA"))
+    for record in _resolve(dnsres, operator_url, "CNAME"):
+        records.extend(resolve_domain(record.target, ip_version))
     return list(dict.fromkeys(records))  # order
 
 
-def epdg_scanner(interface="any", ip_version="ipv4", testcase="SUPPORT_DH_1024MODP"):
+def epdg_scanner(
+    interface="any",
+    ip_version="ipv4",
+    testcase="SUPPORT_DH_1024MODP",
+    results_dir=None,
+):
+    """Run one IKEv2 testcase; returns the results file.
+
+    Vantage point runs pass their own results_dir so parallel runs don't mix output.
+    """
 
     # sanatizing input arguments.
     if testcase not in TEST_CONFIG.keys() or ip_version not in [
@@ -479,6 +492,23 @@ def epdg_scanner(interface="any", ip_version="ipv4", testcase="SUPPORT_DH_1024MO
         )
         exit(0)
 
+    # Only routable address families: a tunnel without IPv6 fails every AAAA target
+    # (ENETUNREACH). resolve_domain() reads this too, so AAAA lookups stop as well.
+    reachable = usable_ip_versions(None if interface == "any" else interface)
+    effective_ip_version = "".join(v for v in ("v4", "v6") if v in reachable and v in ip_version)
+    if not effective_ip_version:
+        raise RuntimeError(
+            f"none of the requested address families ({ip_version}) are reachable "
+            f"from here; this host can originate {reachable or 'nothing'}"
+        )
+    effective_ip_version = f"ip{effective_ip_version}"
+    if effective_ip_version != ip_version:
+        logger.info(
+            f"no {'/'.join(v for v in ('v4', 'v6') if v not in reachable)} route here, "
+            f"scanning {effective_ip_version} only (requested {ip_version})"
+        )
+    ip_version = effective_ip_version
+
     logger.info(f"starting scan for {testcase}...")
 
     timestamp = datetime.datetime.now(datetime.timezone.utc).strftime(
@@ -486,13 +516,14 @@ def epdg_scanner(interface="any", ip_version="ipv4", testcase="SUPPORT_DH_1024MO
     )
     name = f"{testcase}_{timestamp}"
 
-    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+    output_dir = pathlib.Path(results_dir) if results_dir else RESULTS_DIR
+    output_dir.mkdir(parents=True, exist_ok=True)
 
     epdg_domains = get_epdg_domains("epdg_domains.txt")
     # epdg_domains = get_epdg_domains("ike_encr_null_domains.txt")
 
-    results_output_file = RESULTS_DIR / f"{name}.json"
-    traffic_output_file = RESULTS_DIR / f"{name}.pcap"
+    results_output_file = output_dir / f"{name}.json"
+    traffic_output_file = output_dir / f"{name}.pcap"
 
     if testcase == "CHECK_AUTOCONF_DOMAINS":
         with open(results_output_file, "a") as results_file:
@@ -533,53 +564,85 @@ def epdg_scanner(interface="any", ip_version="ipv4", testcase="SUPPORT_DH_1024MO
         stdout=subprocess.PIPE,
     )
 
-    with open(results_output_file, "a") as results_file:
-        results_file.write(f"# key exchange: {ke}, sa_list: {sa_list}\n")
-        for domain in epdg_domains:
-            ips = resolve_domain(domain, ip_version)
-            for ip in ips:
-                mcc, mnc = get_ids_from_domain(domain)
-                # crafting package.
-                ike = EpdgIKEv2(
-                    ip,
-                    500,
-                    interface=None if interface == "any" else interface,
-                    mcc=mcc,
-                    mnc=mnc,
-                )
-                # trying to make connection with encryption proposal.
-                resp = ike.ike_sa_init(sa_list, key_exchange=ke)
-                timestamp = datetime.datetime.now(datetime.timezone.utc).strftime(
-                    "%Y-%m-%dT%H:%M:%SZ"
-                )
-                if not ipsec_encr:
-                    data = {
-                        "timestamp": timestamp,
-                        "domain": domain,
-                        "ip": ip,
-                        "response": resp,
-                    }
-                    json_data = json.dumps(data, default=str)
-                    logger.debug(json_data)
-                    results_file.write(json_data + "\n")
-                elif "successfull" in resp:
-                    # trying to make handshake.
-                    resp = ike.ike_auth(ipsec_encr, ipsec_integ)
-                    data = {
-                        "timestamp": timestamp,
-                        "domain": domain,
-                        "ip": ip,
-                        "response": resp,
-                    }
-                    json_data = json.dumps(data, default=str)
-                    logger.debug(json_data)
-                    results_file.write(json_data + "\n")
+    # try/finally: always stop tcpdump, even if the scan raises.
+    resolver_failures["count"] = 0
+    resolved_domains = 0
 
-    logger.info("terminating tcpdump...")
-    p.terminate()
-    # just to be safe.
-    p.wait(timeout=2)
-    logger.info("done...")
+    try:
+        with open(results_output_file, "a") as results_file:
+            results_file.write(f"# key exchange: {ke}, sa_list: {sa_list}\n")
+            for domain in epdg_domains:
+                ips = resolve_domain(domain, ip_version)
+                resolved_domains += 1 if ips else 0
+                for ip in ips:
+                    # an unreachable target skips only itself, not the rest.
+                    try:
+                        mcc, mnc = get_ids_from_domain(domain)
+                        # crafting package.
+                        ike = EpdgIKEv2(
+                            ip,
+                            500,
+                            interface=None if interface == "any" else interface,
+                            mcc=mcc,
+                            mnc=mnc,
+                        )
+                        # trying to make connection with encryption proposal.
+                        resp = ike.ike_sa_init(sa_list, key_exchange=ke)
+                        timestamp = datetime.datetime.now(
+                            datetime.timezone.utc
+                        ).strftime("%Y-%m-%dT%H:%M:%SZ")
+                        if not ipsec_encr:
+                            data = {
+                                "timestamp": timestamp,
+                                "domain": domain,
+                                "ip": ip,
+                                "response": resp,
+                            }
+                            json_data = json.dumps(data, default=str)
+                            logger.debug(json_data)
+                            results_file.write(json_data + "\n")
+                        elif "successfull" in resp:
+                            # trying to make handshake.
+                            resp = ike.ike_auth(ipsec_encr, ipsec_integ)
+                            data = {
+                                "timestamp": timestamp,
+                                "domain": domain,
+                                "ip": ip,
+                                "response": resp,
+                            }
+                            json_data = json.dumps(data, default=str)
+                            logger.debug(json_data)
+                            results_file.write(json_data + "\n")
+                    except OSError as exc:
+                        logger.warning(f"{domain} [{ip}] unreachable: {exc}")
+    finally:
+        logger.info("terminating tcpdump...")
+        p.terminate()
+        try:
+            # just to be safe.
+            p.wait(timeout=2)
+        except subprocess.TimeoutExpired:
+            # a stuck capture must not fail the testcase.
+            logger.warning("tcpdump did not exit on SIGTERM, killing it")
+            p.kill()
+        logger.info("done...")
+
+    # Nothing resolved means broken DNS: raise rather than ingest an empty scan,
+    # which would read as "no operator supports this DH group".
+    if epdg_domains and not resolved_domains:
+        raise RuntimeError(
+            f"resolved 0 of {len(epdg_domains)} domains "
+            f"({resolver_failures['count']} resolver failures) -- DNS is broken "
+            f"here, refusing to record an empty scan for {testcase}"
+        )
+    if resolver_failures["count"]:
+        logger.warning(
+            f"{resolved_domains}/{len(epdg_domains)} domains resolved, "
+            f"{resolver_failures['count']} resolver failures -- results for "
+            f"{testcase} are incomplete"
+        )
+
+    return results_output_file
 
 
 if __name__ == "__main__":

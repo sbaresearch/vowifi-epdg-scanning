@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fingerprinting - VoWiFi Watchdog</title>
+  <link rel="stylesheet" href="/static/css/landing.css" />
+  <link rel="stylesheet" href="/static/css/theme-toggle.css" />
+  <link rel="stylesheet" href="/static/css/nav.css" />
+  <link rel="stylesheet" href="/static/css/fingerprinting.css" />
+  <link rel="icon" href="data:,">
+  <script src="/static/js/theme.js"></script>
+  <script src="/static/js/takeout.js" defer></script>
+</head>
+<body class="landing-page">
+  <main class="landing-shell">
+    <header class="landing-nav landing-nav-main">
+      <nav class="landing-menu" aria-label="Main">
+        <a href="/">Home</a>
+        <a href="/table/">Data Table</a>
+        <a href="/map/">Map</a>
+        <a href="/collisions/">Key Collisions</a>
+        <a href="/history/">DH Group History</a>
+        <a href="/fingerprinting/" aria-current="page">Fingerprinting</a>
+      </nav>
+      <div class="landing-menu-downloads">
+        <a class="button button-secondary button-compact" id="takeout-csv" data-format="csv" download
+           aria-label="Download CSV" title="Download CSV">
+          <svg class="download-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M8 11l4 4 4-4M5 20h14"/></svg>
+          CSV
+        </a>
+        <a class="button button-secondary button-compact" id="takeout-sql" data-format="sql" download
+           aria-label="Download SQL dump" title="Download SQL dump">
+          <svg class="download-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M8 11l4 4 4-4M5 20h14"/></svg>
+          SQL dump
+        </a>
+      </div>
+      <button id="theme-toggle" aria-label="Switch to dark mode">
+        <span class="theme-icon">&#x263D;</span>
+      </button>
+    </header>
+
+    <section class="hero fingerprint-hero">
+      <div class="hero-inner">
+        <div class="hero-content">
+          <p class="eyebrow">Analysis</p>
+          <h1>Fingerprinting</h1>
+          <p class="hero-copy">
+            ePDGs that answer every IKEv2 handshake test the same way likely run the same software or similar configurations.
+            Grouping their IPs by these fingerprints indicates which operators share an ePDG setup.
+          </p>
+          <p class="snapshot-note">
+            <strong>Snapshot from 27.10.2026.</strong>
+            This page is static and not updated automatically. Code to perform fingerprinting is available on the <a href="https://github.com/sbaresearch/vowifi-epdg-scanning">GitHub Repository</a>.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="info-panel">
+      <div class="section-heading">
+        <p class="section-label">Method</p>
+        <h2>How do we fingerprint?</h2>
+      </div>
+      <ol class="section-copy fingerprint-steps">
+        <li>We take the packet captures from the Watchdog's scans. There's one capture per Diffie-Hellman group
+          (14 in total, 768-bit MODP up to X25519), each holding the IKEv2 handshakes with the ePDGs.</li>
+        <li>From each ePDG reply we take what the server has chosen via tshark: protocol, encryption, PRF (pseudo-random function), integrity
+          and DH transforms (preserving the order), attribute types, the key exchange group and the nonce length.
+          The nonce itself is random, so only its length is of interest.</li>
+        <li>For every IP, the fields from all 14 captures are joined in ascending DH group order and hashed with MD5.
+          We use this hash as the fingerprint.</li>
+        <li>IPs with the same hash sent packets with identical fields mentioned in step 2, which hints that the same ePDG software, hardware or config is used.
+          Only fingerprint clusters shared by two or more IPs are shown below.</li>
+      </ol>
+    </section>
+
+    <section class="info-panel">
+      <div class="section-heading">
+        <p class="section-label">Clusters</p>
+        <h2>Fingerprint Clusters</h2>
+      </div>
+      <p class="section-copy fingerprint-intro">
+        <span id="fp-stats"><b id="fp-clustered">…</b> of the <b id="fp-total">…</b> scanned ePDG IPs share their
+          fingerprint with at least one other IP, making up <b id="fp-count">…</b> clusters.</span>
+        Circles are fingerprints, dots are IPs, and dashed rings group IPs by operator or ASN (autonomous system number).
+        Hover a dot to light up that operator over all clusters.
+      </p>
+      <div class="fp-toolbar">
+        <input type="search" id="fp-search" class="fp-search" list="fp-suggest"
+               placeholder="Search IP or operator…" aria-label="Search IP or operator" />
+        <datalist id="fp-suggest"></datalist>
+        <label class="fp-check"><input type="checkbox" id="fp-asn" /> Group by network (AS)</label>
+        <label class="fp-check"><input type="checkbox" id="fp-multi" /> Hide single-operator, single-AS fingerprints</label>
+      </div>
+      <p class="fp-hint">Drag to pan · Ctrl + scroll or pinch to zoom · Hover for details · Click a dot to copy its IP</p>
+      <svg id="fp-chart" viewBox="0 0 1000 1000" role="img" aria-label="Packed circles of fingerprint clusters"></svg>
+      <p class="footnotes" id="fp-source"></p>
+    </section>
+  </main>
+
+  <div class="fp-tip" hidden></div>
+
+  <script src="/static/vendor/d3/d3-7.9.0.min.js"></script>
+  <script defer src="/static/js/fingerprinting.js"></script>
+</body>
+</html>

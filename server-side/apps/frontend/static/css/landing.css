@@ -57,30 +57,6 @@ body.landing-page {
   padding: 42px 0 28px;
 }
 
-.landing-nav {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding: 0 0 14px;
-}
-
-.landing-nav #theme-toggle {
-  background: var(--landing-surface-strong);
-  border: 1px solid var(--landing-accent);
-  color: var(--landing-accent);
-  box-shadow: 0 2px 8px rgba(14, 28, 45, 0.10);
-}
-
-.landing-nav #theme-toggle:hover {
-  background: var(--landing-accent);
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(14, 28, 45, 0.18);
-}
-
-.landing-nav #theme-toggle:focus-visible {
-  outline: 2px solid var(--landing-accent);
-}
-
 .hero,
 .info-panel {
   background: var(--landing-surface);
@@ -203,33 +179,17 @@ body.landing-page {
   color: var(--landing-text-soft);
 }
 
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-  margin-top: 30px;
+.hero-logo {
+  align-self: center;
+  justify-self: center;
+  width: 100%;
+  max-width: 340px;
+  height: auto;
 }
 
-.button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 48px;
-  padding: 0 22px;
-  border-radius: 999px;
-  text-decoration: none;
-  font-weight: 700;
-  border: 1px solid transparent;
-  transition:
-    transform 120ms ease,
-    box-shadow 120ms ease,
-    background 120ms ease,
-    color 120ms ease,
-    border-color 120ms ease;
-}
-
-.button:hover {
-  transform: translateY(-1px);
+/* the logo is dark navy, so turn it light on the dark background */
+[data-theme="dark"] .hero-logo {
+  filter: brightness(0) invert(0.92);
 }
 
 .button-primary {
@@ -242,52 +202,16 @@ body.landing-page {
   box-shadow: 0 18px 30px rgba(18, 32, 51, 0.18);
 }
 
-/* <button> reset so the .button styles render identically on real buttons. */
 button.button {
   font: inherit;
   cursor: pointer;
   background: none;
 }
 
-.button-secondary {
-  color: var(--landing-text);
-  background: var(--landing-surface-strong);
-  border-color: var(--landing-accent);
-}
-
-.button-secondary:hover {
-  box-shadow: 0 16px 28px rgba(18, 32, 51, 0.12);
-}
-
 .button:disabled {
   cursor: progress;
   opacity: 0.6;
   transform: none;
-}
-
-.hero-download {
-  margin-top: 26px;
-}
-
-.hero-download-label {
-  margin: 0 0 12px;
-  font-size: 0.95rem;
-  color: var(--landing-text-soft);
-}
-
-.hero-download .hero-actions {
-  margin-top: 0;
-}
-
-.hero-download-status {
-  margin: 12px 0 0;
-  min-height: 1.2em;
-  font-size: 0.9rem;
-  color: var(--landing-text-soft);
-}
-
-.hero-download-status.is-error {
-  color: #c0392b;
 }
 
 .section-heading {
@@ -314,15 +238,43 @@ button.button {
 
 .section-copy a,
 .landing-footer a,
-.footnotes a {
+.footnotes a,
+.acknowledgements a,
+.snapshot-note a,
+.hero-copy a {
   color: var(--landing-accent);
   text-decoration: none;
 }
 
 .section-copy a:hover,
 .landing-footer a:hover,
-.footnotes a:hover {
+.footnotes a:hover,
+.acknowledgements a:hover,
+.snapshot-note a:hover,
+.hero-copy a:hover {
   text-decoration: underline;
+}
+
+
+.acknowledgement-logos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.acknowledgement-logos a {
+  display: flex;
+  flex: 0 1 200px;
+  justify-content: center;
+  min-width: 110px;
+}
+
+.acknowledgement-logos img {
+  width: 100%;
+  max-width: 200px;
+  height: auto;
 }
 
 .overview-body {
@@ -393,12 +345,6 @@ button.button {
   text-align: center;
 }
 
-.button:focus,
-.button:focus-visible {
-  outline: 3px solid rgba(28, 108, 245, 0.28);
-  outline-offset: 3px;
-}
-
 @media (max-width: 980px) {
   .hero-inner {
     grid-template-columns: 1fr;
@@ -408,8 +354,20 @@ button.button {
     min-height: 220px;
   }
 
+  .hero-logo {
+    max-width: 240px;
+  }
+
   .capabilities {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .acknowledgement-logos {
+    flex-direction: column;
+  }
+
+  .acknowledgement-logos a {
+    flex: 0 0 auto;
   }
 }
 
@@ -448,13 +406,7 @@ button.button {
     grid-template-columns: 1fr;
   }
 
-  .hero-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .hero-actions .button {
-    width: 80%;
-    align-self: center;
+  .acknowledgement-logos {
+    gap: 1.2rem;
   }
 }

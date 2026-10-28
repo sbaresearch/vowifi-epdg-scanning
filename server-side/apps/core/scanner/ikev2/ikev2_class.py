@@ -8,15 +8,16 @@ import binascii, hashlib, socket
 import logging
 import scanner.ikev2.ikev2_crypto as ikev2_crypto
 from scanner.ikev2.ikev2_crypto import create_key
+from functools import lru_cache
 from ipaddress import ip_address
-from scapy.all import IP, IPv6, UDP, sr1, send, sniff, load_contrib
+from scapy.all import IP, IPv6, UDP, sr1, load_contrib
 
 # fromt scapy.all import get_if_addr
 # from scapy.config import conf
 load_contrib("ikev2")
 
 
-from binascii import hexlify, unhexlify
+from binascii import hexlify
 
 
 logger = logging.getLogger(__name__)
@@ -24,10 +25,6 @@ logger = logging.getLogger(__name__)
 
 def toHex(value):  # bytes hex string
     return hexlify(value).decode("utf-8")
-
-
-def fromHex(value):  # hex string to bytes
-    return unhexlify(value)
 
 
 def get_default_source_address(af_inet, interface=None):
@@ -44,6 +41,22 @@ def get_ip_version(addr):
     if ip_address(addr).version == 6:
         return socket.AF_INET6
     return socket.AF_INET
+
+
+@lru_cache(maxsize=None)
+def usable_ip_versions(interface=None):
+    """Address families ("v4", "v6") this host has a route and source address for.
+
+    Routability only, not reachability: UDP connect() sends nothing. Cached per process.
+    """
+    available = []
+    for version, af_inet in (("v4", socket.AF_INET), ("v6", socket.AF_INET6)):
+        try:
+            get_default_source_address(af_inet, interface)
+            available.append(version)
+        except OSError as exc:
+            logger.info("no %s route from here (%s)", version, exc)
+    return tuple(available)
 
 
 class EpdgIKEv2(object):
@@ -919,9 +932,6 @@ class EpdgIKEv2(object):
 
     def ike_auth(self, trans_encr, trans_integ):
         packet_ike_auth = self.create_packet_ike_auth(trans_encr, trans_integ)
-        # send(packet_ike_auth)
-        # response = sniff(filter=f"udp and src host {self.dst_addr} and src port 4500", timeout=3, count=1)
-        # response = response[0]
         response = sr1(packet_ike_auth, iface=self.interface, timeout=3, verbose=0)
 
         logger.debug("IKE_AUTH response: %s", response)

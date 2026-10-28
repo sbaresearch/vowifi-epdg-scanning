@@ -20,7 +20,10 @@ from app.routes.servers import router as servers_router
 from app.routes.collisions_latest import router as collisions_router
 from app.routes.collision_keys import router as collision_keys_router
 from app.routes.map import router as map_router
+from app.routes.geoblocking import router as geoblocking_router
+from app.routes.dh_history import router as dh_history_router
 from app.routes.takeout import router as takeout_router
+from app.routes.vantage_points import router as vantage_points_router
 from fastapi.middleware.cors import CORSMiddleware
 
 settings = get_settings()
@@ -49,21 +52,28 @@ def _client_ip(request: Request) -> str:
     return request.client.host if request.client else "unknown"
 
 
+# dh-history is interactive and bursts more, so it gets its own independent, higher limit.
+def _rate_class(path: str) -> tuple[str, int]:
+    if path.startswith(f"{settings.api_v1_prefix}/dh-history"):
+        return "history", settings.rate_limit_history_requests_per_minute
+    return "default", settings.rate_limit_requests_per_minute
+
+
 # Returns seconds until the client is not rate limited anymore, or None if not rate limited.
-async def _rate_limit_retry_after(client_ip: str) -> float | None:
+async def _rate_limit_retry_after(key: str, limit: int) -> float | None:
     now = time.monotonic()
     async with _rate_limit_lock:
-        blocked_until = _blocked_until.get(client_ip)
+        blocked_until = _blocked_until.get(key)
         if blocked_until is not None:
             if now < blocked_until:
                 return blocked_until - now
-            del _blocked_until[client_ip]
+            del _blocked_until[key]
 
-        bucket = _rate_buckets[client_ip]
+        bucket = _rate_buckets[key]
         while bucket and now - bucket[0] > _WINDOW_SECONDS:
             bucket.popleft()
-        if len(bucket) >= settings.rate_limit_requests_per_minute:
-            _blocked_until[client_ip] = now + settings.rate_limit_timeout_seconds
+        if len(bucket) >= limit:
+            _blocked_until[key] = now + settings.rate_limit_timeout_seconds
             bucket.clear()
             return settings.rate_limit_timeout_seconds
         bucket.append(now)
@@ -101,7 +111,10 @@ async def request_context_and_security(request: Request, call_next):
     request.state.request_id = request_id
 
     if settings.enable_rate_limit and request.url.path not in _UNTHROTTLED_PATHS:
-        retry_after = await _rate_limit_retry_after(_client_ip(request))
+        rate_class, limit = _rate_class(request.url.path)
+        retry_after = await _rate_limit_retry_after(
+            f"{_client_ip(request)}:{rate_class}", limit
+        )
         if retry_after is not None:
             response = JSONResponse(
                 status_code=429, content={"detail": "Too many requests"}
@@ -123,9 +136,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://127.0.0.1:8081",
-        "https://vowifi-watchdog.sec.univie.ac.at",
     ],
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -147,11 +159,14 @@ register_exception_handlers(app)
 
 for router in (
     servers_router,
+    vantage_points_router,
     scans_router,
     results_router,
     latest_results_router,
     all_results_router,
     map_router,
+    geoblocking_router,
+    dh_history_router,
     collisions_router,
     collision_keys_router,
     takeout_router,

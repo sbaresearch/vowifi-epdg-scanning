@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DH Group History - VoWiFi Watchdog</title>
+  <link rel="stylesheet" href="/static/css/landing.css" />
+  <link rel="stylesheet" href="/static/css/theme-toggle.css" />
+  <link rel="stylesheet" href="/static/css/nav.css" />
+  <link rel="stylesheet" href="/static/css/history.css" />
+  <link rel="icon" href="data:,">
+  <script src="/static/js/theme.js"></script>
+  <script src="/static/js/takeout.js" defer></script>
+</head>
+<body class="landing-page">
+  <main class="landing-shell">
+    <header class="landing-nav landing-nav-main">
+      <nav class="landing-menu" aria-label="Main">
+        <a href="/">Home</a>
+        <a href="/table/">Data Table</a>
+        <a href="/map/">Map</a>
+        <a href="/collisions/">Key Collisions</a>
+        <a href="/history/" aria-current="page">DH Group History</a>
+        <a href="/fingerprinting/">Fingerprinting</a>
+      </nav>
+      <div class="landing-menu-downloads">
+        <a class="button button-secondary button-compact" id="takeout-csv" data-format="csv" download
+           aria-label="Download CSV" title="Download CSV">
+          <svg class="download-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M8 11l4 4 4-4M5 20h14"/></svg>
+          CSV
+        </a>
+        <a class="button button-secondary button-compact" id="takeout-sql" data-format="sql" download
+           aria-label="Download SQL dump" title="Download SQL dump">
+          <svg class="download-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M8 11l4 4 4-4M5 20h14"/></svg>
+          SQL dump
+        </a>
+      </div>
+      <button id="theme-toggle" aria-label="Switch to dark mode">
+        <span class="theme-icon">&#x263D;</span>
+      </button>
+    </header>
+
+    <section class="hero history-hero">
+      <div class="hero-inner history-hero-inner">
+        <div class="hero-content">
+          <p class="eyebrow">History</p>
+          <h1>Diffie-Hellman Group History</h1>
+          <p class="history-operator-label" id="operator-label">Select an operator to analyze history.</p>
+          <p class="hero-copy">
+            See which Diffie-Hellman groups an operator's ePDGs have supported over time.
+            Each row is one group and each dot one scan, so changes are easy to spot.
+            You can also filter by server, measurement point and kind or time range.
+          </p>
+        </div>
+        <div class="history-range" id="range-toggle" hidden>
+          <div class="segment-toggle">
+            <button class="segment-btn" data-days="7">Last Week</button>
+            <button class="segment-btn" data-days="30">Last Month</button>
+            <button class="segment-btn" data-days="90">Last 3 Months</button>
+            <button class="segment-btn segment-btn--active" data-days="0">Full Data</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="info-panel history-panel">
+      <div class="history-layout">
+        <aside class="history-sidebar">
+          <div class="history-vantage" id="source-box" hidden>
+            <label class="history-label" for="source-select">Measured from</label>
+            <select id="source-select" class="history-select"></select>
+            <p class="history-source-mode" id="source-mode"></p>
+          </div>
+
+          <div class="history-picker">
+            <label class="history-label" for="operator-search">Operator</label>
+            <input
+              type="search"
+              id="operator-search"
+              class="history-search"
+              placeholder="Search operators…"
+              autocomplete="on"
+            />
+            <ul class="history-list" id="operator-list"></ul>
+          </div>
+
+          <div class="history-servers" id="server-box" hidden>
+            <label class="history-label">Servers (IPs)</label>
+            <ul class="history-checklist" id="server-list"></ul>
+          </div>
+        </aside>
+
+        <div class="history-main">
+          <div class="history-legend" id="legend" hidden>
+            <span class="legend-item"><span class="legend-swatch legend-supported"></span>Supported</span>
+            <span class="legend-item"><span class="legend-swatch legend-unsupported"></span>Not supported</span>
+          </div>
+          <p class="history-loading" id="timeline-loading" hidden>Loading…</p>
+          <div id="timeline"></div>
+          <p class="history-empty" id="timeline-empty">Pick an operator on the left to load its Diffie-Hellman group history.</p>
+        </div>
+      </div>
+
+      <div class="history-stats" id="stats" hidden></div>
+    </section>
+  </main>
+
+  <div class="rate-toast" id="rate-toast" role="status" hidden>Rate limited — slow down a bit.</div>
+
+  <script src="/static/vendor/echarts/echarts-5.6.0.min.js"></script>
+  <script defer src="/static/js/history.js"></script>
+</body>
+</html>

@@ -10,12 +10,34 @@
   />
   <link rel="stylesheet" href="/static/css/landing.css" />
   <link rel="stylesheet" href="/static/css/theme-toggle.css" />
+  <link rel="stylesheet" href="/static/css/nav.css" />
+  <link rel="icon" href="data:,">
   <script src="/static/js/theme.js"></script>
   <script src="/static/js/takeout.js" defer></script>
 </head>
 <body class="landing-page">
   <main class="landing-shell">
-    <header class="landing-nav">
+    <header class="landing-nav landing-nav-main">
+      <nav class="landing-menu" aria-label="Main">
+        <a href="/" aria-current="page">Home</a>
+        <a href="/table/">Data Table</a>
+        <a href="/map/">Map</a>
+        <a href="/collisions/">Key Collisions</a>
+        <a href="/history/">DH Group History</a>
+        <a href="/fingerprinting/">Fingerprinting</a>
+      </nav>
+      <div class="landing-menu-downloads">
+        <a class="button button-secondary button-compact" id="takeout-csv" data-format="csv" download
+           aria-label="Download CSV" title="Download CSV">
+          <svg class="download-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M8 11l4 4 4-4M5 20h14"/></svg>
+          CSV
+        </a>
+        <a class="button button-secondary button-compact" id="takeout-sql" data-format="sql" download
+           aria-label="Download SQL dump" title="Download SQL dump">
+          <svg class="download-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M8 11l4 4 4-4M5 20h14"/></svg>
+          SQL dump
+        </a>
+      </div>
       <button id="theme-toggle" aria-label="Switch to dark mode">
         <span class="theme-icon">&#x263D;</span>
       </button>
@@ -26,22 +48,11 @@
           <p class="eyebrow"></p>
           <h1>VoWiFi Watchdog</h1>
           <p class="hero-copy">
-            Project VoWiFi Watchdog aims to monitor the global VoWiFi landscape with automated scannning and analysis of worldwide ePDG infrastructure and IKEv2 DH handshakes.
-            It's main goal is to provide insights accessable to all, researchers, operators and the general public in an intuitive and interactive way.
+            Project VoWiFi Watchdog aims to monitor the global VoWiFi landscape with automated scanning and analysis of worldwide ePDG infrastructure and IKEv2 Diffie-Hellman handshakes.
+            Its main goal is to provide insights accessible to all, researchers, operators and the general public in an intuitive and interactive way.
           </p>
-          <div class="hero-actions">
-            <a class="button button-primary" href="/map/">Interactive Map</a>
-            <a class="button button-primary" href="/table/">Data Table</a>
-            <a class="button button-primary" href="/collisions/">Key Collisions</a>
-          </div>
-          <div class="hero-download">
-            <p class="hero-download-label">Download the full raw dataset for your own analysis:</p>
-            <div class="hero-actions">
-              <a class="button button-secondary" id="takeout-csv" data-format="csv" download>Download CSV</a>
-              <a class="button button-secondary" id="takeout-sql" data-format="sql" download>Download SQL dump</a>
-            </div>
-          </div>
         </div>
+        <img class="hero-logo" src="/static/data/vowifi_watchdog_logo.png" alt="Logo VoWiFi Watchdog" width="818" height="594">
       </div>
     </section>
 
@@ -52,10 +63,18 @@
       </div>
       <div class="overview-body">
         <p class="section-copy">
+          Today, there exists a lack of transparency for subscribers to validate and find out which encryption methods operators use to secure WiFi calling. 
+          This Watchdog aims to close this gap by giving everybody the possibility to gain insight into and educate themselves about the service they use. <br>
+          By disclosing the full dataset, even further analysis can be conducted across the data. 
+        </p>
+        <br>
+        <p class="section-copy">
           This project is based on the paper <a href="https://publications.sba-research.org/publications/CR_Diffie_Hellman_Picture_Show_Key_Exchange_S_Gabriel%20Gegenhuber.pdf">Diffie-Hellman Picture Show: Key Exchange Stories from Commercial VoWiFi Deployments</a><sup><a href="#fn1" id="ref1">1</a></sup>.
           
           This project runs an automated pipeline that discovers ePDG infrastructure, then
-          executes multiple IKEv2 handshake tests and exposes the Data through an API and map UI.
+          executes multiple IKEv2 handshake tests and exposes the Data through an API and map UI.<br>
+          A recent version of this project's source code is available on the Watchdog <a href="https://github.com/sbaresearch/vowifi-epdg-scanning">GitHub Repository</a>, 
+          where further <a href="https://github.com/sbaresearch/vowifi-epdg-scanning/tree/main/server-side">technical details</a> about this project can be found.
         </p>
         <div id="footnotes" class="footnotes">
           <ol>
@@ -93,11 +112,32 @@
         </p>
       </article>
     </section>
+
+    <section class="acknowledgements">
+      <article class="capability-card">
+        <p class="section-label">Acknowledgements</p>
+        <p class="acknowledgement-logos">
+          <a href="https://NLnet.nl">
+            <img src="static/data/nlnet_logo.svg" alt="Logo NLnet" width="200">
+          </a>
+          <a href="https://nlnet.nl/mobifree/">
+            <img src="static/data/mobifree_logo.svg" alt="Logo NGI Mobifree" width="200">
+          </a>
+          <a href="https://www.sba-research.org/">
+            <img src="static/data/sba_research_logo.png" alt="Logo SBA Research" width="200">
+          </a>
+          <a href="https://sec.cs.univie.ac.at/">
+            <img src="static/data/university_of_vienna_logo.png" alt="Logo Sec Group University of Vienna" width="200">
+          </a>
+        </p>
+      <p>This project was funded through the <a href="https://nlnet.nl/mobifree/">NGI Mobifree Fund</a>, a fund established by <a href="https://nlnet.nl">NLnet</a> with financial support from the European Commission's <a href="https://ngi.eu">Next Generation Internet</a> programme under the aegis of <a href="https://commission.europa.eu/about-european-commission/departments-and-executive-agencies/communications-networks-content-and-technology_en">DG Communications Networks, Content and Technology</a>. The <a href="https://mobifree.eu">NGI Mobifree</a> R&amp;D programme is part of <a href="https://ec.europa.eu/programmes/horizoneurope/">Horizon Europe</a> research and innovation programme under grant agreement No. <a href="https://cordis.europa.eu/project/id/101135795">101135795</a>.</p>
+      </article>
+    </section>
   </main>
 
   <footer class="landing-footer">
     <p>
-      Map boundaries are based on <a href="https://www.naturalearthdata.com/">Natural Earth</a> data. This project also relies on <a href="https://github.com/zmap/zdns">zdns</a> and MCC/MNC <a href="https://mcc-mnc.com/">enrichment sources</a>.<br />
+      Map boundaries are based on modified <a href="https://www.naturalearthdata.com/">Natural Earth</a> data. This project also relies on <a href="https://github.com/zmap/zdns">zdns</a> and MCC/MNC <a href="https://mcc-mnc.com/">enrichment sources</a>.<br />
       <a href="/contact/">Contact</a>
     </p>
   </footer>

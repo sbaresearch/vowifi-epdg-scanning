@@ -4,13 +4,44 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Map — VoWiFi Watchdog</title>
+  <title>Map - VoWiFi Watchdog</title>
 
   <link rel="stylesheet" href="/static/vendor/maplibre/maplibre-gl-5.19.0.css" />
   <link rel="stylesheet" href="/static/css/map.css" />
+  <link rel="stylesheet" href="/static/css/theme-toggle.css" />
+  <link rel="stylesheet" href="/static/css/nav.css" />
+  <link rel="icon" href="data:,">
+  <script src="/static/js/theme.js"></script>
+  <script src="/static/js/takeout.js" defer></script>
 </head>
 
 <body class="map-page">
+  <header class="landing-nav landing-nav-main">
+    <nav class="landing-menu" aria-label="Main">
+      <a href="/">Home</a>
+      <a href="/table/">Data Table</a>
+      <a href="/map/" aria-current="page">Map</a>
+      <a href="/collisions/">Key Collisions</a>
+      <a href="/history/">DH Group History</a>
+      <a href="/fingerprinting/">Fingerprinting</a>
+    </nav>
+    <div class="landing-menu-downloads">
+      <a class="button button-secondary button-compact" id="takeout-csv" data-format="csv" download
+         aria-label="Download CSV" title="Download CSV">
+        <svg class="download-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M8 11l4 4 4-4M5 20h14"/></svg>
+        CSV
+      </a>
+      <a class="button button-secondary button-compact" id="takeout-sql" data-format="sql" download
+         aria-label="Download SQL dump" title="Download SQL dump">
+        <svg class="download-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M8 11l4 4 4-4M5 20h14"/></svg>
+        SQL dump
+      </a>
+    </div>
+    <button id="theme-toggle" aria-label="Switch to dark mode">
+      <span class="theme-icon">&#x263D;</span>
+    </button>
+  </header>
+
   <div id="map"></div>
 
   <template id="tpl-popup-message">
@@ -26,45 +57,36 @@
         <div class="new-popup-head-left">
           <div class="new-popup-title">{{COUNTRY}}</div>
           <div class="new-popup-score-line">
-            Handshake score: <b>{{SCORE}}</b>
+            Deprecated DH support: <b>{{SCORE}}</b>
           </div>
         </div>
         <div class="new-popup-legend" aria-label="Handshake mark legend">
           <div class="new-popup-legend-row">
-            <span class="new-popup-legend-label">Deprecated (768, 1024, 1536):</span>
-            <span class="new-popup-legend-item">
-              <span class="new-popup-legend-mark new-popup-legend-mark--weak-good">✓</span>
-              supported
-            </span>
-            <span class="new-popup-legend-item">
-              <span class="new-popup-legend-mark new-popup-legend-mark--weak-bad">X</span>
-              not supported
-            </span>
-            <span class="new-popup-legend-item">
-              <span class="new-popup-legend-mark new-popup-legend-mark--no-response">○</span>
-              no response
-            </span>
+            <span class="new-popup-legend-label new-popup-legend-label--deprecated">Deprecated (768, 1024, 1536)</span>
           </div>
           <div class="new-popup-legend-row">
-            <span class="new-popup-legend-label">Regular:</span>
             <span class="new-popup-legend-item">
-              <span class="new-popup-legend-mark new-popup-legend-mark--strong-good">✓</span>
+              <span class="new-popup-legend-mark">✓</span>
               supported
             </span>
             <span class="new-popup-legend-item">
-              <span class="new-popup-legend-mark new-popup-legend-mark--strong-bad">X</span>
+              <span class="new-popup-legend-mark">X</span>
               not supported
             </span>
             <span class="new-popup-legend-item">
-              <span class="new-popup-legend-mark new-popup-legend-mark--no-response">○</span>
+              <span class="new-popup-legend-mark">○</span>
               no response
+            </span>
+            <span class="new-popup-legend-item">
+              <span class="dh-weak-mark" aria-hidden="true">!</span>
+              supports deprecated
             </span>
           </div>
         </div>
       </div>
       <div class="new-popup-grid-wrap">
         <div class="new-popup-grid">
-          <div class="new-popup-grid-row new-popup-grid-row--head" data-grid-template="{{GRID_TEMPLATE}}">
+          <div class="new-popup-grid-row new-popup-grid-row--head">
             <div class="new-popup-grid-cell new-popup-grid-cell--operator new-popup-grid-cell--title">Operator</div>
             {{HEADER_CELLS}}
           </div>
@@ -74,22 +96,29 @@
     </div>
   </template>
 
-  <template id="tpl-popup-row">
-    <div class="new-popup-grid-row new-popup-grid-row--body" data-grid-template="{{GRID_TEMPLATE}}">
-      <div class="new-popup-grid-cell new-popup-grid-cell--operator">{{OPERATOR}}</div>
-      {{VALUE_CELLS}}
+  <template id="tpl-popup-geoblocking">
+    <div class="new-popup-card new-popup-card--geo">
+      <div class="new-popup-title">{{COUNTRY}}</div>
+      <div class="geo-line">{{SUMMARY}}</div>
+      <div class="geo-rows">{{ROWS}}</div>
     </div>
   </template>
 
-  <template id="tpl-popup-row-empty">
-    <div class="new-popup-empty">{{MESSAGE}}</div>
+  <template id="tpl-popup-reach">
+    <div class="new-popup-card new-popup-card--message">
+      <div class="new-popup-title">{{COUNTRY}}</div>
+      <div class="geo-line">{{VERDICT}}</div>
+      <div class="new-popup-message geo-detail">{{DETAIL}}</div>
+    </div>
   </template>
 
   <div id="map-legend" class="mapboxgl-legend" hidden>
-    <h2>Handshake Score</h2>
-    <p>The handshake score (0-10) is an indicator for<br>how many operators support deprecated protocols.<br>No response is not valued (neutral).</p>
-    <div class="legend-gradient" style="background:linear-gradient(to right,rgb(215,55,45),rgb(236,188,55),rgb(48,163,83))"></div>
-    <div class="legend-labels"><span>more</span><span>less</span></div>
+    <button type="button" class="legend-close" aria-label="Close legend" title="Close legend">&times;</button>
+    <div id="legend-dh">
+    <h2>Deprecated DH Support</h2>
+    <p>Average share of the three deprecated DH groups<br>(768, 1024, 1536 MODP) an operator supports.<br>Operators that never answered are left out.<br>total supported deprecated groups divided by 3 divided by operators</p>
+    <div class="legend-gradient" style="background:linear-gradient(to right,rgb(48,163,83),rgb(236,188,55),rgb(215,55,45))"></div>
+    <div class="legend-labels"><span>0%</span><span>100%</span></div>
     <div class="legend-item">
       <div class="legend-patch-container"><div class="legend-shape-square" style="background:#8f8f8f"></div></div>
       <span class="legend-text">No responses</span>
@@ -97,6 +126,99 @@
     <div class="legend-item">
       <div class="legend-patch-container"><div class="legend-shape-square" style="background:#f5f5f5"></div></div>
       <span class="legend-text">No scans</span>
+    </div>
+    <div class="legend-vantage-row" hidden>
+      <span class="legend-text">Scanned from</span>
+      <strong id="legend-vantage"></strong>
+    </div>
+    </div>
+
+    <div id="legend-geo" hidden>
+      <h2>Geoblocking</h2>
+      <p>Do this country's operators block VoWiFi from abroad?</p>
+      <div class="legend-item">
+        <div class="legend-patch-container"><div class="legend-shape-square" style="background:rgb(215,55,45)"></div></div>
+        <span class="legend-text">At least one operator blocks</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-patch-container"><div class="legend-shape-square" style="background:rgb(48,163,83)"></div></div>
+        <span class="legend-text">No operator blocks</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-patch-container"><div class="legend-shape-square" style="background:#8f8f8f"></div></div>
+        <span class="legend-text">No answers</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-patch-container"><div class="legend-shape-square" style="background:#f5f5f5"></div></div>
+        <span class="legend-text">No scans</span>
+      </div>
+      <div class="legend-symbols">
+        <div class="legend-item">
+          <span class="legend-mark"><span class="geo-mark geo-mark--blocks" aria-hidden="true"></span></span>
+          <span class="legend-text">Blocks countries</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-mark"><span class="geo-mark geo-mark--warn" aria-hidden="true"></span></span>
+          <span class="legend-text">May only block VPN and WARP</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-mark"><span class="geo-mark geo-mark--answers" aria-hidden="true"></span></span>
+          <span class="legend-text">Blocks no country</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-mark"><span class="geo-mark geo-mark--none" aria-hidden="true"></span></span>
+          <span class="legend-text">Never answers</span>
+        </div>
+      </div>
+      <div class="legend-notes">
+        <p><strong>No answers:</strong> Has not sent a valid answer to any scan performed and therefore is not evaluated as blocked. Only Endpoints that have at least one valid response can be evaluated as geoblocked.</p>
+      </div>
+    </div>
+
+    <div id="legend-reach" hidden>
+      <h2>Where it answers</h2>
+      <p>Blocks: answers less than a tenth as often as at home.</p>
+      <div class="legend-item">
+        <div class="legend-patch-container"><div class="legend-shape-square" style="background:rgb(48,163,83)"></div></div>
+        <span class="legend-text">Answers</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-patch-container"><div class="legend-shape-square" style="background:rgb(215,55,45)"></div></div>
+        <span class="legend-text">Blocks this country</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-patch-container"><div class="legend-shape-square" style="background:#8f8f8f"></div></div>
+        <span class="legend-text">Never answers</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-patch-container"><div class="legend-shape-square" style="background:#f5f5f5"></div></div>
+        <span class="legend-text">Not scanned yet</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-patch-container"><div class="legend-shape-square legend-shape-home"></div></div>
+        <span class="legend-text">Home country</span>
+      </div>
+      <div class="legend-symbols">
+        <div class="legend-item">
+          <span class="legend-mark"><span class="geo-mark geo-mark--answers" aria-hidden="true"></span></span>
+          <span class="legend-text">Answers</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-mark"><span class="geo-mark geo-mark--blocks" aria-hidden="true"></span></span>
+          <span class="legend-text">Blocks</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-mark"><span class="geo-mark geo-mark--warn" aria-hidden="true"></span></span>
+          <span class="legend-text">May only block VPN and WARP</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-mark"><span class="geo-mark geo-mark--none" aria-hidden="true"></span></span>
+          <span class="legend-text">Never answers</span>
+        </div>
+      </div>
+      <div class="legend-notes">
+        <p><strong>Never answers:</strong> Has not sent a valid answer to any scan performed and therefore is not evaluated as blocked. Only Endpoints that have at least one valid response can be evaluated as geoblocked.</p>
+      </div>
     </div>
   </div>
 

@@ -1,7 +1,3 @@
-import json
-from pathlib import Path
-
-
 def generator(output_path):
     epdg_domains = []
 
@@ -29,23 +25,8 @@ def generator(output_path):
                 )
             )
 
-    """
-    for r in epdg_domains[:10]:
-        print(r)
-    """
-
-    """
-    # json solution, left for later.
-    with open('epdg_domains_generated.json', 'w', encoding='utf-8') as file:
-        json.dump(epdg_domains, file, ensure_ascii=False, indent=4)
-    """
-
     with open(output_path, "w", encoding="utf-8") as file:
         for entry in epdg_domains:
             file.write("{}\n".format(entry))
 
     print("\nAdded {} entries to epdg_domains_generated.txt".format(len(epdg_domains)))
-
-
-if __name__ == "__main__":
-    generator()

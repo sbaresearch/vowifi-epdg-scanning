@@ -192,24 +192,6 @@ DH_GROUPS = {
     DhId.DH_31: (DHType.DH_X25519, x25519),
 }
 
-def ec_add(P, Q, l, p, a):
-    if P == 0:
-        return Q
-    if P == Q:
-        z = (3*(P>>l)*(P>>l)+a) * pow(2*(P&(1<<l)-1), p-2, p)
-    else:
-        z = ((Q&(1<<l)-1) - (P&(1<<l)-1)) * pow((Q>>l)-(P>>l), p-2, p)
-    x = (z*z - (P>>l) - (Q>>l)) % p
-    return x<<l | (z*((P>>l)-x) - (P&(1<<l)-1)) % p
-
-def ec_mul(P, l, i, p, a):
-    r = 0
-    while i > 0:
-        if i & 1:
-            r = ec_add(r, P, l<<3, p, a)
-        i, P = i>>1, ec_add(P, P, l<<3, p, a)
-    return r
-
 class Prf:
     DIGESTS_1 = {
         HashId_1.MD5: (hashlib.md5, 16),
@@ -262,12 +244,6 @@ def calculate_checksum(encrypted,sk_a,INTEG_ID):
     integr = Integrity(INTEG_ID)
     checksum = Integrity.compute(integr, sk_a, encrypted)
     return checksum
-
-def verify_checksum(encrypted, sk_a, integrity_id):
-    #print("Integrity ID = ",INTEG_ID)
-    integr = Integrity(integrity_id)
-    checksum = Integrity.compute(integr,sk_a, encrypted[:len(encrypted)-integr.hash_size])
-    return checksum == encrypted[len(encrypted)-integr.hash_size:]
 
 def decrypt(encrypted, sk_e, ecnryption_id, integrity_id):
     encr = Cipher(ecnryption_id, len(sk_e))

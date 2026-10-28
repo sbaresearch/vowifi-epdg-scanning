@@ -3,15 +3,38 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Key Collisions — VoWiFi Watchdog</title>
+  <title>Key Collisions - VoWiFi Watchdog</title>
   <link rel="stylesheet" href="/static/css/landing.css" />
   <link rel="stylesheet" href="/static/css/theme-toggle.css" />
+  <link rel="stylesheet" href="/static/css/nav.css" />
   <link rel="stylesheet" href="/static/css/collisions.css" />
+  <link rel="icon" href="data:,">
   <script src="/static/js/theme.js"></script>
+  <script src="/static/js/takeout.js" defer></script>
 </head>
 <body class="landing-page">
   <main class="landing-shell">
-    <header class="landing-nav">
+    <header class="landing-nav landing-nav-main">
+      <nav class="landing-menu" aria-label="Main">
+        <a href="/">Home</a>
+        <a href="/table/">Data Table</a>
+        <a href="/map/">Map</a>
+        <a href="/collisions/" aria-current="page">Key Collisions</a>
+        <a href="/history/">DH Group History</a>
+        <a href="/fingerprinting/">Fingerprinting</a>
+      </nav>
+      <div class="landing-menu-downloads">
+        <a class="button button-secondary button-compact" id="takeout-csv" data-format="csv" download
+           aria-label="Download CSV" title="Download CSV">
+          <svg class="download-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M8 11l4 4 4-4M5 20h14"/></svg>
+          CSV
+        </a>
+        <a class="button button-secondary button-compact" id="takeout-sql" data-format="sql" download
+           aria-label="Download SQL dump" title="Download SQL dump">
+          <svg class="download-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M8 11l4 4 4-4M5 20h14"/></svg>
+          SQL dump
+        </a>
+      </div>
       <button id="theme-toggle" aria-label="Switch to dark mode">
         <span class="theme-icon">&#x263D;</span>
       </button>
@@ -22,6 +45,15 @@
         <div class="hero-content">
           <p class="eyebrow">Analysis</p>
           <h1>Key Collisions</h1>
+          <p class="hero-copy">
+            Every ePDG should generate its own unique Diffie-Hellman keys, if the same key shows up on several servers, it's being reused or shared<sup><a href="#fn1" id="ref1">1</a></sup>.
+            Click a DH group in the chart to see its keys, then pick a key to see which operators share it.
+          </p>
+          <div id="footnotes" class="footnotes">
+            <ol>
+              <li id="fn1"><a href="https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange">Diffie-Hellman key exchange</a>, Wikipedia.<a href="#ref1">↩</a></li>
+            </ol>
+          </div>
         </div>
       </div>
     </section>

@@ -70,7 +70,7 @@ To make it easier for other researchers to repeat the full configuration extract
 
 ## Server Side ePDG Probing (Active/Dynamic Analysis)
 
-Automated VoWiFi server-side ePDG probing, ePDG discovery, scanning, storage, and visualization (Section 6).
+Automated VoWiFi server-side ePDG probing, ePDG discovery, scanning, storage, and visualization (Section 6). The full documentation is in [server-side/README.md](server-side/README.md).
 
 #### What this Project does
 
@@ -85,22 +85,31 @@ Per cycle:
 1. Resolve generated ePDG domains with `zdns` and write raw DNS output.
 2. Filter DNS results to keep useful A/AAAA answers and valid CNAME-only domains.
 3. Build the up to date ePDG target list and overwrite `epdg_domains.txt`.
-4. Execute multiple first layer IKEv2 handshake test cases per target to observe behavior across DH variants.
-5. Enrich discovered targets with MCC/MNC metadata (country, network, operator, ITU region).
-6. Normalize and enrich scan results, then upsert into Postgres tables (`scan`, `epdg_server`, `epdg_result`).
-7. Refresh latest-result snapshots (`refresh_latest_snapshot`, `refresh_country_operator_snapshot`).
-8. Rebuild the key-collision dataset (`refresh_collision_keys`).
-9. Cache databse takouts as sql dump and CSV files, compressed and ready to serve for download.
-10. Compress older raw DNS files, keep the newest one uncompressed, then wait for the next cycle.
+4. Scrape MCC/MNC metadata (country, network, operator, ITU region) for enriching the discovered targets.
+5. Register the host and its current public IP as a vantage point (`vantage_point`).
+6. Execute multiple first layer IKEv2 handshake test cases per target to observe behavior across DH variants.
+7. After each test case, normalize and enrich its results, upsert them into Postgres tables (`scan`, `epdg_server`, `epdg_result`) with mode `local` and refresh the latest-result snapshot (`refresh_latest_snapshot`).
+8. Refresh the map and geoblocking views (`refresh_country_operator_snapshot`) and rebuild the key-collision dataset (`refresh_collision_keys`).
+9. Compress older raw DNS files, keep the newest one uncompressed.
+10. Cache database takeouts as SQL dump and CSV files, compressed and ready to serve for download, then wait for the next cycle.
+
+In parallel, `apps/orchestrator/vantage/main.py` continuously repeats the scans through VPN tunnels in other countries (vantage points), since some ePDGs only answer clients from certain locations (geoblocking). For each vantage point it starts a [gluetun](https://github.com/qdm12/gluetun) VPN container, runs `epdg-scanner` with `SCANNER_ROLE=vantage_scan` inside the tunnel and ingests the results. Every scan is stored with its vantage point and mode:
+
+- `local`: the host's own cycle above, without a tunnel.
+- `full`: targets discovered with `zdns` inside the tunnel, all test cases, via the VPN exit.
+- `full_warp`: all ePDG domains in `epdg_server`, all test cases, via the VPN exit plus a Cloudflare WARP hop.
+- `dh2048_warp`: like `full_warp`, but `SUPPORT_DH_2048MODP` only.
 
 #### Services (Docker Compose)
 
 - `epdg-scanner`: orchestrates DNS + scan pipeline (`scanner.main`)
+- `vantage-orchestrator`: runs the vantage point scans by starting gluetun, `warp-hop` and scanner containers via the Docker socket
+- `warp-hop`: Cloudflare WARP hop image (gluetun based); Compose only builds it, the orchestrator starts it when needed
 - `postgres`: primary data store
 - `api-backend`: FastAPI (`/api/v1/*`)
 - `key-collision-zulip-bot`: Zulip bot (built from `apps/bot`) that reports IKEv2 key collisions; reads from the API (`API_ORIGIN=http://api-backend:8000`) and Postgres. No host port.
 - `adminer`: database UI on `127.0.0.1:8080`
-- `frontend`: multi-page static site (map, table, collisions chart, database download) on `127.0.0.1:8081`
+- `frontend`: multi-page static site (map incl. geoblocking view, table, collisions chart, DH group history, fingerprinting snapshot from `tools/fingerprint/`, database download) on `127.0.0.1:8081`
 
 API backend is exposed on `127.0.0.1:8000`.
 
@@ -109,25 +118,26 @@ API backend is exposed on `127.0.0.1:8000`.
 1. Create your secrets file:
 
 ```bash
+cd server-side
 cp .env.secrets.example .env.secrets
 ```
 
 2. Populate your secrets in `.env.secrets`:
 
 - **Required** (Postgres): `POSTGRES_HOST`, `POSTGRES_PORT`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB`
-- **Required** (API DB connection): `DATABASE_URL` (or `DATABASE_URL_FILE`)
 - **Required** (API Scraping): `MCC_MNC_API_TOKEN` (register on mcc-mnc.com to get one.)
 
 
 - Required only if running the Zulip bot (will gracefully exit if not set): `ZULIP_SERVER_URL`, `ZULIP_BOT_EMAIL`, `ZULIP_BOT_API_KEY`
-- Optional (API behavior): `ENABLE_DOCS`, `DEFAULT_LIMIT`, `MAX_LIMIT`, `API_KEY` (or `API_KEY_FILE`), `ENABLE_RATE_LIMIT`, `RATE_LIMIT_REQUESTS_PER_MINUTE`, `RATE_LIMIT_TIMEOUT_SECONDS`, `LOG_LEVEL`
-- Optional (API metadata): `APP_NAME`, `APP_VERSION`, `API_V1_PREFIX`
-- Optional (DB pool tuning): `DB_POOL_SIZE`, `DB_MAX_OVERFLOW`, `DB_POOL_TIMEOUT_SECONDS`, `DB_POOL_RECYCLE_SECONDS`, `DB_SLOW_QUERY_MS`
+- Required only for VPN vantage point scans (set `VANTAGE_ENABLED=false` to scan only from the host): credentials of the providers in `infrastructure/vantage_points.json`, see [Setting up vantage points](server-side/README.md#setting-up-vantage-points)
+- Optional (API behavior): `ENABLE_DOCS`, `DEFAULT_LIMIT`, `MAX_LIMIT`, `API_KEY` (or `API_KEY_FILE`), `ENABLE_RATE_LIMIT`, `RATE_LIMIT_REQUESTS_PER_MINUTE`, `RATE_LIMIT_HISTORY_REQUESTS_PER_MINUTE`, `RATE_LIMIT_TIMEOUT_SECONDS`, `LOG_LEVEL`
+- Optional (vantage points): `LOCAL_VANTAGE_LABEL`, `LOCAL_VANTAGE_COUNTRY` (the host's own vantage point, default `austria`), `VANTAGE_*_PARALLEL`, `VANTAGE_*_TIMEOUT_SECONDS`, `WARP_HOP_ATTEMPTS`
+- Set in `compose.yaml` instead (API metadata, workers, DB pool tuning): `APP_NAME`, `APP_VERSION`, `API_V1_PREFIX`, `UVICORN_WORKERS`, `DB_POOL_SIZE`, `DB_MAX_OVERFLOW`, `DB_POOL_TIMEOUT_SECONDS`, `DB_POOL_RECYCLE_SECONDS`, `DB_SLOW_QUERY_MS`
 
 > [!NOTE]
-> The frontend calls the API with the same `API_KEY`, which is currently embedded in the frontend JS. If you set `API_KEY`, also update it at the top of `apps/frontend/static/js/map.js`, `table.js`, `collisions.js` and `takeout.js`.
+> The frontend calls the API with the same `API_KEY`, which is currently embedded in the frontend JS. If you set `API_KEY`, also update it at the top of `apps/frontend/static/js/map.js`, `table.js`, `collisions.js`, `history.js` and `takeout.js`.
 
-3. Build and start:
+3. Build and start from `server-side/` (the orchestrator uses `${PWD}` as host path for the containers it starts):
 
 ```bash
 docker compose build
@@ -135,33 +145,39 @@ docker compose up
 ```
 
 > [!NOTE]
-> Persistent data is stored under `./epdg-container/` (scanner data + postgres volume + cached takout download).
+> Persistent data is stored under `./epdg-container/` (scanner and vantage scan data + postgres volume + cached takeout downloads).
 
 4. Analyze the data via the web frontend at `127.0.0.1:8081` or via adminer at `127.0.0.1:8080`.
 
 #### API Overview
 
-Base path: `/api/v1` (all `/api/v1` routes require the API key).
+Base path: `/api/v1` (if `API_KEY` is set, all `/api/v1` routes require it via `X-API-Key` header or `api_key` query parameter). All routes and their filters, such as `vantage` and `mode`, are listed in [server-side/apps/api/README.md](server-side/apps/api/README.md).
 
 Main route groups:
 
 - /servers
+- /vantage-points (vantage points and their VPN exits)
 - /scans
 - /results
 - /latest-results
 - /all-results (paginated historical scan results)
 - /map
+- /geoblocking (per operator: geoblocking state and blocked countries)
+- /dh-history (an operator's DH group support over time)
 - /collisions-latest (latest key-collision data)
 - /collision-keys (collision keys ordered by usage count)
-- /takeout
+- /takeout (`/csv` and `/sql` dataset downloads)
 
 #### Disclaimer
 
 This section uses third-party tools and data sources:
 
-- Natural Earth country boundaries (`apps/frontend/static/ne_50m_admin_0_countries.json`): https://github.com/martynafford/natural-earth-geojson
+- Natural Earth country boundaries (`apps/frontend/static/data/ne_50m_admin_0_countries.json`): https://github.com/martynafford/natural-earth-geojson
 - DNS scanning tool (`zdns`): https://github.com/zmap/zdns
 - MCC/MNC enrichment sources: [mcc-mnc.com](https://mcc-mnc.com/) and [Wikipedia mobile network code pages](https://en.wikipedia.org/wiki/Mobile_network_codes)
+- VPN and WARP tunnels (`gluetun`): https://github.com/qdm12/gluetun
+- VPN vantage point setup (`scanywhere`): https://github.com/sbaresearch/scanywhere
+- Frontend libraries (`apps/frontend/static/vendor/`): MapLibre GL, AG Grid, ECharts, D3
 
 Please follow the upstream project license and terms when using or redistributing it.
 

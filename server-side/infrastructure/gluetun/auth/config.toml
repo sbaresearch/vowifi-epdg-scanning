@@ -1,0 +1,10 @@
+# gluetun's control server requires authentication by default. The orchestrator
+# only ever asks it one question -- "what public IP did this tunnel get?" -- so
+# exactly that one read-only route is opened, and nothing else.
+#
+# Reachable only from the internal vantage_control_net, which is not published
+# to the host.
+[[roles]]
+name = "vantage-orchestrator"
+routes = ["GET /v1/publicip/ip"]
+auth = "none"

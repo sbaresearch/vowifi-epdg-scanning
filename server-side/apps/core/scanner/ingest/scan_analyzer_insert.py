@@ -19,6 +19,20 @@ def get_required_env(name: str) -> str:
     return value
 
 
+def conn_kwargs() -> dict:
+    return {
+        "host": get_required_env("POSTGRES_HOST"),
+        "port": int(get_required_env("POSTGRES_PORT")),
+        "dbname": get_required_env("POSTGRES_DB"),
+        "user": get_required_env("POSTGRES_USER"),
+        "password": get_required_env("POSTGRES_PASSWORD"),
+    }
+
+
+def connect() -> psycopg.Connection:
+    return psycopg.connect(**conn_kwargs())
+
+
 # sanatizing and splitting of data. primarily extracting MCC and MNC.
 def normalize(entry):
     if not isinstance(entry, dict):
@@ -119,15 +133,38 @@ def load_country_iso3_map(path: Path) -> dict[str, str]:
 
 # insertion of scan run.
 def insert_run(
-    cursor, dh_variant: str, header_text: str | None, source_file: str
+    cursor,
+    dh_variant: str,
+    header_text: str | None,
+    source_file: str,
+    vantage_id: str,
+    exit_ip: str | None = None,
+    exit_country: str | None = None,
+    mode: str = "full",
+    warp_ip: str | None = None,
+    warp_country: str | None = None,
 ) -> str:
+    """Record one scan pass (exit_ip: VPN exit or host; warp_ip: WARP hop or NULL)."""
     cursor.execute(
         """
-        insert into scan (dh_variant, header_text, source_file)
-        values (%s, %s, %s)
+        insert into scan (
+          dh_variant, header_text, source_file,
+          vantage_id, exit_ip, exit_country, mode, warp_ip, warp_country
+        )
+        values (%s, %s, %s, %s, %s, %s, %s, %s, %s)
         returning id
         """,
-        (dh_variant, header_text, source_file),
+        (
+            dh_variant,
+            header_text,
+            source_file,
+            vantage_id,
+            exit_ip,
+            exit_country,
+            mode,
+            warp_ip,
+            warp_country,
+        ),
     )
     return cursor.fetchone()[0]
 
@@ -178,14 +215,27 @@ def clean_text(x: Any) -> str | None:
 
 # connection to DB and insertion of domain scan data.
 def analyze_and_insert(
-    path: Path, mapping_json: Path, country_iso3_json: Path = DEFAULT_COUNTRY_ISO3_JSON
+    path: Path,
+    mapping_json: Path,
+    country_iso3_json: Path = DEFAULT_COUNTRY_ISO3_JSON,
+    vantage_id: str | None = None,
+    exit_ip: str | None = None,
+    exit_country: str | None = None,
+    mode: str = "full",
+    warp_ip: str | None = None,
+    warp_country: str | None = None,
 ) -> None:
     """
     Reads newline-delimited JSON scan results from `path`, extracts MCC/MNC from the domain,
     enriches targets using `mapping_json` (list of {mcc,mnc,country,network,operator,...}),
     enriches country metadata with ISO3 from `country_iso3_json`,
     then upserts into epdg_server and epdg_result.
+
+    `vantage_id` defaults to the reference vantage point.
     """
+    # deferred import: vantage_points imports this module.
+    from scanner.ingest.vantage_points import get_reference_vantage_id
+
     mccmnc_map = load_mcc_mnc_map(mapping_json)
     country_iso3_map = load_country_iso3_map(country_iso3_json)
 
@@ -199,19 +249,36 @@ def analyze_and_insert(
     else:
         dh_variant = "UNKNOWN"
 
-    conn = psycopg.connect(
-        host=get_required_env("POSTGRES_HOST"),
-        port=int(get_required_env("POSTGRES_PORT")),
-        dbname=get_required_env("POSTGRES_DB"),
-        user=get_required_env("POSTGRES_USER"),
-        password=get_required_env("POSTGRES_PASSWORD"),
-    )
+    conn = connect()
 
     # commits on success, rollbacks on exception.
     with conn:
         with conn.cursor() as cursor:
-            run_id = insert_run(cursor, dh_variant, header_text, str(path))
-            log.info("scan=%s dh_variant=%s", run_id, dh_variant)
+            run_vantage_id = vantage_id or get_reference_vantage_id(cursor)
+            if run_vantage_id is None:
+                raise RuntimeError(
+                    "no vantage point given and no reference vantage point configured"
+                )
+
+            run_id = insert_run(
+                cursor,
+                dh_variant,
+                header_text,
+                str(path),
+                run_vantage_id,
+                exit_ip,
+                exit_country,
+                mode=mode,
+                warp_ip=warp_ip,
+                warp_country=warp_country,
+            )
+            log.info(
+                "scan=%s dh_variant=%s vantage=%s mode=%s",
+                run_id,
+                dh_variant,
+                run_vantage_id,
+                mode,
+            )
 
             rows = []
             for line_counter, line in enumerate(lines, 1):
@@ -297,14 +364,10 @@ def analyze_and_insert(
                     rows,
                 )
 
-                # trigger rebuild of the quick access table.
+                # rebuild the quick access table for this dh_variant + vantage point only.
                 cursor.execute(
                     "select refresh_latest_snapshot(%s)",
                     (run_id,),
-                )
-                # rebuild leaflet API snapshot (materialized view)
-                cursor.execute(
-                    "select refresh_country_operator_snapshot()",
                 )
 
             log.info("inserted/updated %d results", len(rows))
@@ -312,18 +375,19 @@ def analyze_and_insert(
     conn.close()
 
 
+# Full rebuilds of cross-scan state: call once per scan round, not per result file.
+
+
+def refresh_country_operator_snapshot() -> None:
+    with connect() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute("SELECT refresh_country_operator_snapshot()")
+
+
 def refresh_collision_keys() -> None:
-    conn = psycopg.connect(
-        host=get_required_env("POSTGRES_HOST"),
-        port=int(get_required_env("POSTGRES_PORT")),
-        dbname=get_required_env("POSTGRES_DB"),
-        user=get_required_env("POSTGRES_USER"),
-        password=get_required_env("POSTGRES_PASSWORD"),
-    )
-    with conn:
+    with connect() as conn:
         with conn.cursor() as cursor:
             cursor.execute("SELECT refresh_collision_keys()")
-    conn.close()
 
 
 if __name__ == "__main__":

@@ -3,15 +3,38 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Contact — VoWiFi Watchdog</title>
+  <title>Contact - VoWiFi Watchdog</title>
   <link rel="stylesheet" href="/static/css/landing.css" />
   <link rel="stylesheet" href="/static/css/theme-toggle.css" />
+  <link rel="stylesheet" href="/static/css/nav.css" />
   <link rel="stylesheet" href="/static/css/contact.css" />
+  <link rel="icon" href="data:,">
   <script src="/static/js/theme.js"></script>
+  <script src="/static/js/takeout.js" defer></script>
 </head>
 <body class="landing-page">
   <main class="landing-shell">
-    <header class="landing-nav">
+    <header class="landing-nav landing-nav-main">
+      <nav class="landing-menu" aria-label="Main">
+        <a href="/">Home</a>
+        <a href="/table/">Data Table</a>
+        <a href="/map/">Map</a>
+        <a href="/collisions/">Key Collisions</a>
+        <a href="/history/">DH Group History</a>
+        <a href="/fingerprinting/">Fingerprinting</a>
+      </nav>
+      <div class="landing-menu-downloads">
+        <a class="button button-secondary button-compact" id="takeout-csv" data-format="csv" download
+           aria-label="Download CSV" title="Download CSV">
+          <svg class="download-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M8 11l4 4 4-4M5 20h14"/></svg>
+          CSV
+        </a>
+        <a class="button button-secondary button-compact" id="takeout-sql" data-format="sql" download
+           aria-label="Download SQL dump" title="Download SQL dump">
+          <svg class="download-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M8 11l4 4 4-4M5 20h14"/></svg>
+          SQL dump
+        </a>
+      </div>
       <button id="theme-toggle" aria-label="Switch to dark mode">
         <span class="theme-icon">&#x263D;</span>
       </button>
@@ -19,24 +42,24 @@
 
     <section class="info-panel">
       <div class="section-heading">
-        <p class="section-label"></p>
+        <p class="section-label">SBA Research</p>
         <h2>Contact</h2>
       </div>
       <div class="contact-info-row">
         <span class="contact-info-label">Address</span>
-        <span></span>
+        <span>Floragasse 7, 5th Floor, 1040 Wien</span>
       </div>
       <div class="contact-info-row">
         <span class="contact-info-label">Phone</span>
-        <a href=""></a>
+        <a href="tel:+4315053688">+43 (1) 505 36 88</a>
       </div>
       <div class="contact-info-row">
         <span class="contact-info-label">Fax</span>
-        <span></span>
+        <span>+43 (1) 505 88 88</span>
       </div>
       <div class="contact-info-row">
         <span class="contact-info-label">E-Mail</span>
-        <a href=""></a>
+        <a href="mailto:mobileatlas@sba-research.org">mobileatlas@sba-research.org</a>
       </div>
     </section>
 
@@ -47,22 +70,22 @@
       </div>
       <dl class="contact-legal">
         <dt>Company name</dt>
-        <dd></dd>
+        <dd>SBA Research gemeinnützige GmbH (gGmbH)</dd>
         <dt>Address</dt>
-        <dd></dd>
+        <dd>Floragasse 7, 1040 Wien</dd>
         <dt>Commercial register no.</dt>
-        <dd></dd>
+        <dd>345659y</dd>
         <dt>UID</dt>
-        <dd></dd>
+        <dd>ATU65771355</dd>
         <dt>Commercial register court</dt>
-        <dd></dd>
+        <dd>Handelsgericht Wien</dd>
       </dl>
     </section>
   </main>
 
   <footer class="landing-footer">
     <p>
-      Map boundaries are based on <a href="https://www.naturalearthdata.com/">Natural Earth</a> data.
+      Map boundaries are based on modified <a href="https://www.naturalearthdata.com/">Natural Earth</a> data.
       This project also relies on <a href="https://github.com/zmap/zdns">zdns</a> and MCC/MNC <a href="https://mcc-mnc.com/">enrichment sources</a>.
     </p>
   </footer>

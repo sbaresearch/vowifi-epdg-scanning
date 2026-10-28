@@ -1,0 +1,2 @@
+# everything else comes from the epdg-scanner base image.
+docker

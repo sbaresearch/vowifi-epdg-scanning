@@ -1,3 +1,22 @@
 __pycache__/
+.venv/
+.vscode
+.claude/
+.codex
+.env.secrets
+
 server-side/epdg-container/
-server-side/.env.secrets
+# gluetun's VPN server lists, regenerated every run.
+server-side/infrastructure/gluetun/servers/
+# WARP profiles: WireGuard PRIVATE KEYS. Never commit.
+server-side/infrastructure/warp/
+server-side/infrastructure/loadtest/
+server-side/infrastructure/nginx.config
+server-side/apps/frontend/app_old/
+server-side/db/analysis/006_one_time_manual_key_count_analysis.sql
+server-side/db/queries/
+server-side/db/schema/generate_diagram.py
+server-side/db/migrations/archive/
+server-side/tools/fingerprint/csv/
+server-side/tools/fingerprint/pcap/
+server-side/tools/fingerprint/fingerprint.html

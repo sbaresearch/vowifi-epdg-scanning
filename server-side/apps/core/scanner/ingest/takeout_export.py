@@ -18,12 +18,13 @@ from pathlib import Path
 
 import psycopg
 
-from scanner.ingest.scan_analyzer_insert import get_required_env
+from scanner.ingest.scan_analyzer_insert import conn_kwargs, get_required_env
 
 log = logging.getLogger(__name__)
 
-# tables included in CSV dump.
+# tables included in CSV dump (vantage_point, so scan.vantage_id resolves).
 EXPORT_TABLES = (
+    "vantage_point",
     "epdg_server",
     "scan",
     "epdg_result",
@@ -45,24 +46,19 @@ def _takeout_dir() -> Path:
     return data_dir.parent / "takeout"
 
 
-def _conn_kwargs() -> dict:
-    return {
-        "host": get_required_env("POSTGRES_HOST"),
-        "port": int(get_required_env("POSTGRES_PORT")),
-        "dbname": get_required_env("POSTGRES_DB"),
-        "user": get_required_env("POSTGRES_USER"),
-        "password": get_required_env("POSTGRES_PASSWORD"),
-    }
-
-
 def _generate_csv_zip(dest: Path) -> None:
     # streaming tables to zip to not hog memory and take it away from server (tables will get very large).
-    with psycopg.connect(**_conn_kwargs()) as conn, zipfile.ZipFile(
+    with psycopg.connect(**conn_kwargs()) as conn, zipfile.ZipFile(
         dest, "w", compression=zipfile.ZIP_DEFLATED
     ) as zf:
+        # one snapshot for all tables (like pg_dump), so ingests during the export can't leave dangling ids.
+        conn.isolation_level = psycopg.IsolationLevel.REPEATABLE_READ
         for table in EXPORT_TABLES:
             copy_sql = f"COPY {table} TO STDOUT WITH (FORMAT csv, HEADER true)"
-            with zf.open(f"{table}.csv", "w") as entry, conn.cursor() as cur:
+            # zip64: size is unknown while streaming, and without it entries over 2 GiB fail.
+            with zf.open(
+                f"{table}.csv", "w", force_zip64=True
+            ) as entry, conn.cursor() as cur:
                 with cur.copy(copy_sql) as copy:
                     for block in copy:
                         entry.write(block)

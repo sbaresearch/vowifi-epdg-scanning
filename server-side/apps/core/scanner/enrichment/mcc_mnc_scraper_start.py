@@ -1,8 +1,11 @@
 import datetime
 import json
 import logging
+import time
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
+
+import requests
 from scanner.common.logging_config import configure_logging
 from scanner.enrichment import mcc_mnc_com_scraper
 from scanner.enrichment import mcc_mnc_wikipedia_scraper
@@ -12,6 +15,8 @@ logger = logging.getLogger(__name__)
 
 WIKIPEDIA_FILE = Path("mcc_mnc_wikipedia_itu.json")
 WEBSITE_FILE = Path("mcc_mnc_website.json")
+API_ATTEMPTS = 2
+API_RETRY_DELAY = 300  # seconds.
 
 
 def norm3(x: Any) -> str:
@@ -42,7 +47,27 @@ def scraper(output_path: Path = Path(".")) -> None:
     mcc_mnc_wikipedia_scraper.wikipedia_mcc_mnc_scraper(output_path)
 
     logger.info("scraping data from mcc-mnc.com..")
-    mcc_mnc_com_scraper.mcc_mnc_com_scraper(output_path)
+    for attempt in range(1, API_ATTEMPTS + 1):
+        try:
+            mcc_mnc_com_scraper.mcc_mnc_com_scraper(output_path)
+            break
+        except requests.RequestException as e:
+            if attempt == API_ATTEMPTS:
+                # still down: keep the last merged mapping, retry next round.
+                logger.warning(
+                    "mcc-mnc.com unreachable after %d attempts, keeping last merged mapping: %s",
+                    API_ATTEMPTS,
+                    e,
+                )
+                return
+            logger.warning(
+                "mcc-mnc.com unreachable (attempt %d/%d), retrying in %ds: %s",
+                attempt,
+                API_ATTEMPTS,
+                API_RETRY_DELAY,
+                e,
+            )
+            time.sleep(API_RETRY_DELAY)
 
     logger.info("merging results..")
 

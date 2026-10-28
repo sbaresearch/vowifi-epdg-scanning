@@ -1,0 +1,199 @@
+/* Shared top nav bar; own palette, keep in sync with landing.css. */
+:root {
+  --nav-text: #142538;
+  --nav-text-muted: #6a7d91;
+  --nav-accent: #1c5fb8;
+  --nav-border: rgba(88, 112, 141, 0.16);
+  --nav-surface: rgba(255, 255, 255, 0.92);
+}
+
+html[data-theme="dark"] {
+  --nav-text: #e8edf5;
+  --nav-text-muted: #7a8fa2;
+  --nav-accent: #4d8ff5;
+  --nav-border: rgba(255, 255, 255, 0.10);
+  --nav-surface: rgba(26, 38, 58, 0.92);
+}
+
+.landing-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px 22px;
+  padding: 0 0 14px;
+  /* not inherited: the map page's body has no font. */
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.landing-menu {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 22px;
+}
+
+.landing-menu a {
+  color: var(--nav-text);
+  font-size: 1.02rem;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 120ms ease;
+}
+
+.landing-menu a:hover {
+  color: var(--nav-accent);
+}
+
+.landing-menu a[aria-current="page"] {
+  color: var(--nav-accent);
+}
+
+.landing-menu-downloads {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.landing-menu-downloads .button {
+  gap: 8px;
+}
+
+.download-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.button-compact {
+  min-height: 36px;
+  padding: 0 16px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* Downloads sit beside the main nav links, so keep them visibly quieter. */
+.landing-menu-downloads .button-secondary {
+  color: var(--nav-text-muted);
+  background: transparent;
+  border-color: var(--nav-border);
+  font-size: 0.85rem;
+  font-weight: 500;
+  box-shadow: none;
+}
+
+.landing-menu-downloads .button-secondary:hover {
+  color: var(--nav-text);
+  border-color: var(--nav-accent);
+  background: var(--nav-surface);
+  box-shadow: none;
+}
+
+.landing-nav #theme-toggle {
+  background: var(--nav-surface);
+  border: 1px solid var(--nav-accent);
+  color: var(--nav-accent);
+  box-shadow: 0 2px 8px rgba(14, 28, 45, 0.10);
+}
+
+.landing-nav #theme-toggle:hover {
+  background: var(--nav-accent);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(14, 28, 45, 0.18);
+}
+
+.landing-nav #theme-toggle:focus-visible {
+  outline: 2px solid var(--nav-accent);
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 22px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 700;
+  border: 1px solid transparent;
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease,
+    background 120ms ease,
+    color 120ms ease,
+    border-color 120ms ease;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+}
+
+.button-secondary {
+  color: var(--nav-text);
+  background: var(--nav-surface);
+  border-color: var(--nav-accent);
+}
+
+.button-secondary:hover {
+  box-shadow: 0 16px 28px rgba(18, 32, 51, 0.12);
+}
+
+.button:focus,
+.button:focus-visible {
+  outline: 3px solid rgba(28, 108, 245, 0.28);
+  outline-offset: 3px;
+}
+
+@media (max-width: 980px) {
+  /* The full header no longer fits one row, so split it: links on a scrolling
+     strip above, downloads and the theme toggle sharing the row below. */
+  .landing-nav-main {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+  }
+
+  .landing-nav-main .landing-menu {
+    grid-column: 1 / -1;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 14px;
+    padding-right: 28px;
+    border-bottom: 1px solid var(--nav-border);
+    scrollbar-width: none;
+    /* Fade the right edge to hint that the strip scrolls. */
+    mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent);
+  }
+
+  .landing-nav-main .landing-menu::-webkit-scrollbar {
+    display: none;
+  }
+
+  .landing-nav-main .landing-menu-downloads {
+    grid-column: 1;
+  }
+
+  .landing-nav-main #theme-toggle {
+    grid-column: 2;
+    align-self: start;
+  }
+}
+
+@media (max-width: 640px) {
+  .landing-nav-main .landing-menu-downloads {
+    flex-wrap: nowrap;
+  }
+
+  .landing-nav-main .landing-menu-downloads .button {
+    padding: 0 14px;
+    white-space: nowrap;
+  }
+}

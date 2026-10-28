@@ -1,6 +1,6 @@
 pycrypto
 pycryptodome
-cryptography
+cryptography==49.0.0
 dnspython
 scapy @ https://github.com/secdev/scapy/archive/refs/heads/master.zip
 psycopg[binary]

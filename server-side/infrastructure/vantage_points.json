@@ -1,0 +1,5 @@
+[
+  { "provider": "surfshark_open" },
+  { "provider": "nord_open" },
+  { "provider": "cyberghost_open" }
+]

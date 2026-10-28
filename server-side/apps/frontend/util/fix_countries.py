@@ -2,14 +2,10 @@ import json
 import unicodedata
 from pathlib import Path
 
-# this takes a list of country names from your DB and tries to
-# map them to ISO3 codes from Natural Earth 50m json.
-# it then outputs a json with the mappings and a txt file with
-# countires that could not be matched, these need to be manually
-# reviewed and added to the MANUAL dict in this script.
+# builds db_to_iso3.json (country name -> ISO3) from Natural Earth 50m plus MANUAL.
+# unmatched names land in db_to_iso3.unmatched.txt for review -> MANUAL.
 
-# this must be run frequently until all countries are mapped.
-
+# the ePDG database's country names; each must keep a key (checked below).
 db_countries = {
     "Albania",
     "Andorra",
@@ -178,21 +174,62 @@ report_file = DATA / "db_to_iso3.unmatched.txt"
 if not ne_file.exists():
     raise FileNotFoundError(f"Natural Earth file not found: {ne_file}")
 
+# names Natural Earth lacks; emitted as-is and matched by normalized name.
 MANUAL = {
-    # naming variants
-    norm("Russia"): "RUS",
-    norm("United States"): "USA",
-    norm("USA"): "USA",
-    norm("UK"): "GBR",
-    norm("Viet Nam"): "VNM",
-    norm("Cote d Ivoire"): "CIV",
-    norm("Ivory Coast"): "CIV",
-    norm("Hong Kong"): "HKG",
-    norm("Taiwan"): "TWN",
-    norm("French Departments and Territories in the Indian Ocean"): "ATF",
-    norm("France"): "FRA",
-    norm("Norway"): "NOR",
-    norm("French Guiana"): "GUF",  # or "FRA" if you want to roll it into France
+    # --- ISO_A3 "-99" in Natural Earth 50m (its other "-99"s aren't ISO 3166) ---
+    "France": "FRA",
+    "Norway": "NOR",
+    "Kosovo": "XKX",  # user-assigned, not in ISO 3166
+    # --- missing from Natural Earth 50m ---
+    "Bonaire, Sint Eustatius and Saba": "BES",
+    "Bouvet Island": "BVT",
+    "Christmas Island": "CXR",
+    "Cocos Islands": "CCK",
+    "French Guiana": "GUF",  # or "FRA" to merge into France
+    "Gibraltar": "GIB",
+    "Guadeloupe": "GLP",
+    "Martinique": "MTQ",
+    "Mayotte": "MYT",
+    "Reunion": "REU",
+    "Réunion": "REU",
+    "Svalbard and Jan Mayen": "SJM",
+    "Tokelau": "TKL",
+    "Tuvalu": "TUV",
+    "United States Minor Outlying Islands": "UMI",
+    # --- naming variants ---
+    "Bosnia": "BIH",
+    "Cape Verde": "CPV",  # NE: "Cabo Verde"
+    "Cote d Ivoire": "CIV",
+    "French Departments and Territories in the Indian Ocean": "ATF",
+    "Hong Kong": "HKG",
+    "Hong Kong, SAR China": "HKG",
+    "Ivory Coast": "CIV",
+    "Korea": "KOR",  # CyberGhost's name; ambiguous in NE
+    "Libyan Arab Jamahiriya": "LBY",  # superseded official name
+    "North Macedonia": "MKD",  # NE 50m: "Macedonia"
+    "Palestine, State of": "PSE",
+    "Russia": "RUS",
+    "Taiwan": "TWN",
+    "Taiwan, Republic of China": "TWN",
+    "UAE": "ARE",
+    "UK": "GBR",
+    "USA": "USA",
+    "United States": "USA",
+    "Viet Nam": "VNM",
+    # --- gluetun server list spellings, typos included ---
+    "Antiguaand Barbuda": "ATG",
+    "Coted`Ivoire": "CIV",
+    "Marocco": "MAR",  # Surfshark's misspelling
+    "Republicof Djibouti": "DJI",
+    "Republicof Singapore": "SGP",
+    "Republicofthe Congo": "COG",
+    "Saint Kittsand Nevis": "KNA",
+    "Saint Pierreand Miquelon": "SPM",
+    "Saint Vincentandthe Grenadines": "VCT",
+    "Sao Tomeand Principe": "STP",
+    "Svalbardand Jan Mayen": "SJM",
+    "Trinidadand Tobago": "TTO",
+    "Turksand Caicos Islands": "TCA",
 }
 
 
@@ -226,19 +263,35 @@ for feat in features:
 print(f"Natural Earth features: {len(features)}")
 print(f"Indexed (valid ISO_A3): {indexed} (skipped {skipped})")
 
+manual_by_norm = {norm(name): iso3 for name, iso3 in MANUAL.items()}
+
+# every Natural Earth spelling, original casing (lookups match exactly).
 db_to_iso3 = {}
+for feat in features:
+    p = feat.get("properties") or {}
+
+    iso3 = p.get("ISO_A3")
+    if not isinstance(iso3, str) or iso3 in ("-99", ""):
+        continue
+
+    for field in ALIAS_FIELDS:
+        val = p.get(field)
+        if isinstance(val, str) and val.strip():
+            db_to_iso3.setdefault(val.strip(), iso3)
+
+for name, iso3 in MANUAL.items():
+    db_to_iso3.setdefault(name, iso3)
+
+# ePDG names last, by normalized lookup, so each keeps its spelling ("Czech Republic").
 unmatched = []
-
 for db_name in sorted(db_countries):
-    k = norm(db_name)
-
-    iso3 = alias_to_iso3.get(k) or MANUAL.get(k)
-
+    iso3 = alias_to_iso3.get(norm(db_name)) or manual_by_norm.get(norm(db_name))
     if iso3:
-        db_to_iso3[db_name] = iso3
+        db_to_iso3.setdefault(db_name, iso3)
     else:
         unmatched.append(db_name)
 
+db_to_iso3 = dict(sorted(db_to_iso3.items()))
 
 with out_file.open("w", encoding="utf-8") as f:
     json.dump(db_to_iso3, f, ensure_ascii=False, indent=2)
@@ -247,10 +300,12 @@ with report_file.open("w", encoding="utf-8") as f:
     for name in unmatched:
         f.write(name + "\n")
 
-print(f"Wrote mapping: {out_file} ({len(db_to_iso3)} matched)")
-print(f"Unmatched: {len(unmatched)} -> {report_file}")
+print(f"Wrote mapping: {out_file} ({len(db_to_iso3)} names, "
+      f"{len(set(db_to_iso3.values()))} distinct ISO3)")
+print(f"Unmatched ePDG names: {len(unmatched)} -> {report_file}")
 
 if unmatched:
-    print("First unmatched examples:")
-    for n in unmatched[:20]:
+    print("ePDG country names with no ISO3 -- add them to MANUAL:")
+    for n in unmatched:
         print("  -", n)
+    raise SystemExit(1)

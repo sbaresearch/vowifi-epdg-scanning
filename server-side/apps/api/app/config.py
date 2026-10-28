@@ -48,6 +48,8 @@ class Settings(BaseSettings):
 
     enable_rate_limit: bool = True
     rate_limit_requests_per_minute: int = 120
+    # the dh-history page is interactive and bursts more, so it gets its own higher limit.
+    rate_limit_history_requests_per_minute: int = 300
     # how long a client stays blocked (seconds) after exceeding the rate limit.
     rate_limit_timeout_seconds: float = 60.0
 

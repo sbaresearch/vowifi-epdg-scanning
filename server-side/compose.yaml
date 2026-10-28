@@ -1,4 +1,11 @@
 services:
+  warp-hop:
+    build:
+      context: ./apps/warp
+      dockerfile: Dockerfile
+    image: warp-hop:latest
+    scale: 0
+
   epdg-scanner:
     build:
       context: ./apps/core
@@ -31,9 +38,62 @@ services:
 
     command: ["python3", "-u", "-m", "scanner.main"]
 
+    depends_on:
+      - postgres
+
     networks:
       - ipv6_net
       - database_net
+
+  # scans from VPN vantage points: spawns gluetun + scanner containers per vantage
+  # point via the Docker socket, then ingests their results.
+  vantage-orchestrator:
+    build:
+      context: ./apps/orchestrator
+      dockerfile: Dockerfile
+      # FROM epdg-scanner: compose builds that service first.
+      additional_contexts:
+        epdg-scanner: service:epdg-scanner
+    image: vantage-orchestrator:latest
+    container_name: vantage-orchestrator
+    restart: unless-stopped
+    # time to stop the containers it started (compose doesn't know them).
+    stop_grace_period: 60s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    working_dir: /app
+    env_file:
+      - ./.env.secrets
+
+    environment:
+      DATA_DIR: /data/data
+      # host path for spawned containers' binds: run `docker compose` from here.
+      HOST_PROJECT_DIR: ${PWD}
+      SCANNER_IMAGE: epdg-scanner:latest
+      GLUETUN_SERVERS_DIR: /gluetun-config/servers
+      VANTAGE_POINTS_FILE: /config/vantage_points.json
+
+    volumes:
+      - ./epdg-container:/data
+      # read-only: only the gluetun containers write here.
+      - ./infrastructure/gluetun:/gluetun-config:ro
+      - ./infrastructure/vantage_points.json:/config/vantage_points.json:ro
+      # WARP WireGuard profiles (private keys), written by the registration container.
+      - ./infrastructure/warp:/warp:ro
+      # spawns sibling containers (gluetun + scanner).
+      - /var/run/docker.sock:/var/run/docker.sock
+
+    depends_on:
+      - postgres
+      - epdg-scanner
+
+    networks:
+      - database_net
+      - vantage_control_net
 
   api-backend:
     build:
@@ -63,6 +123,7 @@ services:
       DB_POOL_RECYCLE_SECONDS: 1800
       DB_SLOW_QUERY_MS: 300
       TAKEOUT_DIR: /takeout
+      FORWARDED_ALLOW_IPS: "*"
 
     volumes:
       # read-only access to the cached DB data takeouts.
@@ -99,7 +160,8 @@ services:
       # here so the database gets inizialized on first startup.
       - ./db/migrations/001_create_tables.sql:/docker-entrypoint-initdb.d/001_create_tables.sql:ro
       - ./db/migrations/002_create_functions.sql:/docker-entrypoint-initdb.d/002_create_functions.sql:ro
-      - ./db/migrations/003_add_iso3.sql:/docker-entrypoint-initdb.d/003_add_iso3.sql:ro
+      - ./db/migrations/003_schema.sql:/docker-entrypoint-initdb.d/003_schema.sql:ro
+      - ./db/migrations/004_geoblocking.sql:/docker-entrypoint-initdb.d/004_geoblocking.sql:ro
 
     command:
       - "postgres"
@@ -188,3 +250,10 @@ networks:
     internal: true
 
   frontend_net:
+
+  # orchestrator <-> gluetun control traffic. Not internal (gluetun dials VPNs);
+  # fixed subnet for gluetun's FIREWALL_OUTBOUND_SUBNETS.
+  vantage_control_net:
+    ipam:
+      config:
+        - subnet: "172.29.240.0/24"

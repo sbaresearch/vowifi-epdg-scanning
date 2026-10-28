@@ -9,7 +9,7 @@ APIS = (
     "https://vowifi.mobileatlas.eu/api/v1",
 )
 # public key, shipped in the watchdog's table page (static/js/table.js)
-API_KEY = ""
+API_KEY = "82qTWlonsL1CjFJMi-8rDFrmA3Mms0AfaW3kCzyMtcbiuBgRV5YxQoeWf0YmZ6P7"
 LIMIT = 200  # the API's max_limit
 TIMEOUT = 10  # seconds without an answer before a domain counts as failed
 

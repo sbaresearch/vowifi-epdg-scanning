@@ -1083,35 +1083,6 @@ class EpdgIKEv2(object):
 
         return packet_ip
 
-    def ike_auth_analyze_response(self, response):
-        # IP / UDP 213.94.78.29:ipsec_nat_t > 192.168.52.71:52707 / NON_ESP / IKEv2 / IKEv2_Encrypted
-
-        # wrap it into generic payload object
-        decrypted = EpdgIKEv2.decrypt_ikev2_packet(
-            response, self.encr_id, self.sk_er, self.integ_id
-        )
-        if logger.isEnabledFor(logging.DEBUG):
-            logger.debug("IKE_AUTH decrypted response:\n%s", decrypted.show(dump=True))
-
-        if EpdgIKEv2.contains_invalid_user(decrypted):
-            return "invalid user"
-        elif EpdgIKEv2.contains_auth_failed(decrypted):
-            return "auth failed"
-        elif IKEv2_EAP in decrypted:
-            eap = decrypted[IKEv2_EAP]
-            return f"received eap challenge {eap.load}"
-
-    def ike_auth(self, trans_encr, trans_integ):
-        packet_ike_auth = self.create_packet_ike_auth(trans_encr, trans_integ)
-        response = sr1(packet_ike_auth, iface=self.interface, timeout=3, verbose=0)
-
-        logger.debug("IKE_AUTH response: %s", response)
-        if response and IKEv2 in response and response[IKEv2].flags == "Response":
-            return self.ike_auth_analyze_response(response[IKEv2])
-        else:
-            logger.debug("no auth resp")
-            return "no auth response"
-
     @staticmethod
     def reassemble_encrypted_response(responses, encr_id, sk_er, integ_id):
         """Decrypt a (possibly RFC 7383 fragmented) IKE response.

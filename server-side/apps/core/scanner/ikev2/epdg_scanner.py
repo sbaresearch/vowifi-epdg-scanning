@@ -379,44 +379,6 @@ TEST_CONFIG = {
         ],
         "key_echange": EpdgIKEv2.KE_DH_1024MODP,
     },
-    "SUPPORT_IPSEC_ENCR_NULL": {
-        "sa_list": [
-            [
-                EpdgIKEv2.ENC_AES_128,
-                EpdgIKEv2.ENC_AES_256,
-                EpdgIKEv2.ENC_3DES,
-                EpdgIKEv2.PRF_SHA1,
-                EpdgIKEv2.PRF_SHA2_256,
-                EpdgIKEv2.PRF_MD5,
-                EpdgIKEv2.INT_SHA1_96,
-                EpdgIKEv2.INT_SHA2_256_128,
-                EpdgIKEv2.INT_MD5_96,
-                EpdgIKEv2.DH_1024MODP,
-            ]
-        ],
-        "key_echange": EpdgIKEv2.KE_DH_1024MODP,
-        "ipsec_encr": EpdgIKEv2.ENC_NULL,
-        "ipsec_integ": EpdgIKEv2.INT_MD5_96,
-    },
-    "SUPPORT_IPSEC_ENCR_DES": {
-        "sa_list": [
-            [
-                EpdgIKEv2.ENC_AES_128,
-                EpdgIKEv2.ENC_AES_256,
-                EpdgIKEv2.ENC_DES,
-                EpdgIKEv2.PRF_SHA1,
-                EpdgIKEv2.PRF_SHA2_256,
-                EpdgIKEv2.PRF_MD5,
-                EpdgIKEv2.INT_SHA1_96,
-                EpdgIKEv2.INT_SHA2_256_128,
-                EpdgIKEv2.INT_MD5_96,
-                EpdgIKEv2.DH_1024MODP,
-            ]
-        ],
-        "key_echange": EpdgIKEv2.KE_DH_1024MODP,
-        "ipsec_encr": EpdgIKEv2.ENC_DES,
-        "ipsec_integ": EpdgIKEv2.INT_MD5_96,
-    },
     # IKE_AUTH w/ CERTREQ
     "PROBE_EPDG_CERT": {
         "sa_list": [
@@ -845,18 +807,6 @@ def epdg_scanner(
                             datetime.timezone.utc
                         ).strftime("%Y-%m-%dT%H:%M:%SZ")
                         if not ipsec_encr:
-                            data = {
-                                "timestamp": timestamp,
-                                "domain": domain,
-                                "ip": ip,
-                                "response": resp,
-                            }
-                            json_data = json.dumps(data, default=str)
-                            logger.debug(json_data)
-                            results_file.write(json_data + "\n")
-                        elif "successfull" in resp:
-                            # trying to make handshake.
-                            resp = ike.ike_auth(ipsec_encr, ipsec_integ)
                             data = {
                                 "timestamp": timestamp,
                                 "domain": domain,

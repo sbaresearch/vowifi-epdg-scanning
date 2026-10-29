@@ -1,28 +1,18 @@
 def generator(output_path):
     epdg_domains = []
 
-    # adding all 3 digit mcc's (1.000.000)
-    for mnc in range(1000):
-        for mcc in range(1000):
-            mnc_padded = "{:03d}".format(mcc)
-            mcc_padded = "{:03d}".format(mnc)
-
+    # all 3-digit MNCs (1,000,000 combinations)
+    for mcc in range(1000):
+        for mnc in range(1000):
             epdg_domains.append(
-                "epdg.epc.mnc{0}.mcc{1}.pub.3gppnetwork.org".format(
-                    mnc_padded, mcc_padded
-                )
+                "epdg.epc.mnc{0:03d}.mcc{1:03d}.pub.3gppnetwork.org".format(mnc, mcc)
             )
 
-    # adding all 2 digit mcc's (100.000)
-    for mnc in range(1000):
-        for mcc in range(100):
-            mnc_padded = "{:02d}".format(mcc)
-            mcc_padded = "{:03d}".format(mnc)
-
+    # all 2-digit MNCs (100,000 combinations)
+    for mcc in range(1000):
+        for mnc in range(100):
             epdg_domains.append(
-                "epdg.epc.mnc{0}.mcc{1}.pub.3gppnetwork.org".format(
-                    mnc_padded, mcc_padded
-                )
+                "epdg.epc.mnc{0:02d}.mcc{1:03d}.pub.3gppnetwork.org".format(mnc, mcc)
             )
 
     with open(output_path, "w", encoding="utf-8") as file:

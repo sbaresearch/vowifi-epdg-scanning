@@ -7,7 +7,11 @@ import argparse
 import subprocess
 import dns.resolver
 from scanner.common.logging_config import configure_logging
-from scanner.ikev2.ikev2_class import EpdgIKEv2, usable_ip_versions
+from scanner.ikev2.ikev2_class import (
+    EpdgIKEv2,
+    certreq_authority_from_cas,
+    usable_ip_versions,
+)
 import logging
 import datetime
 import json
@@ -413,7 +417,139 @@ TEST_CONFIG = {
         "ipsec_encr": EpdgIKEv2.ENC_DES,
         "ipsec_integ": EpdgIKEv2.INT_MD5_96,
     },
+    # IKE_AUTH w/ CERTREQ
+    "PROBE_EPDG_CERT": {
+        "sa_list": [
+            [
+                EpdgIKEv2.ENC_AES_128,
+                EpdgIKEv2.ENC_AES_256,
+                EpdgIKEv2.ENC_3DES,
+                EpdgIKEv2.PRF_SHA1,
+                EpdgIKEv2.PRF_SHA2_256,
+                EpdgIKEv2.PRF_MD5,
+                EpdgIKEv2.INT_SHA1_96,
+                EpdgIKEv2.INT_SHA2_256_128,
+                EpdgIKEv2.INT_MD5_96,
+                EpdgIKEv2.DH_2048MODP,
+            ]
+        ],
+        "key_echange": EpdgIKEv2.KE_DH_2048MODP,
+        # broad ESP offer so one is accepted (narrow -> 14, e.g. Telstra)
+        "ipsec_encr": [
+            EpdgIKEv2.ENC_AES_256,
+            EpdgIKEv2.ENC_AES_192,
+            EpdgIKEv2.ENC_AES_128,
+            EpdgIKEv2.ENC_3DES,
+        ],
+        "ipsec_integ": [
+            EpdgIKEv2.INT_SHA2_256_128,
+            EpdgIKEv2.INT_SHA2_384_192,
+            EpdgIKEv2.INT_SHA2_512_256,
+            EpdgIKEv2.INT_SHA1_96,
+            EpdgIKEv2.INT_AES_XCBC_96,
+            EpdgIKEv2.INT_MD5_96,
+        ],
+        "cert_probe": True,
+        "identity_type": "aka_pseudonym",
+        "identity_username": "fakeuser",
+    },
 }
+
+
+# child-SA (ESP) crypto probing
+_IPSEC_BASELINE_ENCR = [
+    EpdgIKEv2.ENC_AES_256,
+    EpdgIKEv2.ENC_AES_192,
+    EpdgIKEv2.ENC_AES_128,
+    EpdgIKEv2.ENC_3DES,
+]
+_IPSEC_BASELINE_INTEG = [
+    EpdgIKEv2.INT_SHA2_256_128,
+    EpdgIKEv2.INT_SHA2_384_192,
+    EpdgIKEv2.INT_SHA2_512_256,
+    EpdgIKEv2.INT_SHA1_96,
+    EpdgIKEv2.INT_AES_XCBC_96,
+    EpdgIKEv2.INT_MD5_96,
+]
+# IKE SA to bring the tunnel up before the ESP probe (broad, DH-2048)
+_IKE_SA_FOR_IPSEC_PROBE = [
+    [
+        EpdgIKEv2.ENC_AES_128,
+        EpdgIKEv2.ENC_AES_256,
+        EpdgIKEv2.ENC_3DES,
+        EpdgIKEv2.PRF_SHA1,
+        EpdgIKEv2.PRF_SHA2_256,
+        EpdgIKEv2.PRF_MD5,
+        EpdgIKEv2.INT_SHA1_96,
+        EpdgIKEv2.INT_SHA2_256_128,
+        EpdgIKEv2.INT_MD5_96,
+        EpdgIKEv2.DH_2048MODP,
+    ]
+]
+
+# CBC/CTR ciphers (broad integ baseline)
+_IPSEC_ENCR_CANDIDATES = {
+    "AES_CBC_256": EpdgIKEv2.ENC_AES_256,
+    "AES_CBC_192": EpdgIKEv2.ENC_AES_192,
+    "AES_CBC_128": EpdgIKEv2.ENC_AES_128,
+    "AES_CTR_128": EpdgIKEv2.ENC_AES_CTR_128,
+    "3DES": EpdgIKEv2.ENC_3DES,
+    "DES": EpdgIKEv2.ENC_DES,
+    "NULL": EpdgIKEv2.ENC_NULL,
+}
+# AEAD: no separate integ transform
+_IPSEC_ENCR_AEAD_CANDIDATES = {
+    "AES_GCM_16_256": EpdgIKEv2.AES_GCM_16_256,
+    "AES_GCM_16_128": EpdgIKEv2.AES_GCM_16_128,
+    "AES_GCM_8_128": EpdgIKEv2.AES_GCM_8_128,
+}
+# integ algos (broad CBC baseline)
+_IPSEC_INTEG_CANDIDATES = {
+    "SHA1_96": EpdgIKEv2.INT_SHA1_96,
+    "SHA2_256_128": EpdgIKEv2.INT_SHA2_256_128,
+    "SHA2_384_192": EpdgIKEv2.INT_SHA2_384_192,
+    "SHA2_512_256": EpdgIKEv2.INT_SHA2_512_256,
+    "AES_XCBC_96": EpdgIKEv2.INT_AES_XCBC_96,
+    "MD5_96": EpdgIKEv2.INT_MD5_96,
+}
+
+
+def _ipsec_probe_entry(encr, integ):
+    return {
+        "sa_list": _IKE_SA_FOR_IPSEC_PROBE,
+        "key_echange": EpdgIKEv2.KE_DH_2048MODP,
+        "ipsec_encr": encr,
+        "ipsec_integ": integ,
+        "ipsec_probe": True,
+        "identity_type": "aka_pseudonym",
+        "identity_username": "fakeuser",
+    }
+
+
+for _name, _t in _IPSEC_ENCR_CANDIDATES.items():
+    TEST_CONFIG[f"PROBE_IPSEC_ENCR_{_name}"] = _ipsec_probe_entry(
+        [_t], _IPSEC_BASELINE_INTEG
+    )
+for _name, _t in _IPSEC_ENCR_AEAD_CANDIDATES.items():
+    TEST_CONFIG[f"PROBE_IPSEC_ENCR_{_name}"] = _ipsec_probe_entry([_t], [])
+for _name, _t in _IPSEC_INTEG_CANDIDATES.items():
+    TEST_CONFIG[f"PROBE_IPSEC_INTEG_{_name}"] = _ipsec_probe_entry(
+        _IPSEC_BASELINE_ENCR, [_t]
+    )
+
+# identity-axis control: same crypto, IDi from the 001/01 test PLMN (foreign
+# realm). served-vs-wrong response shows whether the subscriber check is reached.
+def _wrongrealm(base_name):
+    import copy
+    e = copy.deepcopy(TEST_CONFIG[base_name])
+    e["idi_realm_mcc"] = "001"
+    e["idi_realm_mnc"] = "01"
+    return e
+
+TEST_CONFIG["PROBE_IPSEC_ENCR_NULL_WRONGREALM"] = _wrongrealm("PROBE_IPSEC_ENCR_NULL")
+TEST_CONFIG["PROBE_IPSEC_ENCR_AES_GCM_16_128_WRONGREALM"] = _wrongrealm(
+    "PROBE_IPSEC_ENCR_AES_GCM_16_128"
+)
 
 
 REGEX_VOWIFI = r"^epdg.epc.mnc(\d{2,3}).mcc(\d{3}).pub.3gppnetwork.org\.?$"
@@ -468,6 +604,75 @@ def resolve_domain(operator_url, ip_version="v4v6"):
     for record in _resolve(dnsres, operator_url, "CNAME"):
         records.extend(resolve_domain(record.target, ip_version))
     return list(dict.fromkeys(records))  # order
+
+
+def load_cert_authority():
+    """CERTREQ authority bytes. EPDG_CA_CERTS_DIR -> hash those CAs; else empty (any CA)."""
+    ca_dir = os.getenv("EPDG_CA_CERTS_DIR", "").strip()
+    if not ca_dir:
+        return b""
+    paths = sorted(
+        p
+        for ext in ("*.crt", "*.pem", "*.der", "*.cer")
+        for p in pathlib.Path(ca_dir).glob(ext)
+    )
+    if not paths:
+        logger.warning("EPDG_CA_CERTS_DIR=%s has no cert files; using empty CERTREQ", ca_dir)
+        return b""
+    logger.info("CERTREQ built from %d CA cert(s) in %s", len(paths), ca_dir)
+    return certreq_authority_from_cas(paths)
+
+
+def cert_probe_target(interface, ip, mcc, mnc, cfg, cert_authority):
+    """Cert probe on one IP: IKE_SA_INIT (frag) then IKE_AUTH w/ CERTREQ.
+    Returns the SA_INIT result if the SA never comes up."""
+    ike = EpdgIKEv2(
+        ip,
+        500,
+        interface=None if interface == "any" else interface,
+        mcc=mcc,
+        mnc=mnc,
+        identity_type=cfg.get("identity_type", "aka_pseudonym"),
+        identity_username=cfg.get("identity_username"),
+        idi_mcc=cfg.get("idi_realm_mcc"),
+        idi_mnc=cfg.get("idi_realm_mnc"),
+    )
+    sa_resp = ike.ike_sa_init(
+        cfg["sa_list"], key_exchange=cfg["key_echange"], fragmentation_supported=True
+    )
+    if not (
+        isinstance(sa_resp, dict)
+        and sa_resp.get("state") == "successful key exchange"
+    ):
+        return sa_resp
+    return ike.ike_auth_probe_cert(
+        cfg["ipsec_encr"], cfg["ipsec_integ"], cert_authority=cert_authority
+    )
+
+
+def ipsec_probe_target(interface, ip, mcc, mnc, cfg):
+    """ESP crypto probe on one IP: IKE_SA_INIT then IKE_AUTH w/ cfg's ESP
+    proposal. Returns the SA_INIT result if the tunnel never came up."""
+    ike = EpdgIKEv2(
+        ip,
+        500,
+        interface=None if interface == "any" else interface,
+        mcc=mcc,
+        mnc=mnc,
+        identity_type=cfg.get("identity_type", "aka_pseudonym"),
+        identity_username=cfg.get("identity_username"),
+        idi_mcc=cfg.get("idi_realm_mcc"),
+        idi_mnc=cfg.get("idi_realm_mnc"),
+    )
+    sa_resp = ike.ike_sa_init(
+        cfg["sa_list"], key_exchange=cfg["key_echange"], fragmentation_supported=True
+    )
+    if not (
+        isinstance(sa_resp, dict)
+        and sa_resp.get("state") == "successful key exchange"
+    ):
+        return sa_resp
+    return ike.ike_auth_probe_ipsec(cfg["ipsec_encr"], cfg["ipsec_integ"])
 
 
 def epdg_scanner(
@@ -548,6 +753,9 @@ def epdg_scanner(
     ke = TEST_CONFIG[testcase]["key_echange"]
     ipsec_encr = TEST_CONFIG[testcase].get("ipsec_encr")
     ipsec_integ = TEST_CONFIG[testcase].get("ipsec_integ")
+    cert_probe = TEST_CONFIG[testcase].get("cert_probe", False)
+    cert_authority = load_cert_authority() if cert_probe else b""
+    ipsec_probe = TEST_CONFIG[testcase].get("ipsec_probe", False)
 
     # start TCP dump to *.pcap file.
     p = subprocess.Popen(
@@ -578,6 +786,51 @@ def epdg_scanner(
                     # an unreachable target skips only itself, not the rest.
                     try:
                         mcc, mnc = get_ids_from_domain(domain)
+
+                        # cert probe: own flow
+                        if cert_probe:
+                            resp = cert_probe_target(
+                                interface,
+                                ip,
+                                mcc,
+                                mnc,
+                                TEST_CONFIG[testcase],
+                                cert_authority,
+                            )
+                            timestamp = datetime.datetime.now(
+                                datetime.timezone.utc
+                            ).strftime("%Y-%m-%dT%H:%M:%SZ")
+                            data = {
+                                "timestamp": timestamp,
+                                "domain": domain,
+                                "ip": ip,
+                                "response": resp,
+                            }
+                            json_data = json.dumps(data, default=str)
+                            logger.debug(json_data)
+                            results_file.write(json_data + "\n")
+                            continue
+
+                        # ESP probe: own flow
+                        if ipsec_probe:
+                            resp = ipsec_probe_target(
+                                interface, ip, mcc, mnc, TEST_CONFIG[testcase]
+                            )
+                            timestamp = datetime.datetime.now(
+                                datetime.timezone.utc
+                            ).strftime("%Y-%m-%dT%H:%M:%SZ")
+                            data = {
+                                "timestamp": timestamp,
+                                "domain": domain,
+                                "ip": ip,
+                                "testcase": testcase,
+                                "response": resp,
+                            }
+                            json_data = json.dumps(data, default=str)
+                            logger.debug(json_data)
+                            results_file.write(json_data + "\n")
+                            continue
+
                         # crafting package.
                         ike = EpdgIKEv2(
                             ip,

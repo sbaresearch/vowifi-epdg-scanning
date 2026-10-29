@@ -6,11 +6,16 @@ some codeparts from https://github.com/Spinlogic/epdg_discoverer
 import secrets
 import binascii, hashlib, socket
 import logging
+import datetime
+import pathlib
 import scanner.ikev2.ikev2_crypto as ikev2_crypto
 from scanner.ikev2.ikev2_crypto import create_key
 from functools import lru_cache
 from ipaddress import ip_address
-from scapy.all import IP, IPv6, UDP, sr1, load_contrib
+from cryptography import x509
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
+from scapy.all import IP, IPv6, UDP, sr1, sr, load_contrib
 
 # fromt scapy.all import get_if_addr
 # from scapy.config import conf
@@ -57,6 +62,112 @@ def usable_ip_versions(interface=None):
         except OSError as exc:
             logger.info("no %s route from here (%s)", version, exc)
     return tuple(available)
+
+
+# --- 3GPP identity helpers (3GPP TS 23.003, RFC 4187/5448) -------------------
+
+# Leading NAI digit that tags how the peer interprets the username that follows,
+# per RFC 4187 §4.1.1.7 (EAP-AKA/EAP-SIM) and RFC 5448 §4.1.1 (EAP-AKA').
+EAP_IDENTITY_PREFIX = {
+    "aka_permanent": "0",
+    "sim_permanent": "1",
+    "aka_pseudonym": "2",
+    "sim_pseudonym": "3",
+    "aka_reauth": "4",
+    "sim_reauth": "5",
+    "aka_prime_permanent": "6",
+    "aka_prime_pseudonym": "7",
+    "aka_prime_reauth": "8",
+}
+
+
+def generate_probe_imsi(mcc, mnc):
+    """15-digit IMSI: MCC+MNC+zero MSIN (TS 23.003). Unprovisioned, 2/3-digit MNC."""
+    mcc = str(mcc).strip()
+    mnc = str(mnc).strip()
+    if not (mcc.isdigit() and mnc.isdigit()):
+        raise ValueError(f"mcc/mnc must be numeric, got mcc={mcc!r} mnc={mnc!r}")
+    if len(mcc) != 3 or len(mnc) not in (2, 3):
+        raise ValueError(
+            f"mcc must be 3 digits and mnc 2 or 3, got mcc={mcc!r} mnc={mnc!r}"
+        )
+    return (mcc + mnc).ljust(15, "0")
+
+
+def build_epc_nai(mcc, mnc, imsi=None, username=None, identity_type="aka_permanent"):
+    """EPC NAI for the IKE_AUTH IDi (TS 23.003). Realm MNC/MCC zero-padded to 3."""
+    try:
+        prefix = EAP_IDENTITY_PREFIX[identity_type]
+    except KeyError:
+        raise ValueError(
+            f"unknown identity_type {identity_type!r}; "
+            f"expected one of {sorted(EAP_IDENTITY_PREFIX)}"
+        )
+    if username is None:
+        username = imsi
+    if username is None:
+        raise ValueError("build_epc_nai needs either imsi or username")
+    realm = f"nai.epc.mnc{str(mnc).zfill(3)}.mcc{str(mcc).zfill(3)}.3gppnetwork.org"
+    return f"{prefix}{username}@{realm}"
+
+
+# --- cert helpers ---
+
+
+def _load_certificate(data):
+    """Load a cert from DER or PEM bytes."""
+    try:
+        return x509.load_der_x509_certificate(data)
+    except ValueError:
+        return x509.load_pem_x509_certificate(data)
+
+
+def certreq_authority_from_cas(cert_paths):
+    """CERTREQ authority: concat of SHA-1(DER SPKI) per CA (RFC 7296). Empty = any CA."""
+    authority = b""
+    for path in cert_paths:
+        cert = _load_certificate(pathlib.Path(path).read_bytes())
+        spki = cert.public_key().public_bytes(
+            Encoding.DER, PublicFormat.SubjectPublicKeyInfo
+        )
+        authority += hashlib.sha1(spki).digest()
+    return authority
+
+
+def _iso_utc(dt):
+    """ISO-8601 UTC; tolerate naive datetimes from older cryptography."""
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=datetime.timezone.utc)
+    return dt.isoformat()
+
+
+def parse_certificate(cert_encoding, cert_data):
+    """Summarise a CERT payload -> dict, never raises. X.509 only, else raw hex."""
+    info = {
+        "cert_encoding": int(cert_encoding) if cert_encoding is not None else None,
+        "length": len(cert_data) if cert_data else 0,
+    }
+    if cert_encoding == 4 and cert_data:
+        try:
+            cert = x509.load_der_x509_certificate(bytes(cert_data))
+            not_before = getattr(cert, "not_valid_before_utc", None) or cert.not_valid_before
+            not_after = getattr(cert, "not_valid_after_utc", None) or cert.not_valid_after
+            info.update(
+                {
+                    "subject": cert.subject.rfc4514_string(),
+                    "issuer": cert.issuer.rfc4514_string(),
+                    "serial_number": format(cert.serial_number, "x"),
+                    "not_valid_before": _iso_utc(not_before),
+                    "not_valid_after": _iso_utc(not_after),
+                    "sha256_fingerprint": cert.fingerprint(hashes.SHA256()).hex(),
+                    "pem": cert.public_bytes(Encoding.PEM).decode("ascii"),
+                }
+            )
+        except Exception as exc:  # bad cert mustn't kill the scan
+            info["parse_error"] = f"{type(exc).__name__}: {exc}"
+    else:
+        info["raw_hex"] = toHex(bytes(cert_data)) if cert_data else ""
+    return info
 
 
 class EpdgIKEv2(object):
@@ -541,13 +652,15 @@ class EpdgIKEv2(object):
             load=encrypted_payload,
         )
         packet_ike[IKEv2].length = len(packet_ike.payload) + 28
+        # ICV length varies by integ algo (SHA1-96=12, SHA2-256-128=16)
+        icv_len = ikev2_crypto.Integrity(integ_id).hash_size
         checksum = ikev2_crypto.calculate_checksum(
-            bytes(packet_ike)[:-12], sk_a, integ_id
+            bytes(packet_ike)[:-icv_len], sk_a, integ_id
         )
 
         # fix checksum in payload
         packet_ike[IKEv2_Encrypted].load = (
-            packet_ike[IKEv2_Encrypted].load[:-12] + checksum
+            packet_ike[IKEv2_Encrypted].load[:-icv_len] + checksum
         )
 
         return packet_ike
@@ -580,6 +693,11 @@ class EpdgIKEv2(object):
         mnc="01",
         imsi="generate",
         sport=0,
+        identity_type="aka_permanent",
+        identity_username=None,
+        idi_type="Email_addr",
+        idi_mcc=None,
+        idi_mnc=None,
     ):
         self.spi_i = secrets.token_bytes(8)
         self.spi_r = bytes(8)
@@ -589,6 +707,13 @@ class EpdgIKEv2(object):
         self.mcc = mcc
         self.mnc = mnc
         self.imsi = imsi
+        # permanent -> username from IMSI; pseudonym/reauth -> identity_username
+        self.identity_type = identity_type
+        self.identity_username = identity_username
+        self.idi_type = idi_type
+        # IDi realm/IMSI override (identity-axis probing); defaults to target
+        self.idi_mcc = idi_mcc or mcc
+        self.idi_mnc = idi_mnc or mnc
         self.af_inet = get_ip_version(self.dst_addr)
         self.src_addr = get_default_source_address(self.af_inet, self.interface)
         self.src_port = sport
@@ -610,7 +735,7 @@ class EpdgIKEv2(object):
         logger.debug("binding to %s", self.sock.getsockname())
 
         if self.imsi == "generate":
-            self.imsi = f"0{self.mcc}{self.mnc}".ljust(16, "0")  # 3GPP TS 23.003
+            self.imsi = generate_probe_imsi(self.idi_mcc, self.idi_mnc)  # 3GPP TS 23.003
 
     def ike_generate_keys(self):
         (
@@ -698,7 +823,9 @@ class EpdgIKEv2(object):
             return IPv6(dst=dst)
         return IP(dst=dst)
 
-    def ike_sa_init_create_packet(self, sa_list, key_exchange, cookie=None):
+    def ike_sa_init_create_packet(
+        self, sa_list, key_exchange, cookie=None, fragmentation_supported=False
+    ):
         self.dh_private_key, self.dh_public_key_bytes, self.dh_key_size = (
             ikev2_crypto.dh_generate_key(key_exchange)
         )
@@ -735,25 +862,35 @@ class EpdgIKEv2(object):
                 notify=nat_det_src,
             )
             / IKEv2_Notify(
-                next_payload="None",
+                next_payload="Notify" if fragmentation_supported else "None",
                 type="NAT_DETECTION_DESTINATION_IP",
                 notify=nat_det_dst,
             )
         )
+        # RFC 7383: responder fragments only if we advertise support
+        if fragmentation_supported:
+            packet_sa_init = packet_sa_init / IKEv2_Notify(
+                next_payload="None", type="IKEV2_FRAGMENTATION_SUPPORTED"
+            )
         if cookie:
             logger.debug("append cookie")
             EpdgIKEv2.append_cookie(packet_sa_init, cookie)
         return packet_sa_init
 
-    def ike_sa_init(self, sa_list, key_exchange, cookie=None):
+    def ike_sa_init(self, sa_list, key_exchange, cookie=None, fragmentation_supported=False):
         ## calculate nat_detection_source_ip and nat_detection_destination_ip
-        packet_sa_init = self.ike_sa_init_create_packet(sa_list, key_exchange, cookie)
+        packet_sa_init = self.ike_sa_init_create_packet(
+            sa_list, key_exchange, cookie, fragmentation_supported
+        )
         response = sr1(packet_sa_init, iface=self.interface, timeout=3, verbose=0)
         if not cookie and EpdgIKEv2.get_cookie(response):
             cookie = EpdgIKEv2.get_cookie(response)
             logger.debug("retry with cookie %s", cookie)
             return self.ike_sa_init(
-                sa_list=sa_list, key_exchange=key_exchange, cookie=cookie
+                sa_list=sa_list,
+                key_exchange=key_exchange,
+                cookie=cookie,
+                fragmentation_supported=fragmentation_supported,
             )
         if response and IKEv2 in response and response[IKEv2].flags == "Response":
             return self.ike_sa_init_analyze_response(
@@ -821,13 +958,29 @@ class EpdgIKEv2(object):
         except:
             return "exception occured"
 
-    def create_packet_ike_auth(self, trans_encr, trans_integ):
+    @staticmethod
+    def _as_transform_list(transforms):
+        if transforms is None:
+            return []
+        if isinstance(transforms, (list, tuple)):
+            return list(transforms)
+        return [transforms]
+
+    def create_packet_ike_auth(
+        self, trans_encr, trans_integ, cert_authority=None
+    ):
         self.ike_auth_spi = secrets.token_bytes(4)
+        # ESP proposal. encr/integ may be a transform or a list (offer several,
+        # responder picks). Empty integ = AEAD (GCM). No DH group: child-SA PFS
+        # isn't used by the SWu profile (TS 33.402/33.234).
+        encr_list = EpdgIKEv2._as_transform_list(trans_encr)
+        integ_list = EpdgIKEv2._as_transform_list(trans_integ)
+        esp_transforms = encr_list + integ_list + [EpdgIKEv2.ESN]
         sa_proposal = IKEv2_Proposal(
             proto="ESP",
             SPI=self.ike_auth_spi,
-            trans_nb=3,
-            trans=trans_encr / trans_integ / EpdgIKEv2.ESN,
+            trans_nb=len(esp_transforms),
+            trans=EpdgIKEv2.create_sa_transform_list(esp_transforms),
         )
         logger.debug("SPI: %s", toHex(self.ike_auth_spi))
 
@@ -868,6 +1021,28 @@ class EpdgIKEv2(object):
             ),
         ]
 
+        # A CERTREQ asks the ePDG to present its certificate (RFC 7296 §3.7). It
+        # sits right after IDi; cert_authority is a concatenation of SHA-1
+        # hashes of trusted CA public keys, or b"" to accept any CA.
+        want_certreq = cert_authority is not None
+        idi = IKEv2_IDi(
+            next_payload="CERTREQ" if want_certreq else "IDr",
+            IDtype=self.idi_type,
+            ID=build_epc_nai(
+                self.idi_mcc,
+                self.idi_mnc,
+                imsi=self.imsi,
+                username=self.identity_username,
+                identity_type=self.identity_type,
+            ),
+        )
+        if want_certreq:
+            idi = idi / IKEv2_CERTREQ(
+                next_payload="IDr",
+                cert_encoding=4,  # X.509 Certificate - Signature
+                cert_authority=cert_authority,
+            )
+
         packet_ike_auth = (
             IKEv2(
                 init_SPI=self.spi_i,
@@ -877,11 +1052,7 @@ class EpdgIKEv2(object):
                 flags="Initiator",
                 id=1,
             )
-            / IKEv2_IDi(
-                next_payload="IDr",
-                IDtype="Email_addr",
-                ID=f"{self.imsi}@nai.epc.mnc{self.mnc.zfill(3)}.{self.mcc.zfill(3)}.3gppnetwork.org",
-            )
+            / idi
             / IKEv2_IDr(next_payload="CP", IDtype="FQDN", ID="ims")
             / IKEv2_CP(next_payload="SA", CFGType="CFG_REQUEST", attributes=cp_attrs)
             / IKEv2_SA(next_payload="TSi", prop=sa_proposal)
@@ -940,3 +1111,174 @@ class EpdgIKEv2(object):
         else:
             logger.debug("no auth resp")
             return "no auth response"
+
+    @staticmethod
+    def reassemble_encrypted_response(responses, encr_id, sk_er, integ_id):
+        """Decrypt a (possibly RFC 7383 fragmented) IKE response.
+
+        Returns (payload_chain, n_fragments), or (None, n) if nothing decrypted.
+        Fragments are de-padded then concatenated.
+        """
+        fragments = {}
+        first_next_payload = None
+        single_plain = None
+        single_next = None
+
+        for resp in responses:
+            if resp is None or IKEv2 not in resp:
+                continue
+            ike = resp[IKEv2]
+            if IKEv2_Encrypted_Fragment in ike:
+                skf = ike[IKEv2_Encrypted_Fragment]
+                try:
+                    plain = ikev2_crypto.decrypt(
+                        bytes(skf.load), sk_er, encr_id, integ_id
+                    )
+                except Exception as exc:
+                    logger.warning(
+                        "fragment %s decrypt failed: %s", skf.frag_number, exc
+                    )
+                    continue
+                fragments[int(skf.frag_number)] = plain
+                if int(skf.frag_number) == 1:
+                    first_next_payload = skf.next_payload
+            elif IKEv2_Encrypted in ike:
+                enc = ike[IKEv2_Encrypted]
+                try:
+                    single_plain = ikev2_crypto.decrypt(
+                        bytes(enc.load), sk_er, encr_id, integ_id
+                    )
+                    single_next = enc.next_payload
+                except Exception as exc:
+                    logger.warning("encrypted payload decrypt failed: %s", exc)
+
+        if fragments:
+            if 1 not in fragments:
+                logger.warning(
+                    "missing first IKE fragment; got %s", sorted(fragments)
+                )
+                return None, len(fragments)
+            ordered = b"".join(fragments[i] for i in sorted(fragments))
+            hdr = bytes.fromhex(f"{int(first_next_payload):02x}000004")
+            return IKEv2_Payload(hdr + ordered), len(fragments)
+
+        if single_plain is not None:
+            hdr = bytes.fromhex(f"{int(single_next):02x}000004")
+            return IKEv2_Payload(hdr + single_plain), 1
+
+        return None, 0
+
+    @staticmethod
+    def classify_cert_response(chain, n_fragments):
+        """IKE_AUTH chain -> cert_present / vulnerable_no_cert_eap / inconclusive"""
+        result = {
+            "state": "ike_auth cert probe",
+            "n_fragments": n_fragments,
+            "cert_present": False,
+            "eap_started": False,
+            "certs": [],
+            "notify_types": [],
+        }
+        if chain is None:
+            result["finding"] = "no_decryptable_response"
+            return result
+
+        certs = EpdgIKEv2.extract_matching_payloads(chain, IKEv2_CERT)
+        result["cert_present"] = bool(certs)
+        result["certs"] = [
+            parse_certificate(c.cert_encoding, c.cert_data) for c in certs
+        ]
+        result["eap_started"] = IKEv2_EAP in chain
+        # get_notify_payloads() expects a full IKEv2 packet; the reassembled
+        # response is a bare payload chain, so walk it for IKEv2_Notify directly.
+        notifies = EpdgIKEv2.extract_matching_payloads(chain, IKEv2_Notify)
+        result["notify_types"] = [int(n.type) for n in notifies]
+
+        if result["cert_present"]:
+            # Finer secure/partial split (ID/CN mismatch, expiry) is left to
+            # post-analysis against the configured IDr/CA.
+            result["finding"] = "cert_present"
+        elif result["eap_started"]:
+            result["finding"] = "vulnerable_no_cert_eap"
+        else:
+            result["finding"] = "inconclusive"
+        return result
+
+    def _ike_auth_exchange(
+        self, trans_encr, trans_integ, cert_authority=None, timeout=5
+    ):
+        # needs a completed encrypted IKE_SA_INIT. sr(multi=True) matches every
+        # datagram on our init_SPI, so all fragments are collected.
+        """Send one IKE_AUTH, collect+decrypt the reply -> (chain, n, error)."""
+        if self.encr_id is None or self.encr_id == ikev2_crypto.EncrId.ENCR_NULL:
+            return None, 0, "ike_auth needs an encrypted IKE SA"
+
+        packet = self.create_packet_ike_auth(
+            trans_encr, trans_integ, cert_authority=cert_authority
+        )
+        answered, _ = sr(
+            packet, iface=self.interface, timeout=timeout, multi=True, verbose=0
+        )
+        responses = [rcv for _sent, rcv in answered]
+        logger.debug("IKE_AUTH: %d response datagram(s)", len(responses))
+        if not responses:
+            return None, 0, "no auth response"
+
+        chain, n_fragments = EpdgIKEv2.reassemble_encrypted_response(
+            responses, self.encr_id, self.sk_er, self.integ_id
+        )
+        if logger.isEnabledFor(logging.DEBUG) and chain is not None:
+            logger.debug("reassembled IKE_AUTH response:\n%s", chain.show(dump=True))
+        return chain, n_fragments, None
+
+    def ike_auth_probe_cert(
+        self, trans_encr, trans_integ, cert_authority=b"", timeout=5
+    ):
+        """Send an IKE_AUTH with a CERTREQ and report whether a cert comes back."""
+        chain, n_fragments, error = self._ike_auth_exchange(
+            trans_encr, trans_integ, cert_authority=cert_authority, timeout=timeout
+        )
+        if error:
+            return {"state": error}
+        return EpdgIKEv2.classify_cert_response(chain, n_fragments)
+
+    def ike_auth_probe_ipsec(self, trans_encr, trans_integ, timeout=5):
+        """Offer one child-SA (ESP) proposal and report whether it was accepted.
+
+        No CERTREQ -- this isolates the crypto accept/reject signal.
+        """
+        chain, n_fragments, error = self._ike_auth_exchange(
+            trans_encr, trans_integ, cert_authority=None, timeout=timeout
+        )
+        if error:
+            return {"state": error}
+        return EpdgIKEv2.classify_ipsec_proposal_response(chain, n_fragments)
+
+    @staticmethod
+    def classify_ipsec_proposal_response(chain, n_fragments):
+        # NO_PROPOSAL_CHOSEN -> rejected; any other decryptable reply -> accepted
+        # (SA checked before subscriber). Raw notify_types kept for analysis.
+        """Did the ePDG accept the offered ESP proposal? -> result dict."""
+        result = {
+            "state": "ike_auth ipsec probe",
+            "n_fragments": n_fragments,
+            "proposal_rejected": False,
+            "cert_present": False,
+            "eap_started": False,
+            "notify_types": [],
+        }
+        if chain is None:
+            result["result"] = "inconclusive"
+            return result
+
+        notifies = EpdgIKEv2.extract_matching_payloads(chain, IKEv2_Notify)
+        result["notify_types"] = [int(n.type) for n in notifies]
+        result["proposal_rejected"] = 14 in result["notify_types"]  # NO_PROPOSAL_CHOSEN
+        result["cert_present"] = bool(
+            EpdgIKEv2.extract_matching_payloads(chain, IKEv2_CERT)
+        )
+        result["eap_started"] = IKEv2_EAP in chain
+        result["result"] = (
+            "not_supported" if result["proposal_rejected"] else "supported"
+        )
+        return result

@@ -441,5 +441,39 @@ class ProbeTestConfigGuardTest(unittest.TestCase):
             self.assertFalse(name.startswith("PROBE_"))
 
 
+class IkeOuterProbeTestConfigTest(unittest.TestCase):
+    """Outer (IKE SA) crypto sweep: additive PROBE_IKE_* names; SUPPORT_* untouched."""
+
+    def _cfg(self):
+        from scanner.ikev2.epdg_scanner import TEST_CONFIG
+        return TEST_CONFIG
+
+    def test_sweep_generated(self):
+        t = self._cfg()
+        encr = [k for k in t if k.startswith("PROBE_IKE_ENCR_")]
+        integ = [k for k in t if k.startswith("PROBE_IKE_INTEG_")]
+        dh = [k for k in t if k.startswith("PROBE_IKE_DH_")]
+        self.assertEqual(len(encr), 10)
+        self.assertEqual(len(integ), 6)
+        self.assertEqual(len(dh), 14)
+        # outer layer rides the IKE_SA_INIT path -> no inner/probe flags
+        for k in encr + integ:
+            self.assertNotIn("ipsec_encr", t[k])
+            self.assertNotIn("ipsec_probe", t[k])
+
+    def test_dh_alias_is_same_object(self):
+        # identical object => byte-identical pipeline behaviour
+        t = self._cfg()
+        self.assertIs(t["PROBE_IKE_DH_2048MODP"], t["SUPPORT_DH_2048MODP"])
+
+    def test_aead_offers_no_integrity(self):
+        # GCM proposal omits the integrity transforms a CBC proposal carries
+        t = self._cfg()
+        cbc = len(t["PROBE_IKE_ENCR_AES_CBC_128"]["sa_list"][0])
+        gcm = len(t["PROBE_IKE_ENCR_AES_GCM_16_128"]["sa_list"][0])
+        self.assertEqual(cbc, 13)   # 1 encr + 5 prf + 6 integ + 1 dh
+        self.assertEqual(gcm, 7)    # 1 encr + 5 prf + 1 dh (no integ)
+
+
 if __name__ == "__main__":
     unittest.main()

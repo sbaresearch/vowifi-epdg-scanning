@@ -514,6 +514,84 @@ TEST_CONFIG["PROBE_IPSEC_ENCR_AES_GCM_16_128_WRONGREALM"] = _wrongrealm(
 )
 
 
+# --- outer (IKE SA) crypto probing ---
+# One IKE_SA_INIT per candidate: offer that transform plus a broad baseline for
+# the other dimensions; a successful key exchange means it is accepted. Rides
+# the same path as the DH scan. Homogeneous PROBE_* names; the SUPPORT_* ones
+# stay as pipeline aliases.
+_IKE_PRF_BASELINE = [
+    EpdgIKEv2.PRF_SHA1,
+    EpdgIKEv2.PRF_SHA2_256,
+    EpdgIKEv2.PRF_SHA2_384,
+    EpdgIKEv2.PRF_SHA2_512,
+    EpdgIKEv2.PRF_MD5,
+]
+_IKE_INTEG_BASELINE = [
+    EpdgIKEv2.INT_SHA1_96,
+    EpdgIKEv2.INT_SHA2_256_128,
+    EpdgIKEv2.INT_SHA2_384_192,
+    EpdgIKEv2.INT_SHA2_512_256,
+    EpdgIKEv2.INT_AES_XCBC_96,
+    EpdgIKEv2.INT_MD5_96,
+]
+_IKE_ENCR_BASELINE = [
+    EpdgIKEv2.ENC_AES_256,
+    EpdgIKEv2.ENC_AES_192,
+    EpdgIKEv2.ENC_AES_128,
+    EpdgIKEv2.ENC_3DES,
+]
+
+_IKE_ENCR_CANDIDATES = {
+    "NULL": EpdgIKEv2.ENC_NULL,
+    "DES": EpdgIKEv2.ENC_DES,
+    "3DES": EpdgIKEv2.ENC_3DES,
+    "AES_CBC_128": EpdgIKEv2.ENC_AES_128,
+    "AES_CBC_192": EpdgIKEv2.ENC_AES_192,
+    "AES_CBC_256": EpdgIKEv2.ENC_AES_256,
+    "AES_CTR_128": EpdgIKEv2.ENC_AES_CTR_128,
+}
+# AEAD ciphers carry no separate integrity transform.
+_IKE_ENCR_AEAD_CANDIDATES = {
+    "AES_GCM_16_256": EpdgIKEv2.AES_GCM_16_256,
+    "AES_GCM_16_128": EpdgIKEv2.AES_GCM_16_128,
+    "AES_GCM_8_128": EpdgIKEv2.AES_GCM_8_128,
+}
+_IKE_INTEG_CANDIDATES = {
+    "SHA1_96": EpdgIKEv2.INT_SHA1_96,
+    "SHA2_256_128": EpdgIKEv2.INT_SHA2_256_128,
+    "SHA2_384_192": EpdgIKEv2.INT_SHA2_384_192,
+    "SHA2_512_256": EpdgIKEv2.INT_SHA2_512_256,
+    "AES_XCBC_96": EpdgIKEv2.INT_AES_XCBC_96,
+    "MD5_96": EpdgIKEv2.INT_MD5_96,
+}
+
+
+def _ike_probe_entry(proposal):
+    return {"sa_list": [proposal], "key_echange": EpdgIKEv2.KE_DH_2048MODP}
+
+
+for _name, _t in _IKE_ENCR_CANDIDATES.items():
+    TEST_CONFIG[f"PROBE_IKE_ENCR_{_name}"] = _ike_probe_entry(
+        [_t] + _IKE_PRF_BASELINE + _IKE_INTEG_BASELINE + [EpdgIKEv2.DH_2048MODP]
+    )
+for _name, _t in _IKE_ENCR_AEAD_CANDIDATES.items():
+    TEST_CONFIG[f"PROBE_IKE_ENCR_{_name}"] = _ike_probe_entry(
+        [_t] + _IKE_PRF_BASELINE + [EpdgIKEv2.DH_2048MODP]
+    )
+for _name, _t in _IKE_INTEG_CANDIDATES.items():
+    TEST_CONFIG[f"PROBE_IKE_INTEG_{_name}"] = _ike_probe_entry(
+        _IKE_ENCR_BASELINE + _IKE_PRF_BASELINE + [_t] + [EpdgIKEv2.DH_2048MODP]
+    )
+
+# homogeneous aliases for the DH (key-exchange) scan; SUPPORT_DH_* stay for the pipeline
+for _suffix in (
+    "768MODP", "1024MODP", "1536MODP", "2048MODP", "3072MODP", "4096MODP",
+    "6144MODP", "8192MODP", "256ECP", "384ECP", "512ECP", "192ECP",
+    "224ECP", "X25519",
+):
+    TEST_CONFIG[f"PROBE_IKE_DH_{_suffix}"] = TEST_CONFIG[f"SUPPORT_DH_{_suffix}"]
+
+
 REGEX_VOWIFI = r"^epdg.epc.mnc(\d{2,3}).mcc(\d{3}).pub.3gppnetwork.org\.?$"
 
 BASE_DIR = pathlib.Path(__file__).resolve().parent
